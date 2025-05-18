@@ -7,16 +7,18 @@ import { Post } from "@/types";
 import Link from "next/link";
 import Image from "next/image";
 
-export async function generateMetadata({
-    params,
-}: {
-    params: { slug: string };
-}): Promise<Metadata> {
+export async function generateMetadata(
+    props: {
+        params: Promise<{ slug: string }>;
+    }
+): Promise<Metadata> {
+    const params = await props.params;
     return { title: params.slug };
 }
 
 
-export default async function BlogPostPage({ params }: { params: { slug: string } }) {
+export default async function BlogPostPage(props: { params: Promise<{ slug: string }> }) {
+    const params = await props.params;
     const posts = await fetchPostsByCategory(params.slug);
     if (!posts) return notFound();
 

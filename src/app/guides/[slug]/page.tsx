@@ -9,11 +9,12 @@ import Image from "next/image";
 export const dynamic = "force-dynamic"; // Or use generateStaticParams below
 
 
-export async function generateMetadata({
-    params,
-}: {
-    params: { slug: string };
-}): Promise<Metadata> {
+export async function generateMetadata(
+    props: {
+        params: Promise<{ slug: string }>;
+    }
+): Promise<Metadata> {
+    const params = await props.params;
     const { slug } = params;
     const guide = await fetchGuideBySlug(slug);
     if (!guide) return { title: "Blog not found", description: "" };
@@ -25,7 +26,8 @@ export async function generateMetadata({
     });
 }
 
-export default async function GuidePage({ params }: { params: { slug: string } }) {
+export default async function GuidePage(props: { params: Promise<{ slug: string }> }) {
+    const params = await props.params;
     const { slug } = params;
     const guide = await fetchGuideBySlug(slug);
     if (!guide) return notFound();

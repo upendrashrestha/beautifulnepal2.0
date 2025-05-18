@@ -6,7 +6,8 @@ import { ITEM_PER_PAGE } from "@/util/constant";
 import { Post } from "@/types";
 import { urlFor } from "@/sanity/lib/image";
 
-export default async function BlogPage({ params }: { params: { page: string } }) {
+export default async function BlogPage(props: { params: Promise<{ page: string }> }) {
+    const params = await props.params;
     const currentPage = parseInt(params.page || "1", 10);
     const { posts, total } = await fetchPaginatedPosts(currentPage);
 

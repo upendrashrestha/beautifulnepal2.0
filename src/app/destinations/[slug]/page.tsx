@@ -7,11 +7,12 @@ import { generateMetadataHelper } from "@/util/generateMetadataHelper";
 import { urlFor } from "@/sanity/lib/image";
 import Image from "next/image";
 
-export async function generateMetadata({
-    params,
-}: {
-    params: { slug: string };
-}): Promise<Metadata> {
+export async function generateMetadata(
+    props: {
+        params: Promise<{ slug: string }>;
+    }
+): Promise<Metadata> {
+    const params = await props.params;
     const destination = await fetchDestinationBySlug(params.slug);
     if (!destination) return { title: "Destination not found", description: "" };
     return generateMetadataHelper({
@@ -21,7 +22,8 @@ export async function generateMetadata({
     });
 }
 
-export default async function BlogPostPage({ params }: { params: { slug: string } }) {
+export default async function BlogPostPage(props: { params: Promise<{ slug: string }> }) {
+    const params = await props.params;
     const destination = await fetchDestinationBySlug(params.slug);
     if (!destination) return notFound();
 

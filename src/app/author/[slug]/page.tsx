@@ -2,13 +2,15 @@ import { fetchPostsByAuthor } from "@/sanity/lib/fetch";
 import { Post } from "@/types";
 
 type PageProps = {
-    params: {
+    params: Promise<{
         slug: string;
-    };
+    }>;
 };
 
-export default async function AuthorPage({ params }: PageProps) {
-    const posts = await fetchPostsByAuthor(params.slug);
+export default async function AuthorPage(props: PageProps) {
+    const params = await props.params;
+    const slug = params.slug;
+    const posts = await fetchPostsByAuthor(slug);
     return (
         <main className="p-6">
             <h1 className="text-3xl font-bold mb-4">Authors Blogs</h1>

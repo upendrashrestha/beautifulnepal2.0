@@ -10,12 +10,11 @@ export const dynamic = "force-dynamic"; // Or use generateStaticParams below
 
 
 type PageProps = {
-    params: { slug: string };
+    params: Promise<{ slug: string }>;
 };
 
-export async function generateMetadata({
-    params,
-}: PageProps): Promise<Metadata> {
+export async function generateMetadata(props: PageProps): Promise<Metadata> {
+    const params = await props.params;
     const { slug } = params;
     const post = await fetchPostBySlug(slug);
     if (!post) return { title: "Blog not found", description: "" };
@@ -28,7 +27,8 @@ export async function generateMetadata({
     });
 }
 
-export default async function BlogPostPage({ params }: PageProps) {
+export default async function BlogPostPage(props: PageProps) {
+    const params = await props.params;
     const { slug } = params;
     const post = await fetchPostBySlug(slug);
     if (!post) return notFound();

@@ -1,12 +1,5 @@
 import { PortableTextBlock } from "next-sanity";
 
-export type PageProps = {
-  params: Params;
-};
-
-type Params = {
-  slug: string;
-};
 export interface Slug {
   current: string;
 }

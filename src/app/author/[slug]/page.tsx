@@ -1,5 +1,11 @@
 import { fetchPostsByAuthor } from "@/sanity/lib/fetch";
-import { Post, PageProps } from "@/types";
+import { Post } from "@/types";
+
+type PageProps = {
+    params: {
+        slug: string;
+    };
+};
 
 export default async function AuthorPage({ params }: PageProps) {
     const posts = await fetchPostsByAuthor(params.slug);

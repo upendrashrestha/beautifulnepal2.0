@@ -6,9 +6,12 @@ import { Metadata } from "next";
 import { fetchPostBySlug } from "@/sanity/lib/fetch";
 import { generateMetadataHelper } from "@/util/generateMetadataHelper";
 import Image from "next/image";
-import { PageProps } from "@/types";
 export const dynamic = "force-dynamic"; // Or use generateStaticParams below
 
+
+type PageProps = {
+    params: { slug: string };
+};
 
 export async function generateMetadata({
     params,
@@ -25,7 +28,7 @@ export async function generateMetadata({
     });
 }
 
-export default async function BlogPostPage({ params }: { params: { slug: string } }) {
+export default async function BlogPostPage({ params }: PageProps) {
     const { slug } = params;
     const post = await fetchPostBySlug(slug);
     if (!post) return notFound();

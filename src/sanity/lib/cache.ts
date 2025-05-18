@@ -1,6 +1,10 @@
 // lib/sanity/cache.ts
 
-const cache = new Map<string, Promise<any>>();
+/**
+ * Generic cache map scoped to type T.
+ * NOTE: You can also use a WeakMap if needed per instance.
+ */
+const cache = new Map<string, Promise<unknown>>();
 
 /**
  * Fetch data with caching. Use `forceRefresh = true` to bypass cache.
@@ -14,7 +18,9 @@ export function withCache<T>(
     const result = fetcher();
     cache.set(key, result);
   }
-  return cache.get(key)!;
+
+  // Type assertion is safe because the cache is only populated through the typed fetcher.
+  return cache.get(key)! as Promise<T>;
 }
 
 /**

@@ -1,12 +1,19 @@
-export default {
+import { defineField, defineType } from "sanity";
+
+export const destinationType = defineType({
   name: "destination",
   title: "Destination",
   type: "document",
   fields: [
-    { name: "name", type: "string", title: "Name" },
-    { name: "slug", type: "slug", title: "Slug", options: { source: "name" } },
-    { name: "intro", type: "text", title: "Intro" },
-    {
+    defineField({ name: "name", type: "string", title: "Name" }),
+    defineField({
+      name: "slug",
+      type: "slug",
+      title: "Slug",
+      options: { source: "name" },
+    }),
+    defineField({ name: "intro", type: "text", title: "Intro" }),
+    defineField({
       name: "heroImage",
       type: "image",
       title: "Hero Image",
@@ -14,24 +21,24 @@ export default {
         hotspot: true,
       },
       fields: [
-        {
+        defineField({
           name: "alt",
           type: "string",
           title: "Alternative text",
-        },
+        }),
       ],
-    },
-    {
+    }),
+    defineField({
       name: "details",
       type: "array",
       title: "Details",
       of: [{ type: "block" }],
-    },
-    {
+    }),
+    defineField({
       name: "affiliateLinks",
       title: "Affiliate Links",
       type: "array",
       of: [{ type: "reference", to: [{ type: "affiliateLink" }] }],
-    }
+    }),
   ],
-};
+});

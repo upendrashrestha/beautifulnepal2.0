@@ -1,0 +1,7 @@
+/* Force LTR direction in Portable Text Editor */
+[data-ui="Textarea"] textarea,
+[data-ui="Input"] input,
+[data-ui="PortableTextInput"] [contenteditable="true"] {
+  direction: ltr !important;
+  text-align: left !important;
+}

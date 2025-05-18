@@ -67,7 +67,7 @@ export default async function GuidePage({ params }: { params: { slug: string } }
 
             {/* Body */}
             <div className="prose max-w-none prose-lg prose-gray">
-                <PortableText value={guide.body} />
+                {guide.body && <PortableText value={guide.body} />}
             </div>
         </article>
     );

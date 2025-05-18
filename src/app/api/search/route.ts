@@ -15,13 +15,19 @@ export async function GET(req: Request) {
         _id,
         title,
         slug,
-        "type": "blog"
+        "type": "blogs"
       },
       "destinations": *[_type == "destination" && name match $q]{
         _id,
         name,
         slug,
         "type": "destinations"
+      },
+      "guides": *[_type == "guide" && title match $q]{
+        _id,
+        title,
+        slug,
+        "type": "guides"
       },
       "categories": *[_type == "category" && title match $q]{
         _id,

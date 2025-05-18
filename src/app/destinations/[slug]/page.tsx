@@ -38,7 +38,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
                     />
                 </div>
             )}
-            <PortableText value={destination.details} />
+            {destination.details && <PortableText value={destination.details} />}
         </div>
     );
 }

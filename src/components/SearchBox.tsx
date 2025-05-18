@@ -2,19 +2,19 @@
 
 import { useState } from "react";
 import { SearchIcon } from "lucide-react";
+import { SearchQueryResult } from "@/types";
 
 export default function SearchBox() {
     const [term, setTerm] = useState("");
-    const [results, setResults] = useState<any[]>([]);
+    const [results, setResults] = useState<SearchQueryResult>();
 
     async function handleSearch(e: React.FormEvent) {
         e.preventDefault();
         if (!term.trim()) return;
 
         const res = await fetch(`/api/search?q=${encodeURIComponent(term)}`);
-        const data = await res.json();
-        const merged = [...data.posts, ...data.destinations, ...data.categories];
-        setResults(merged);
+        const data: SearchQueryResult = await res.json();
+        setResults(data);
     }
 
     return (
@@ -33,10 +33,39 @@ export default function SearchBox() {
             </form>
 
             <ul className="space-y-2">
-                {results.map((item) => (
+
+
+                {results?.posts.map((item) => (
                     <li key={item._id}>
                         <a href={`/${item.type}/${item.slug.current}`} className="text-blue-600 hover:underline">
-                            {item.title || item.name}
+                            {item.title}
+                        </a>{" "}
+                        <span className="text-sm text-gray-500">({item.type})</span>
+                    </li>
+                ))}
+
+                {results?.guides.map((item) => (
+                    <li key={item._id}>
+                        <a href={`/${item.type}/${item.slug.current}`} className="text-blue-600 hover:underline">
+                            {item.title}
+                        </a>{" "}
+                        <span className="text-sm text-gray-500">({item.type})</span>
+                    </li>
+                ))}
+
+                {results?.destinations.map((item) => (
+                    <li key={item._id}>
+                        <a href={`/${item.type}/${item.slug.current}`} className="text-blue-600 hover:underline">
+                            {item.name}
+                        </a>{" "}
+                        <span className="text-sm text-gray-500">({item.type})</span>
+                    </li>
+                ))}
+
+                {results?.categories.map((item) => (
+                    <li key={item._id}>
+                        <a href={`/${item.type}/${item.slug.current}`} className="text-blue-600 hover:underline">
+                            {item.title}
                         </a>{" "}
                         <span className="text-sm text-gray-500">({item.type})</span>
                     </li>

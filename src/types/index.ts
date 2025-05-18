@@ -1,3 +1,5 @@
+import { PortableTextBlock } from "next-sanity";
+
 export interface Slug {
   current: string;
 }
@@ -6,6 +8,7 @@ export interface Category {
   _id: string;
   title: string;
   slug: Slug;
+  type?: string;
 }
 
 export interface AffiliateLink {
@@ -29,9 +32,10 @@ export interface Post {
     };
     alt?: string;
   };
-  body?: any; // Portable Text type
+  body?: BlockContent; // Portable Text type
   categories?: Category[];
   excerpt?: string;
+  type?: string; // "blog" or "guide"
 }
 
 export interface Guide {
@@ -47,8 +51,9 @@ export interface Guide {
     };
     alt?: string;
   };
-  body?: any; // Portable Text type
+  body?: BlockContent; // Portable Text type
   excerpt?: string;
+  type?: string; // "blog" or "guide"
 }
 
 export interface Destination {
@@ -63,8 +68,9 @@ export interface Destination {
       alt?: string;
     };
   };
-  details?: any; // Portable Text type
+  details?: BlockContent; // Portable Text type
   affiliateLinks?: AffiliateLink[];
+  type?: string; // "blog" or "guide"
 }
 export interface SocialLink {
   _id: string;
@@ -126,6 +132,15 @@ export interface Company {
       };
     };
   }[];
-  termsAndConditions?: any;
+  termsAndConditions?: BlockContent;
   shortDescription?: string;
 }
+
+export type SearchQueryResult = {
+  posts: Post[];
+  destinations: Destination[];
+  guides: Guide[];
+  categories: Category[];
+};
+
+export type BlockContent = PortableTextBlock[];

@@ -77,7 +77,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
 
             {/* Body */}
             <div className="prose max-w-none prose-lg prose-gray">
-                <PortableText value={post.body} />
+                {post.body && <PortableText value={post.body} />}
             </div>
         </article>
     );

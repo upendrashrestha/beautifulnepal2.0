@@ -1,7 +1,7 @@
 import { fetchPostsByAuthor } from "@/sanity/lib/fetch";
-import { Post } from "@/types";
+import { Post, PageProps } from "@/types";
 
-export default async function BlogPage({ params }: { params: { slug: string } }) {
+export default async function AuthorPage({ params }: PageProps) {
     const posts = await fetchPostsByAuthor(params.slug);
     return (
         <main className="p-6">

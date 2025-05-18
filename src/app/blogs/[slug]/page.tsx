@@ -6,14 +6,13 @@ import { Metadata } from "next";
 import { fetchPostBySlug } from "@/sanity/lib/fetch";
 import { generateMetadataHelper } from "@/util/generateMetadataHelper";
 import Image from "next/image";
+import { PageProps } from "@/types";
 export const dynamic = "force-dynamic"; // Or use generateStaticParams below
 
 
 export async function generateMetadata({
     params,
-}: {
-    params: { slug: string };
-}): Promise<Metadata> {
+}: PageProps): Promise<Metadata> {
     const { slug } = params;
     const post = await fetchPostBySlug(slug);
     if (!post) return { title: "Blog not found", description: "" };

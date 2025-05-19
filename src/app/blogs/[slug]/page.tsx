@@ -9,9 +9,10 @@ import Image from "next/image";
 import { Box, Chip, Container, Divider, Stack, Typography } from "@mui/material";
 export const dynamic = "force-dynamic"; // Or use generateStaticParams below
 
-
 type PageProps = {
-    params: Promise<{ slug: string }>;
+    params: Promise<{
+        slug: string;
+    }>;
 };
 
 export async function generateMetadata(props: PageProps): Promise<Metadata> {

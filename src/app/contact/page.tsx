@@ -1,81 +1,169 @@
-"use client"
-import { useState } from 'react';
+"use client";
 
+import { useState } from "react";
+import {
+    Box,
+    TextField,
+    Typography,
+    Button,
+    Alert,
+    InputAdornment,
+    CircularProgress,
+} from "@mui/material";
+import { Person, Email, Message } from "@mui/icons-material";
 
 export default function ContactPage() {
-    const [formData, setFormData] = useState({ name: '', email: '', message: '', website: '' });
-    const [status, setStatus] = useState('');
+    const [formData, setFormData] = useState({
+        name: "",
+        email: "",
+        message: "",
+        website: "",
+    });
+    const [status, setStatus] = useState("");
+    const [loading, setLoading] = useState(false);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const handleChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setStatus('Submitting...');
+        setLoading(true);
+        setStatus("");
 
         try {
-            const res = await fetch('/api/contact', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+            const res = await fetch("/api/contact", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData),
             });
 
-            if (!res.ok) throw new Error('Failed to submit');
+            if (!res.ok) throw new Error("Failed to submit");
 
-            setFormData({ name: '', email: '', message: '', website: '' });
-            setStatus('Thank you! Your message has been sent.');
+            setFormData({ name: "", email: "", message: "", website: "" });
+            setStatus("success");
         } catch (err) {
             console.error(err);
-            setStatus('Something went wrong. Try again.');
+            setStatus("error");
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
-        <div className="w-full p-6">
-            <h1 className="text-3xl font-bold mb-5 text-center">Contact Us</h1>
-            <form onSubmit={handleSubmit} className="space-y-4">
+        <Box
+            maxWidth="600px"
+            mx="auto"
+            px={3}
+            py={3}
+            display="flex"
+            flexDirection="column"
+            gap={3}
+        >
+            <Typography
+                variant="h4"
+                component="h1"
+                fontWeight="bold"
+                textAlign="center"
+                gutterBottom
+            >
+                Contact Us
+            </Typography>
+
+            <form onSubmit={handleSubmit} noValidate>
                 <input
                     type="text"
                     name="website"
                     value={formData.website}
                     onChange={handleChange}
-                    className="hidden"
+                    style={{ display: "none" }}
                     autoComplete="off"
                     tabIndex={-1}
                 />
-                <input
-                    className="w-full border border-gray-300 rounded px-4 py-2"
-                    type="text"
+
+                <TextField
+                    label="Your Name"
                     name="name"
-                    placeholder="Your Name"
+                    fullWidth
+                    required
+                    variant="outlined"
                     value={formData.name}
                     onChange={handleChange}
-                    required
+                    margin="normal"
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <Person />
+                            </InputAdornment>
+                        ),
+                    }}
                 />
-                <input
-                    className="w-full border border-gray-300 rounded px-4 py-2"
-                    type="email"
+
+                <TextField
+                    label="Your Email"
                     name="email"
-                    placeholder="Your Email"
+                    type="email"
+                    fullWidth
+                    required
+                    variant="outlined"
                     value={formData.email}
                     onChange={handleChange}
-                    required
+                    margin="normal"
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <Email />
+                            </InputAdornment>
+                        ),
+                    }}
                 />
-                <textarea
-                    className="w-full border border-gray-300 rounded px-4 py-2"
+
+                <TextField
+                    label="Your Message"
                     name="message"
-                    placeholder="Your Message"
+                    multiline
                     rows={5}
+                    fullWidth
+                    required
+                    variant="outlined"
                     value={formData.message}
                     onChange={handleChange}
-                    required
+                    margin="normal"
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <Message />
+                            </InputAdornment>
+                        ),
+                    }}
                 />
-                <button type="submit" className="bg-blue-600 text-white py-2 px-4 rounded">
-                    Send
-                </button>
+
+                <Box mt={2}>
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        fullWidth
+                        disabled={loading}
+                        startIcon={loading ? <CircularProgress size={20} /> : undefined}
+                    >
+                        {loading ? "Sending..." : "Send Message"}
+                    </Button>
+                </Box>
             </form>
-            {status && <p className="mt-4">{status}</p>}
-        </div>
+
+            {status === "success" && (
+                <Alert severity="success" sx={{ mt: 2 }}>
+                    Thank you! Your message has been sent.
+                </Alert>
+            )}
+            {status === "error" && (
+                <Alert severity="error" sx={{ mt: 2 }}>
+                    Something went wrong. Please try again.
+                </Alert>
+            )}
+        </Box>
     );
 }

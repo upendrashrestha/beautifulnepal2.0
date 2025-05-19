@@ -1,76 +1,122 @@
 "use client";
 
 import { useState } from "react";
-import { SearchIcon } from "lucide-react";
+import {
+    Button,
+    CircularProgress,
+    TextField,
+    Typography,
+    List,
+    ListItem,
+    Link as MuiLink,
+    Container,
+    InputAdornment,
+} from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
 import { SearchQueryResult } from "@/types";
+import Link from "next/link";
 
 export default function SearchBox() {
     const [term, setTerm] = useState("");
     const [results, setResults] = useState<SearchQueryResult>();
+    const [loading, setLoading] = useState(false);
 
     async function handleSearch(e: React.FormEvent) {
         e.preventDefault();
         if (!term.trim()) return;
 
-        const res = await fetch(`/api/search?q=${encodeURIComponent(term)}`);
-        const data: SearchQueryResult = await res.json();
-        setResults(data);
+        setLoading(true);
+        setResults(undefined);
+
+        try {
+            const res = await fetch(`/api/search?q=${encodeURIComponent(term)}`);
+            const data: SearchQueryResult = await res.json();
+            setResults(data);
+        } catch (error) {
+            console.error("Search failed", error);
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (
-        <div className="max-w-xl mx-auto">
-            <form onSubmit={handleSearch} className="flex gap-2 mb-4">
-                <input
-                    type="text"
+        <Container maxWidth="lg" sx={{ py: 3 }}>
+            <form onSubmit={handleSearch} style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
+                <TextField
+                    fullWidth
+                    variant="outlined"
+                    label="Search blog, destination or guides..."
                     value={term}
                     onChange={(e) => setTerm(e.target.value)}
-                    placeholder="Search blog, destination or guides..."
-                    className="w-full border border-gray-300 rounded px-4 py-2"
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <SearchIcon color="action" />
+                            </InputAdornment>
+                        ),
+                    }}
                 />
-                <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer">
-                    <SearchIcon className="w-4 h-4" />
-                </button>
+
+                <Button
+                    type="submit"
+                    variant="contained"
+                    disabled={loading}
+                    color="primary"
+                    sx={{ whiteSpace: "nowrap", minWidth: 40 }}
+                >
+                    {loading ? <CircularProgress size={20} /> : <SearchIcon />}
+                </Button>
             </form>
 
-            <ul className="space-y-2">
+            {loading && <Typography color="text.secondary">Searching...</Typography>}
 
+            {results && (
+                <List>
+                    {results.posts.map((item) => (
+                        <ListItem key={item._id}>
+                            <MuiLink component={Link} href={`/${item.type}/${item.slug.current}`} underline="hover">
+                                {item.title}
+                            </MuiLink>{" "}
+                            <Typography variant="body2" color="text.secondary" ml={1}>
+                                ({item.type})
+                            </Typography>
+                        </ListItem>
+                    ))}
 
-                {results?.posts.map((item) => (
-                    <li key={item._id}>
-                        <a href={`/${item.type}/${item.slug.current}`} className="text-blue-600 hover:underline">
-                            {item.title}
-                        </a>{" "}
-                        <span className="text-sm text-gray-500">({item.type})</span>
-                    </li>
-                ))}
+                    {results.guides.map((item) => (
+                        <ListItem key={item._id}>
+                            <MuiLink component={Link} href={`/${item.type}/${item.slug.current}`} underline="hover">
+                                {item.title}
+                            </MuiLink>{" "}
+                            <Typography variant="body2" color="text.secondary" ml={1}>
+                                ({item.type})
+                            </Typography>
+                        </ListItem>
+                    ))}
 
-                {results?.guides.map((item) => (
-                    <li key={item._id}>
-                        <a href={`/${item.type}/${item.slug.current}`} className="text-blue-600 hover:underline">
-                            {item.title}
-                        </a>{" "}
-                        <span className="text-sm text-gray-500">({item.type})</span>
-                    </li>
-                ))}
+                    {results.destinations.map((item) => (
+                        <ListItem key={item._id}>
+                            <MuiLink component={Link} href={`/${item.type}/${item.slug.current}`} underline="hover">
+                                {item.name}
+                            </MuiLink>{" "}
+                            <Typography variant="body2" color="text.secondary" ml={1}>
+                                ({item.type})
+                            </Typography>
+                        </ListItem>
+                    ))}
 
-                {results?.destinations.map((item) => (
-                    <li key={item._id}>
-                        <a href={`/${item.type}/${item.slug.current}`} className="text-blue-600 hover:underline">
-                            {item.name}
-                        </a>{" "}
-                        <span className="text-sm text-gray-500">({item.type})</span>
-                    </li>
-                ))}
-
-                {results?.categories.map((item) => (
-                    <li key={item._id}>
-                        <a href={`/${item.type}/${item.slug.current}`} className="text-blue-600 hover:underline">
-                            {item.title}
-                        </a>{" "}
-                        <span className="text-sm text-gray-500">({item.type})</span>
-                    </li>
-                ))}
-            </ul>
-        </div>
+                    {results.categories.map((item) => (
+                        <ListItem key={item._id}>
+                            <MuiLink component={Link} href={`/${item.type}/${item.slug.current}`} underline="hover">
+                                {item.title}
+                            </MuiLink>{" "}
+                            <Typography variant="body2" color="text.secondary" ml={1}>
+                                ({item.type})
+                            </Typography>
+                        </ListItem>
+                    ))}
+                </List>
+            )}
+        </Container>
     );
 }

@@ -6,6 +6,7 @@ import { Metadata } from "next";
 import { fetchPostBySlug } from "@/sanity/lib/fetch";
 import { generateMetadataHelper } from "@/util/generateMetadataHelper";
 import Image from "next/image";
+import { Box, Chip, Container, Divider, Stack, Typography } from "@mui/material";
 export const dynamic = "force-dynamic"; // Or use generateStaticParams below
 
 
@@ -34,53 +35,63 @@ export default async function BlogPostPage(props: PageProps) {
     if (!post) return notFound();
 
     return (
-        <article className="max-w-4xl mx-auto p-6 lg:p-12">
+        <Container maxWidth="md" sx={{ py: 3 }}>
             {/* Title */}
-            <h1 className="text-4xl md:text-5xl font-bold leading-tight text-gray-800 mb-4">
+            <Typography variant="h3" component="h1" gutterBottom fontWeight="bold">
                 {post.title}
-            </h1>
+            </Typography>
 
             {/* Metadata */}
-            <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 mb-6">
-                {post.author && <p>By {post.author.name}</p>}
+            <Stack direction="row" spacing={2} mb={3} flexWrap="wrap" alignItems="center">
+                {post.author && (
+                    <Typography variant="body2" color="text.secondary">
+                        By {post.author.name}
+                    </Typography>
+                )}
                 {post.publishedAt && (
-                    <p>{new Date(post.publishedAt).toLocaleDateString()}</p>
+                    <Typography variant="body2" color="text.secondary">
+                        {new Date(post.publishedAt).toLocaleDateString()}
+                    </Typography>
                 )}
                 {post.categories && post.categories?.length > 0 && (
-                    <div className="flex flex-wrap gap-2">
+                    <Stack direction="row" spacing={1}>
                         {post.categories.map((cat) => (
-                            <span
-                                key={cat._id}
-                                className="bg-gray-200 text-gray-700 px-2 py-1 rounded-full text-xs"
-                            >
-                                {cat.title}
-                            </span>
+                            <Chip key={cat._id} label={cat.title} size="small" />
                         ))}
-                    </div>
+                    </Stack>
                 )}
-            </div>
+            </Stack>
+
+            <Divider sx={{ my: 3 }} />
 
             {/* Main Image */}
             {post.mainImage?.asset?._ref && (
-                <div className="relative w-full h-80 md:h-[500px] mb-8 overflow-hidden rounded-xl">
+                <Box position="relative" width="100%" height={400} mb={4}>
                     <Image
                         src={urlFor(post.mainImage.asset._ref).url()}
                         alt={post.mainImage.alt || post.title}
                         fill
-                        className="object-cover"
+                        style={{ objectFit: "cover", borderRadius: "12px" }}
                     />
-                </div>
+                </Box>
             )}
 
             {/* Excerpt */}
             {post.excerpt && (
-                <p className="text-lg text-gray-700 italic mb-8">{post.excerpt}</p>
+                <Typography
+                    variant="h6"
+                    color="text.secondary"
+                    fontStyle="italic"
+                    mb={4}
+                >
+                    {post.excerpt}
+                </Typography>
             )}
 
             {/* Body */}
-            <div className="prose max-w-none prose-lg prose-gray">
+            <Box sx={{ "& > *": { mb: 2 } }}>
                 {post.body && <PortableText value={post.body} />}
-            </div>
-        </article>
+            </Box>
+        </Container>
     );
 }

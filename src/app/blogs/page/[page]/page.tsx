@@ -5,17 +5,21 @@ import Image from "next/image";
 import { ITEM_PER_PAGE } from "@/util/constant";
 import { Post } from "@/types";
 import { urlFor } from "@/sanity/lib/image";
+import { Container, Divider, Typography } from "@mui/material";
 
-export default async function BlogPage(props: { params: Promise<{ page: string }> }) {
-    const params = await props.params;
+export default async function BlogPage({ params }: { params: { page: string } }) {
     const currentPage = parseInt(params.page || "1", 10);
     const { posts, total } = await fetchPaginatedPosts(currentPage);
 
     const totalPages = Math.ceil(total / ITEM_PER_PAGE);
 
     return (
-        <div className="w-full p-6">
-            <h1 className="text-3xl font-bold mb-5 text-center">Blog</h1>
+        <Container maxWidth="lg" sx={{ py: 3 }}>
+            {/* Title */}
+            <Typography variant="h3" component="h1" gutterBottom fontWeight="bold">
+                Blogs
+            </Typography>
+            <Divider sx={{ mb: 3 }} />
 
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
                 {posts.map((post: Post) => (
@@ -61,6 +65,6 @@ export default async function BlogPage(props: { params: Promise<{ page: string }
                     </Link>
                 )}
             </div>
-        </div>
+        </Container>
     );
 }

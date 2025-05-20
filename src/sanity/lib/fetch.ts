@@ -64,7 +64,10 @@ export function fetchCompany(): Promise<Company> {
 export function fetchDestinations(): Promise<Destination[]> {
   return withCache(
     "destinations",
-    () => client.fetch(`*[_type == "destination"]{_id, name, slug, intro}`),
+    () =>
+      client.fetch(
+        `*[_type == "destination"]{_id, name, slug, intro, heroImage}`
+      ),
     true
   );
 }

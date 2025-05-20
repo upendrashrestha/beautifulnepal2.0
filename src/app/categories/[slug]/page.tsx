@@ -6,6 +6,7 @@ import { fetchPostsByCategory } from "@/sanity/lib/fetch";
 import { Post } from "@/types";
 import Link from "next/link";
 import Image from "next/image";
+import PageTitle from "@/components/PageTitle";
 
 export async function generateMetadata(
     props: {
@@ -23,10 +24,9 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
     if (!posts) return notFound();
 
     return (
-        <div className="w-full p-6">
-            <h1 className="text-3xl font-bold mb-5 text-center">{params.slug}</h1>
-
-            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div>
+            <PageTitle>{params.slug}</PageTitle>
+            <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
                 {posts.map((post: Post) => (
                     <Link
                         key={post._id}

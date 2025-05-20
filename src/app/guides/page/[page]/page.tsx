@@ -5,6 +5,7 @@ import Image from "next/image";
 import { ITEM_PER_PAGE } from "@/util/constant";
 import { Guide } from "@/types";
 import { urlFor } from "@/sanity/lib/image";
+import PageTitle from "@/components/PageTitle";
 
 export default async function GuidePage(props: { params: Promise<{ page: string }> }) {
     const params = await props.params;
@@ -14,10 +15,10 @@ export default async function GuidePage(props: { params: Promise<{ page: string 
     const totalPages = Math.ceil(total / ITEM_PER_PAGE);
 
     return (
-        <div className="w-full p-6">
-            <h1 className="text-3xl font-bold mb-5 text-center">Guides</h1>
+        <div>
+            <PageTitle>Guides</PageTitle>
 
-            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
                 {guides.map((guide: Guide) => (
                     <Link
                         key={guide._id}

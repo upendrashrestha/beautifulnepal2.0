@@ -1,3 +1,4 @@
+import PageTitle from "@/components/PageTitle";
 import { fetchCompanyAbout } from "@/sanity/lib/fetch";
 import { generateMetadataHelper } from "@/util/generateMetadataHelper";
 import { Metadata } from "next";
@@ -14,10 +15,12 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function AboutPage() {
     const companyAbout = await fetchCompanyAbout();
     return (
-        <div className="w-full p-6">
-            <h1 className="text-3xl font-bold mb-5 text-center">About Us</h1>
+        <div>
+            <div className="text-center">
+                <PageTitle>About Us</PageTitle>
+            </div>
 
-            <div className="text-gray-600 text-sm line-clamp-3">
+            <div className="mt-10 text-gray-600 text-sm line-clamp-3">
                 {companyAbout.description}
             </div>
 

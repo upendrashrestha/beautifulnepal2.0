@@ -1,0 +1,84 @@
+import Link from './Link'
+import PageTitle from './PageTitle'
+import SectionContainer from './SectionContainer'
+// Update the import path below if the Image component is located elsewhere
+import Image from './Image'
+import { Post } from '../types'
+import { PortableText } from '@portabletext/react'
+import { urlFor } from '@/sanity/lib/image'
+
+
+export default function PostView(post: Post) {
+    return (
+        <SectionContainer>
+            <article>
+                <div className="xl:divide-y xl:divide-gray-200 xl:dark:divide-gray-700">
+                    <header className="pt-6 xl:pb-6">
+                        <div className="space-y-1 text-center">
+                            <dl className="space-y-10">
+                                <div>
+                                    <dt className="sr-only">Published on</dt>
+                                    <dd className="text-base leading-6 font-medium text-gray-500 dark:text-gray-400">
+                                        <time dateTime={post.publishedAt ?? ''}>
+                                            {post.publishedAt
+                                                ? new Date(post.publishedAt).toLocaleDateString('en-US', {
+                                                    year: 'numeric',
+                                                    month: 'long',
+                                                    day: 'numeric',
+                                                })
+                                                : 'Unknown date'
+                                            }
+                                        </time>
+                                    </dd>
+                                </div>
+                            </dl>
+                            <div>
+                                <PageTitle>{post.title}</PageTitle>
+                            </div>
+                        </div>
+                    </header>
+                    <div className="grid-rows-[auto_1fr] divide-y divide-gray-200 pb-8 xl:grid xl:grid-cols-4 xl:gap-x-6 xl:divide-y-0 dark:divide-gray-700">
+                        <div className="p-4 xl:border-b xl:border-gray-200  xl:dark:border-gray-700">
+                            <Link href={`/author/${post.author?.slug}`}
+                                className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400">By {post.author?.name}</Link>
+                        </div>
+
+
+                        {post.body &&
+                            <div className="xl:col-span-3 xl:row-span-2 xl:pb-0 ">
+                                {/* Main Image */}
+                                {post.mainImage?.asset?._ref && (
+
+                                    <Image
+                                        src={urlFor(post.mainImage.asset._ref).url()}
+                                        alt={post.mainImage.alt || post.title}
+                                        height={500}
+                                        width={500}
+                                        style={{ objectFit: "cover" }}
+                                    />
+                                )}
+                                <div className="prose dark:prose-invert max-w-none pt-10 pb-8"><PortableText value={post.body} />
+                                </div>
+
+                            </div>
+                        }
+                        <footer>
+                            <div className="divide-gray-200 text-sm leading-5 font-medium xl:col-start-1 xl:row-start-2 xl:divide-y dark:divide-gray-700">
+
+                            </div>
+                            <div className="pt-4 xl:pt-8">
+                                <Link
+                                    href={`/blogs`}
+                                    className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                                    aria-label="Back to the blog"
+                                >
+                                    &larr; Back to the blog
+                                </Link>
+                            </div>
+                        </footer>
+                    </div>
+                </div>
+            </article>
+        </SectionContainer>
+    )
+}

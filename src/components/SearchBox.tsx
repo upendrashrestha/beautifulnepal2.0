@@ -2,15 +2,7 @@
 
 import { useState } from "react";
 import {
-    Button,
     CircularProgress,
-    TextField,
-    Typography,
-    List,
-    ListItem,
-    Link as MuiLink,
-    Container,
-    InputAdornment,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { SearchQueryResult } from "@/types";
@@ -40,83 +32,47 @@ export default function SearchBox() {
     }
 
     return (
-        <Container maxWidth="lg" sx={{ py: 3 }}>
-            <form onSubmit={handleSearch} style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
-                <TextField
-                    fullWidth
-                    variant="outlined"
-                    label="Search blog, destination or guides..."
-                    value={term}
-                    onChange={(e) => setTerm(e.target.value)}
-                    InputProps={{
-                        startAdornment: (
-                            <InputAdornment position="start">
-                                <SearchIcon color="action" />
-                            </InputAdornment>
-                        ),
-                    }}
-                />
+        <div className="max-w-screen-lg mx-auto py-6 px-4">
+            <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-4 mb-4">
+                <div className="relative w-full">
+                    <span className="absolute inset-y-0 left-3 flex items-center text-gray-500">
+                        <SearchIcon fontSize="small" />
+                    </span>
+                    <input
+                        type="text"
+                        placeholder="Search blog, destination or guides..."
+                        value={term}
+                        onChange={(e) => setTerm(e.target.value)}
+                        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                </div>
 
-                <Button
+                <button
                     type="submit"
-                    variant="contained"
                     disabled={loading}
-                    color="primary"
-                    sx={{ whiteSpace: "nowrap", minWidth: 40 }}
+                    className="min-w-[40px] px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 whitespace-nowrap flex items-center justify-center"
                 >
-                    {loading ? <CircularProgress size={20} /> : <SearchIcon />}
-                </Button>
+                    {loading ? <CircularProgress size={20} /> : <SearchIcon fontSize="small" />}
+                </button>
             </form>
 
-            {loading && <Typography color="text.secondary">Searching...</Typography>}
+            {loading && <p className="text-gray-500">Searching...</p>}
 
             {results && (
-                <List>
-                    {results.posts.map((item) => (
-                        <ListItem key={item._id}>
-                            <MuiLink component={Link} href={`/${item.type}/${item.slug.current}`} underline="hover">
-                                {item.title}
-                            </MuiLink>{" "}
-                            <Typography variant="body2" color="text.secondary" ml={1}>
-                                ({item.type})
-                            </Typography>
-                        </ListItem>
+                <ul className="space-y-2">
+                    {[...results.posts, ...results.guides, ...results.destinations, ...results.categories].map((item) => (
+                        <li key={item._id} className="flex items-center">
+                            <Link
+                                href={`/${item.type}/${item.slug.current}`}
+                                className="text-blue-600 hover:underline"
+                            >
+                                {"title" in item ? item.title : item.name}
+                            </Link>
+                            <span className="ml-2 text-sm text-gray-500">({item.type})</span>
+                        </li>
                     ))}
-
-                    {results.guides.map((item) => (
-                        <ListItem key={item._id}>
-                            <MuiLink component={Link} href={`/${item.type}/${item.slug.current}`} underline="hover">
-                                {item.title}
-                            </MuiLink>{" "}
-                            <Typography variant="body2" color="text.secondary" ml={1}>
-                                ({item.type})
-                            </Typography>
-                        </ListItem>
-                    ))}
-
-                    {results.destinations.map((item) => (
-                        <ListItem key={item._id}>
-                            <MuiLink component={Link} href={`/${item.type}/${item.slug.current}`} underline="hover">
-                                {item.name}
-                            </MuiLink>{" "}
-                            <Typography variant="body2" color="text.secondary" ml={1}>
-                                ({item.type})
-                            </Typography>
-                        </ListItem>
-                    ))}
-
-                    {results.categories.map((item) => (
-                        <ListItem key={item._id}>
-                            <MuiLink component={Link} href={`/${item.type}/${item.slug.current}`} underline="hover">
-                                {item.title}
-                            </MuiLink>{" "}
-                            <Typography variant="body2" color="text.secondary" ml={1}>
-                                ({item.type})
-                            </Typography>
-                        </ListItem>
-                    ))}
-                </List>
+                </ul>
             )}
-        </Container>
+        </div>
     );
 }

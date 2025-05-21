@@ -1,10 +1,10 @@
-import PageTitle from "@/components/PageTitle";
 import { fetchDestinations } from "@/sanity/lib/fetch";
 import { urlFor } from "@/sanity/lib/image";
 import { Destination } from "@/types";
 import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
+import PageLayout from "@/layouts/PageLayout";
 
 export async function generateMetadata(): Promise<Metadata> {
     return { title: "Destinations", description: "Destinations list page." };
@@ -13,9 +13,8 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function DestinationListPage() {
     const destinations = await fetchDestinations();
     return (
-        <div>
-            <PageTitle> Destinations</PageTitle >
-            <ul className="space-y-6 mt-10">
+        <PageLayout title="Destinations">
+            <ul className="space-y-6">
                 {destinations.map((d: Destination) => (
                     <li key={d._id}>
                         <Link
@@ -43,6 +42,6 @@ export default async function DestinationListPage() {
                     </li>
                 ))}
             </ul>
-        </div >
+        </PageLayout>
     );
 }

@@ -1,4 +1,5 @@
-import PageTitle from "@/components/PageTitle";
+
+import PageLayout from "@/layouts/PageLayout";
 import { fetchPostsByAuthor } from "@/sanity/lib/fetch";
 import { Post } from "@/types";
 
@@ -13,9 +14,8 @@ export default async function AuthorPage(props: PageProps) {
     const slug = params.slug;
     const posts = await fetchPostsByAuthor(slug);
     return (
-        <div>
-            <PageTitle>Author Blogs</PageTitle>
-            <ul className="mt-10">
+        <PageLayout title="Author's Blogs">
+            <ul>
                 {posts.map((post: Post) => (
                     <li key={post._id} className="mb-4">
                         <a href={`/blogs/${post.slug.current}`} className="text-xl text-blue-600 underline">
@@ -24,6 +24,6 @@ export default async function AuthorPage(props: PageProps) {
                     </li>
                 ))}
             </ul>
-        </div>
+        </PageLayout>
     );
 }

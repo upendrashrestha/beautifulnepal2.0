@@ -6,6 +6,7 @@ import { Metadata } from "next";
 import { fetchGuideBySlug } from "@/sanity/lib/fetch";
 import { generateMetadataHelper } from "@/util/generateMetadataHelper";
 import Image from "next/image";
+import SocialShare from "@/components/SocialShare";
 export const dynamic = "force-dynamic"; // Or use generateStaticParams below
 
 
@@ -33,12 +34,14 @@ export default async function GuidePage(props: { params: Promise<{ slug: string 
     if (!guide) return notFound();
 
     return (
-        <article className="max-w-4xl mx-auto p-6 lg:p-12">
+        <article className="max-w-4xl mx-auto">
             {/* Title */}
             <h1 className="text-4xl md:text-5xl font-bold leading-tight text-gray-800 mb-4">
                 {guide.title}
             </h1>
-
+            <div className="mb-4">
+                <SocialShare />
+            </div>
             {/* Metadata */}
             <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 mb-6">
                 {guide.author && <p>By {guide.author.name}</p>}

@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import logo from "@/assets/logo.png";
 import DestinationDropdown from "./DestinationDropdown";
-import { MailIcon } from 'lucide-react';
+import { FaEnvelope } from 'react-icons/fa';
 
 export default function Header() {
     return (
@@ -35,7 +35,7 @@ export default function Header() {
                         href="/contact"
                         className="text-sm font-medium bg-gray-100 p-2 rounded-lg hover:bg-gray-200"
                     >
-                        <MailIcon className="w-4 h-4 inline-block" />
+                        <FaEnvelope className="w-4 h-4 inline-block" />
                     </Link>
                 </div>
 

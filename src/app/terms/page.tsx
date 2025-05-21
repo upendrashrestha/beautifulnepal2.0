@@ -1,3 +1,4 @@
+import PageLayout from "@/layouts/PageLayout";
 import { fetchCompanyTerms } from "@/sanity/lib/fetch";
 import { generateMetadataHelper } from "@/util/generateMetadataHelper";
 import { Metadata } from "next";
@@ -15,10 +16,8 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function TermsPage() {
     const companyTerms = await fetchCompanyTerms();
     return (
-        <div className="w-full p-6">
-            <h1 className="text-3xl font-bold mb-5 text-center">Terms And Condition</h1>
+        <PageLayout title="Terms And Condition">
             {companyTerms?.termsAndConditions && <PortableText value={companyTerms?.termsAndConditions} />}
-
-        </div >
+        </PageLayout >
     );
 }

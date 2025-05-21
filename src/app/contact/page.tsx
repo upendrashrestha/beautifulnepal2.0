@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import PageTitle from "@/components/PageTitle";
+import PageLayout from "@/layouts/PageLayout";
 
 export default function ContactPage() {
     const [formData, setFormData] = useState({
@@ -44,11 +44,9 @@ export default function ContactPage() {
     };
 
     return (
-        <div>
-            <div className="text-center">
-                <PageTitle>Contact Us</PageTitle>
-            </div>
-            <div className="max-w-2xl mx-auto px-4 py-12">
+        <PageLayout title="">
+            <div className="max-w-2xl mx-auto px-4">
+                <h1 className="text-3xl p-4 font-bold text-gray-800 text-center">Contact Us</h1>
                 <p className="text-gray-600 text-sm">
                     We would love to hear from you! Please fill out the form below and we will get back to you as soon as possible.
                 </p>
@@ -159,6 +157,6 @@ export default function ContactPage() {
                     </div>
                 )}
             </div>
-        </div>
+        </PageLayout>
     );
 }

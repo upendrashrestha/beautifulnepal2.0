@@ -6,6 +6,7 @@ import Image from './Image'
 import { Post } from '../types'
 import { PortableText } from '@portabletext/react'
 import { urlFor } from '@/sanity/lib/image'
+import SocialShare from './SocialShare'
 
 
 export default function PostView(post: Post) {
@@ -41,6 +42,9 @@ export default function PostView(post: Post) {
                         <div className="p-4 xl:border-b xl:border-gray-200  xl:dark:border-gray-700">
                             <Link href={`/author/${post.author?.slug}`}
                                 className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400">By {post.author?.name}</Link>
+                            <div className="flex items-center gap-x-4 pt-6">
+                                <SocialShare />
+                            </div>
                         </div>
 
 

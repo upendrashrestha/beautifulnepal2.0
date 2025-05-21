@@ -2,11 +2,11 @@
 import { fetchPaginatedPosts } from "@/sanity/lib/fetch";
 import { ITEM_PER_PAGE } from "@/util/constant";
 import Pagination from "@/components/Pagination";
-import PageTitle from "@/components/PageTitle";
 import { Post } from "@/types";
 import Link from "@/components/Link";
 import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
+import PageLayout from "@/layouts/PageLayout";
 
 export default async function BlogPage(props: { params: Promise<{ page: string }> }) {
     const params = await props.params;
@@ -16,10 +16,9 @@ export default async function BlogPage(props: { params: Promise<{ page: string }
     const totalPages = Math.ceil(total / ITEM_PER_PAGE);
 
     return (
-        <div>
-            <PageTitle>Blogs</PageTitle>
+        <PageLayout title="Blogs">
 
-            <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
                 {posts.map((post: Post) => (
                     <Link
                         key={post._id}
@@ -52,7 +51,7 @@ export default async function BlogPage(props: { params: Promise<{ page: string }
                     <Pagination pageName="blogs" currentPage={currentPage} totalPages={totalPages} />
                 </div>
             )}
-        </div>
+        </PageLayout>
 
     );
 }

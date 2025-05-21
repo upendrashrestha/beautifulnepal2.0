@@ -1,10 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-    CircularProgress,
-} from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
+import { FaCircle, FaSearch } from "react-icons/fa";
 import { SearchQueryResult } from "@/types";
 import Link from "next/link";
 
@@ -36,7 +33,7 @@ export default function SearchBox() {
             <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-4 mb-4">
                 <div className="relative w-full">
                     <span className="absolute inset-y-0 left-3 flex items-center text-gray-500">
-                        <SearchIcon fontSize="small" />
+                        <FaSearch fontSize="small" />
                     </span>
                     <input
                         type="text"
@@ -52,7 +49,7 @@ export default function SearchBox() {
                     disabled={loading}
                     className="min-w-[40px] px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 whitespace-nowrap flex items-center justify-center"
                 >
-                    {loading ? <CircularProgress size={20} /> : <SearchIcon fontSize="small" />}
+                    {loading ? <FaCircle fontSize={"sm"} /> : <FaSearch fontSize="small" />}
                 </button>
             </form>
 

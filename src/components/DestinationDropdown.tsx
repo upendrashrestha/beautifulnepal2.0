@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { fetchDestinations } from "@/sanity/lib/fetch";
 import { Destination } from "@/types";
-import { ChevronDown } from "lucide-react"; // or any icon lib
+import { FaChevronDown } from "react-icons/fa"; // or any icon lib
 
 export default function DestinationDropdown() {
     const [open, setOpen] = useState(false);
@@ -37,7 +37,7 @@ export default function DestinationDropdown() {
                 className="flex items-center text-sm font-medium text-black hover:bg-gray-100 px-3 py-2 rounded-md"
             >
                 Destinations
-                <ChevronDown className="w-4 h-4 ml-1" />
+                <FaChevronDown fontSize={'sm'} className="w-4 h-4 ml-1" />
             </button>
 
             {open && (

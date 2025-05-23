@@ -137,8 +137,8 @@ export function fetchGuideBySlug(slug: string): Promise<Guide> {
         mainImage,
         publishedAt,
         excerpt,
-        destination->{ name },
-        author->{ name }
+        destination->{ name, slug },
+        author->{ name, slug }
       }`,
       { slug }
     )
@@ -212,16 +212,12 @@ export function fetchPostsByDestinationAndCategory(
   );
 }
 
-export function fetchAuthorByRef(refId: string): Promise<Author | null> {
-  return withCache(`author:${refId}`, async () => {
-    const query = `*[_type == "author" && _id == $refId][0]{_id, name, image{asset->{url}}}`;
-    try {
-      const author = await client.fetch(query, { refId });
-      return author || null;
-    } catch (error) {
-      console.error("Failed to fetch author by reference:", error);
-      return null;
-    }
+export function fetchAuthorBySlug(slug: string): Promise<Author> {
+  return withCache(`author:${slug}`, () => {
+    return client.fetch(
+      `*[_type == "author" && slug.current == $slug][0]{_id, name, slug, bio, image}`,
+      { slug }
+    );
   });
 }
 

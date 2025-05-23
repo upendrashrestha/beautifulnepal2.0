@@ -48,10 +48,10 @@ function PostCard({ post }: { post: Post }) {
                     />
                 </div>
                 <CardContent className="pt-4">
-                    <h3 className="mb-2 font-cal text-lg leading-6 text-gray-900 group-hover:text-gray-600">
+                    <h3 className="mb-2 font-cal text-lg leading-6 text-black group-hover:text-gray">
                         {post.title}
                     </h3>
-                    <p className="mb-4 line-clamp-2 text-sm leading-6 text-gray-600">
+                    <p className="mb-4 line-clamp-2 text-sm leading-6 text-black">
                         {post.excerpt || ""}
                     </p>
                     <div className="flex items-center gap-x-4">

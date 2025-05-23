@@ -7,6 +7,8 @@ import { fetchGuideBySlug } from "@/sanity/lib/fetch";
 import { generateMetadataHelper } from "@/utils/generateMetadataHelper";
 import Image from "next/image";
 import SocialShare from "@/components/SocialShare";
+import Link from "@/components/Link";
+import PageLayout from "@/components/layouts/PageLayout";
 export const dynamic = "force-dynamic"; // Or use generateStaticParams below
 
 
@@ -33,23 +35,19 @@ export default async function GuidePage(props: { params: Promise<{ slug: string 
     const guide = await fetchGuideBySlug(slug);
     if (!guide) return notFound();
 
-    return (
-        <article className="max-w-4xl mx-auto">
-            {/* Title */}
-            <h1 className="text-4xl md:text-5xl font-bold leading-tight text-gray-800 mb-4">
-                {guide.title}
-            </h1>
+    return (<PageLayout title={`Guide - ${guide.title}`}>
+        <article className="max-w-5xl mx-auto">
             <div className="mb-4">
                 <SocialShare />
             </div>
             {/* Metadata */}
             <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 mb-6">
-                {guide.author && <p>By {guide.author.name}</p>}
+                {guide.author && <Link className="hover:text-black" href={`/author/${guide.author.slug?.current}`}>By {guide.author.name}</Link>}
                 {guide.publishedAt && (
                     <p>{new Date(guide.publishedAt).toLocaleDateString()}</p>
                 )}
                 {guide.destination && (
-                    <p>Destination: {guide.destination.name}</p>
+                    <p>Destination: <Link className="hover:text-black" href={`/destinations/${guide.destination.slug?.current}`}>{guide.destination.name}</Link></p>
                 )}
             </div>
 
@@ -75,5 +73,6 @@ export default async function GuidePage(props: { params: Promise<{ slug: string 
                 {guide.body && <PortableText value={guide.body} />}
             </div>
         </article>
+    </PageLayout>
     );
 }

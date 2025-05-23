@@ -7,6 +7,7 @@ import { generateMetadataHelper } from "@/utils/generateMetadataHelper";
 import { urlFor } from "@/sanity/lib/image";
 import Image from "next/image";
 import SocialShare from "@/components/SocialShare";
+import PageLayout from "@/components/layouts/PageLayout";
 
 export async function generateMetadata(
     props: {
@@ -29,24 +30,25 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
     if (!destination) return notFound();
 
     return (
-        <article className="max-w-4xl mx-auto">
-            <h1 className="text-4xl font-bold mb-4">{destination.name}</h1>
-            <div className="mb-4"><SocialShare /></div>
+        <PageLayout title={`Destination - ${destination.name}`}>
+            <article className="max-w-5xl mx-auto">
+                <div className="mb-4"><SocialShare /></div>
 
-            {destination.heroImage && (
-                <div className="relative h-48 w-full">
-                    <Image
-                        src={urlFor(destination.heroImage.asset._ref).url()}
-                        alt={destination.name}
-                        fill
-                        className="object-cover"
-                    />
+                {destination.heroImage && (
+                    <div className="relative h-48 w-full">
+                        <Image
+                            src={urlFor(destination.heroImage.asset._ref).url()}
+                            alt={destination.name}
+                            fill
+                            className="object-cover"
+                        />
+                    </div>
+                )}
+                <div className="p-5">
+
+                    {destination.details && <PortableText value={destination.details} />}
                 </div>
-            )}
-            <div className="p-5">
-
-                {destination.details && <PortableText value={destination.details} />}
-            </div>
-        </article>
+            </article>
+        </PageLayout>
     );
 }

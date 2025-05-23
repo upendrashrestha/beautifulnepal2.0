@@ -95,7 +95,7 @@ export interface Author {
   _ref: string;
   name: string;
   slug: Slug;
-  bio?: string;
+  bio?: PortableTextBlock[];
   image?: {
     asset: {
       url: string;

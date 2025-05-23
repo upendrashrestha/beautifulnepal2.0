@@ -30,7 +30,7 @@ export default async function CategoriesPage(props: { params: Promise<{ slug: st
                     <Link
                         key={post._id}
                         href={`/blogs/${post.slug.current}`}
-                        className="group rounded-lg overflow-hidden hover:shadow-md transition"
+                        className="group rounded-lg bg-white overflow-hidden hover:shadow-md transition"
                     >
                         {post.mainImage && (
                             <div className="relative h-48 w-full">
@@ -47,7 +47,7 @@ export default async function CategoriesPage(props: { params: Promise<{ slug: st
                             <h2 className="text-xl font-semibold mb-2 group-hover:text-blue-800 transition-colors">
                                 {post.title}
                             </h2>
-                            <p className="text-gray-600 text-sm line-clamp-3">{post.excerpt || ""}</p>
+                            <p className="text-black text-sm line-clamp-3">{post.excerpt || ""}</p>
                         </div>
                     </Link>
                 ))}

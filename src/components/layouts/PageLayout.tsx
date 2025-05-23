@@ -1,6 +1,7 @@
 'use client'
 
 import PageTitle from '@/components/PageTitle';
+import BackButton from '../ui/backButton';
 
 
 type PageLayoutProps = {
@@ -15,8 +16,12 @@ export default function PageLayout({
 
     return (
         <div>
-            <PageTitle>{title}</PageTitle>
-            <div className="mt-10 backgroud-slate">
+            <div className="flex items-center">
+                <BackButton className="mr-4" />
+                <PageTitle>{title}</PageTitle>
+            </div>
+
+            <div className="mt-10 bg-slate-50 rounded p-4">
                 {children}
             </div>
 

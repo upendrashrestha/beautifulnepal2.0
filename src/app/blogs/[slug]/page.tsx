@@ -69,8 +69,8 @@ function PostView(post: Post) {
                                     <dt className="sr-only">Category</dt>
                                     <dd>
                                         <ul>
-                                            {post.categories?.map(x => (
-                                                <li key={x._id}>{x.title}</li>
+                                            {post.categories?.map((x, i) => (
+                                                <li key={i}>{x.title}</li>
                                             ))}
                                         </ul>
                                     </dd>
@@ -128,10 +128,10 @@ function PostView(post: Post) {
                             <div className="pt-4 xl:pt-8">
                                 <Link
                                     href={`/blogs`}
-                                    className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                                    aria-label="Back to the blog"
+                                    className="text-primary-500 hover:text-primary-600 hover:font-bold"
+                                    aria-label="Back to the blogs"
                                 >
-                                    &larr; Back to the blog
+                                    &larr; Back to the blogs
                                 </Link>
                             </div>
                         </footer>

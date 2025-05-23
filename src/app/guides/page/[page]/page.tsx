@@ -23,7 +23,7 @@ export default async function GuidePage(props: { params: Promise<{ page: string 
                         <Link
                             key={guide._id}
                             href={`/guides/${guide.slug.current}`}
-                            className="group overflow-hidden transition"
+                            className="group rounded-lg bg-white overflow-hidden hover:shadow-md transition"
                         >
                             {guide.mainImage && (
                                 <div className="relative h-48 w-full">

@@ -1,5 +1,5 @@
 
-import PageLayout from "@/layouts/PageLayout";
+import PageLayout from "@/components/layouts/PageLayout";
 import { fetchPostsByAuthor } from "@/sanity/lib/fetch";
 import { Post } from "@/types";
 

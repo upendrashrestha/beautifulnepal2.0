@@ -1,14 +1,28 @@
 import { defineType, defineArrayMember } from "sanity";
 import { ImageIcon } from "@sanity/icons";
 
+/**
+ * This is the schema type for block content used in the post document type
+ * Importing this type into the studio configuration's `schema` property
+ * lets you reuse it in other document types with:
+ *  {
+ *    name: 'someName',
+ *    title: 'Some title',
+ *    type: 'blockContent'
+ *  }
+ */
+
 export const blockContentType = defineType({
-  name: "blockContent",
   title: "Block Content",
+  name: "blockContent",
   type: "array",
   of: [
     defineArrayMember({
-      name: "block",
       type: "block",
+      // Styles let you define what blocks can be marked up as. The default
+      // set corresponds with HTML tags, but you can set any title or value
+      // you want, and decide how you want to deal with it where you want to
+      // use your content.
       styles: [
         { title: "Normal", value: "normal" },
         { title: "H1", value: "h1" },
@@ -17,50 +31,44 @@ export const blockContentType = defineType({
         { title: "H4", value: "h4" },
         { title: "Quote", value: "blockquote" },
       ],
-      lists: [
-        { title: "Bullet", value: "bullet" },
-        { title: "Numbered", value: "number" },
-      ],
+      lists: [{ title: "Bullet", value: "bullet" }],
+      // Marks let you mark up inline text in the Portable Text Editor
       marks: {
+        // Decorators usually describe a single property – e.g. a typographic
+        // preference or highlighting
         decorators: [
-          { title: "Bold", value: "strong" },
-          { title: "Italic", value: "em" },
-          { title: "Underline", value: "underline" },
-          { title: "Code", value: "code" },
+          { title: "Strong", value: "strong" },
+          { title: "Emphasis", value: "em" },
         ],
+        // Annotations can be any object structure – e.g. a link or a footnote.
         annotations: [
           {
+            title: "URL",
             name: "link",
             type: "object",
-            title: "External Link",
             fields: [
               {
+                title: "URL",
                 name: "href",
                 type: "url",
-                title: "URL",
-              },
-              {
-                name: "blank",
-                type: "boolean",
-                title: "Open in new tab",
               },
             ],
           },
         ],
       },
     }),
+    // You can add additional types here. Note that you can't use
+    // primitive types such as 'string' and 'number' in the same array
+    // as a block type.
     defineArrayMember({
-      name: "image",
       type: "image",
       icon: ImageIcon,
-      options: {
-        hotspot: true,
-      },
+      options: { hotspot: true },
       fields: [
         {
           name: "alt",
           type: "string",
-          title: "Alternative text",
+          title: "Alternative Text",
         },
       ],
     }),

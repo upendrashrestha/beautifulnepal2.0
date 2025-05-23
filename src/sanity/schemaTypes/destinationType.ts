@@ -30,15 +30,19 @@ export const destinationType = defineType({
     }),
     defineField({
       name: "details",
-      type: "array",
+      type: "blockContent",
       title: "Details",
-      of: [{ type: "block" }],
     }),
     defineField({
       name: "affiliateLinks",
       title: "Affiliate Links",
       type: "array",
       of: [{ type: "reference", to: [{ type: "affiliateLink" }] }],
+    }),
+    defineField({
+      name: "publishedAt",
+      type: "datetime",
+      initialValue: () => new Date().toISOString(),
     }),
   ],
 });

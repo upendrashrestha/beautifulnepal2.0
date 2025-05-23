@@ -1,12 +1,13 @@
 // app/blogs/page/[page]/page.tsx
 import { fetchPaginatedPosts } from "@/sanity/lib/fetch";
-import { ITEM_PER_PAGE } from "@/util/constant";
+import { ITEM_PER_PAGE } from "@/utils/constant";
 import Pagination from "@/components/Pagination";
-import { Post } from "@/types";
 import Link from "@/components/Link";
 import Image from "next/image";
+import PageLayout from "@/components/layouts/PageLayout";
+import { Card, CardContent } from "@/components/ui/card";
 import { urlFor } from "@/sanity/lib/image";
-import PageLayout from "@/layouts/PageLayout";
+import { Post } from "@/types";
 
 export default async function BlogPage(props: { params: Promise<{ page: string }> }) {
     const params = await props.params;
@@ -20,29 +21,7 @@ export default async function BlogPage(props: { params: Promise<{ page: string }
 
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
                 {posts.map((post: Post) => (
-                    <Link
-                        key={post._id}
-                        href={`/blogs/${post.slug.current}`}
-                        className="group rounded-xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-lg transition"
-                    >
-                        {post.mainImage && (
-                            <div className="relative h-48 w-full">
-                                <Image
-                                    src={urlFor(post.mainImage.asset._ref).url()}
-                                    alt={post.mainImage.alt || post.title}
-                                    fill
-                                    className="object-cover"
-                                />
-                            </div>
-                        )}
-
-                        <div className="p-5">
-                            <h2 className="text-xl font-bold text-gray-800 mb-2 group-hover:text-blue-700 transition-colors">
-                                {post.title}
-                            </h2>
-                            <p className="text-sm text-gray-600 line-clamp-3">{post.excerpt || ""}</p>
-                        </div>
-                    </Link>
+                    <PostCard key={post._id} post={post} />
                 ))}
             </div>
 
@@ -53,5 +32,52 @@ export default async function BlogPage(props: { params: Promise<{ page: string }
             )}
         </PageLayout>
 
+    );
+}
+
+function PostCard({ post }: { post: Post }) {
+    return (
+        <Card className="overflow-hidden border-0 transition-transform duration-300 hover:scale-105">
+            <Link href={`/blogs/${post.slug.current}`}>
+                <div className="relative h-48 w-full">
+                    <Image
+                        src={post.mainImage?.asset._ref ? urlFor(post.mainImage.asset._ref).url() : ""}
+                        alt={post.mainImage?.asset?.alt || post.title}
+                        layout="fill"
+                        objectFit="cover"
+                    />
+                </div>
+                <CardContent className="pt-4">
+                    <h3 className="mb-2 font-cal text-lg leading-6 text-gray-900 group-hover:text-gray-600">
+                        {post.title}
+                    </h3>
+                    <p className="mb-4 line-clamp-2 text-sm leading-6 text-gray-600">
+                        {post.excerpt || ""}
+                    </p>
+                    <div className="flex items-center gap-x-4">
+                        <Image
+                            src={post.author?.image?.asset?._ref ? urlFor(post.author.image.asset._ref).url() : ""}
+                            alt=""
+                            className="h-8 w-8 rounded-full bg-gray-50"
+                            width={32}
+                            height={32}
+                        />
+                        <div className="text-sm">
+                            <p className="font-semibold text-gray-900">{post.author?.name}</p>
+                            <time dateTime={post.publishedAt ?? ''}>
+                                {post.publishedAt
+                                    ? new Date(post.publishedAt).toLocaleDateString('en-US', {
+                                        year: 'numeric',
+                                        month: 'long',
+                                        day: 'numeric',
+                                    })
+                                    : 'Unknown date'
+                                }
+                            </time>
+                        </div>
+                    </div>
+                </CardContent>
+            </Link>
+        </Card>
     );
 }

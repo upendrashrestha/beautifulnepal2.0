@@ -1,12 +1,17 @@
 import { Author, Category, Company, Destination, Guide, Post } from "@/types";
 import { client } from "./client";
 import { withCache } from "./cache";
-import { ITEM_PER_PAGE } from "@/util/constant";
-
+import { ITEM_PER_PAGE } from "@/utils/constant";
 export function fetchPosts(): Promise<Post[]> {
   return withCache(
     "posts",
-    () => client.fetch(`*[_type == "post"]{_id, title, slug, mainImage}`),
+    () =>
+      client.fetch(`*[_type == "post"]{
+      _id,
+      title,
+      slug,
+      mainImage,
+      author}`),
     true
   );
 }
@@ -89,7 +94,11 @@ export function fetchPostBySlug(slug: string): Promise<Post> {
         publishedAt,
         destination->{ name },
         excerpt,
-        author->{ name }
+        author->{
+          name,
+          slug,
+          image
+        }
       }`,
       { slug }
     )
@@ -102,7 +111,12 @@ export async function fetchPaginatedPosts(page: number) {
 
   const posts = await client.fetch(
     `*[_type == "post"] | order(publishedAt desc) [${start}...${end}]{
-      _id, title, slug, mainImage, excerpt, publishedAt, category->{ title }
+      _id, title, slug, mainImage, excerpt, 
+      publishedAt, 
+      category->{ title },
+       author ->{
+          name, slug, image
+          },
     }`
   );
 
@@ -209,4 +223,10 @@ export function fetchAuthorByRef(refId: string): Promise<Author | null> {
       return null;
     }
   });
+}
+
+export function fetchAuthors(): Promise<Author[]> {
+  return withCache("authors", () =>
+    client.fetch(`*[_type == "author"]{_id, name, slug, image}`)
+  );
 }

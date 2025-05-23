@@ -2,11 +2,11 @@
 import { fetchPaginatedGuides } from "@/sanity/lib/fetch";
 import Link from "next/link";
 import Image from "next/image";
-import { ITEM_PER_PAGE } from "@/util/constant";
+import { ITEM_PER_PAGE } from "@/utils/constant";
 import { Guide } from "@/types";
 import { urlFor } from "@/sanity/lib/image";
 import Pagination from "@/components/Pagination";
-import PageLayout from "@/layouts/PageLayout";
+import PageLayout from "@/components/layouts/PageLayout";
 
 export default async function GuidePage(props: { params: Promise<{ page: string }> }) {
     const params = await props.params;

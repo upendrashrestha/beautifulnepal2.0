@@ -67,5 +67,10 @@ export const companyType = defineType({
       validation: (Rule) =>
         Rule.max(160).warning("Excerpt should be less than 160 characters"),
     }),
+    defineField({
+      name: "publishedAt",
+      type: "datetime",
+      initialValue: () => new Date().toISOString(),
+    }),
   ],
 });

@@ -3,10 +3,10 @@ import { notFound } from "next/navigation";
 import { urlFor } from "@/sanity/lib/image";
 import { Metadata } from "next";
 import { fetchPostsByCategory } from "@/sanity/lib/fetch";
-import { Post } from "@/types";
 import Link from "next/link";
 import Image from "next/image";
-import PageLayout from "@/layouts/PageLayout";
+import PageLayout from "@/components/layouts/PageLayout";
+import { Post } from "@/types";
 
 export async function generateMetadata(
     props: {
@@ -36,7 +36,7 @@ export default async function CategoriesPage(props: { params: Promise<{ slug: st
                             <div className="relative h-48 w-full">
                                 <Image
                                     src={urlFor(post.mainImage.asset._ref).url()}
-                                    alt={post.mainImage.alt || post.title}
+                                    alt={post.mainImage.asset.alt || post.title}
                                     fill
                                     className="object-cover"
                                 />

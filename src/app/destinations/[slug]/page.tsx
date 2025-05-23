@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { PortableText } from "@portabletext/react";
 import { Metadata } from "next";
 import { fetchDestinationBySlug } from "@/sanity/lib/fetch";
-import { generateMetadataHelper } from "@/util/generateMetadataHelper";
+import { generateMetadataHelper } from "@/utils/generateMetadataHelper";
 import { urlFor } from "@/sanity/lib/image";
 import Image from "next/image";
 import SocialShare from "@/components/SocialShare";
@@ -43,7 +43,10 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
                     />
                 </div>
             )}
-            {destination.details && <PortableText value={destination.details} />}
+            <div className="p-5">
+
+                {destination.details && <PortableText value={destination.details} />}
+            </div>
         </article>
     );
 }

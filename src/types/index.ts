@@ -19,31 +19,36 @@ export interface AffiliateLink {
   relatedTo?: string; // could be destination id or slug
 }
 
-export interface Post {
+export type Post = {
+  publishedAt: string;
   _id: string;
   title: string;
-  slug: Slug;
-  author?: Author;
-  destination?: Destination;
-  publishedAt?: string;
-  mainImage?: {
+  description: string | null;
+  body: PortableTextBlock[];
+  slug: { current: string; _type: "slug" };
+  mainImage: {
     asset: {
       _ref: string;
+      _type: string;
+      alt: string | null;
     };
-    alt?: string;
-  };
-  body?: BlockContent; // Portable Text type
-  categories?: Category[];
+    _type: string;
+  } | null;
+  imageURL: string | null;
+  _createdAt: string;
   excerpt?: string;
-  type?: string; // "blog" or "guide"
-}
+  type?: string; //
+  author?: Author;
+  categories?: Category[];
+  destination?: Destination;
+};
 
 export interface Guide {
   _id: string;
   title: string;
   slug: Slug;
   author?: Author;
-  publishedAt?: string;
+  publishedAt: string;
   destination?: Destination;
   mainImage?: {
     asset: {
@@ -51,7 +56,7 @@ export interface Guide {
     };
     alt?: string;
   };
-  body?: BlockContent; // Portable Text type
+  body?: PortableTextBlock[]; // Portable Text type
   excerpt?: string;
   type?: string; // "blog" or "guide"
 }
@@ -68,9 +73,10 @@ export interface Destination {
       alt?: string;
     };
   };
-  details?: BlockContent; // Portable Text type
+  details?: PortableTextBlock[];
   affiliateLinks?: AffiliateLink[];
   type?: string; // "blog" or "guide"
+  publishedAt: string;
 }
 export interface SocialLink {
   _id: string;
@@ -90,11 +96,13 @@ export interface Author {
   name: string;
   slug: Slug;
   bio?: string;
-  profileImage?: {
+  image?: {
     asset: {
       url: string;
+      _ref: string;
     };
   };
+  publishedAt: string;
 }
 
 export interface BnMetadata {
@@ -132,8 +140,9 @@ export interface Company {
       };
     };
   }[];
-  termsAndConditions?: BlockContent;
+  termsAndConditions?: PortableTextBlock[];
   shortDescription?: string;
+  publishedAt: string;
 }
 
 export type SearchQueryResult = {
@@ -142,5 +151,3 @@ export type SearchQueryResult = {
   guides: Guide[];
   categories: Category[];
 };
-
-export type BlockContent = PortableTextBlock[];

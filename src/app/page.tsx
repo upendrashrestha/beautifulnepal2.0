@@ -3,7 +3,7 @@ import SearchBox from "@/components/SearchBox";
 
 export default function HomePage() {
   return (
-    <div className="max-w-screen-lg mx-auto py-6 px-4">
+    <div className="max-w-screen-lg m-auto mt-12 px-4">
       <h1
         className="text-4xl sm:text-5xl md:text-6xl font-bold text-center bg-gradient-to-r from-red-600 to-blue-600 bg-clip-text text-transparent animate-fade-in-up"
       >

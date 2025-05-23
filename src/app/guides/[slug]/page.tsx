@@ -4,7 +4,7 @@ import { PortableText } from "@portabletext/react";
 import { urlFor } from "@/sanity/lib/image";
 import { Metadata } from "next";
 import { fetchGuideBySlug } from "@/sanity/lib/fetch";
-import { generateMetadataHelper } from "@/util/generateMetadataHelper";
+import { generateMetadataHelper } from "@/utils/generateMetadataHelper";
 import Image from "next/image";
 import SocialShare from "@/components/SocialShare";
 export const dynamic = "force-dynamic"; // Or use generateStaticParams below

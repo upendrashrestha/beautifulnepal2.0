@@ -33,9 +33,9 @@ export default function Header() {
                     <DestinationDropdown />
                     <Link
                         href="/contact"
-                        className="text-sm font-medium bg-gray-100 p-2 rounded-lg hover:bg-gray-200"
+                        className="border-1 hover:bg-gray-100 px-3 py-2 rounded-md font-bold text-sm text-gray-700 flex items-center"
                     >
-                        <FaEnvelope className="w-4 h-4 inline-block" />
+                        <FaEnvelope size={'sm'} className="w-4 h-4 inline-block" />
                     </Link>
                 </div>
 

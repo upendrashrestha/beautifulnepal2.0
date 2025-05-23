@@ -14,6 +14,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+export const viewport = {
+  themeColor: "#FFF",
+};
+
 export const metadata: Metadata = {
   title: {
     default: "Beautiful Nepal",
@@ -39,13 +43,18 @@ export default function RootLayout({
     max-w-7xl
     mx-auto
     px-4 sm:px-6 lg:px-8
-    py-12
+    pb-12
+    pt-6
     min-h-screen
+    bg-gray-50
   ">
           {children}
         </div>
 
         <Footer />
+        {/* {env.NEXT_PUBLIC_GTM_ID ? (
+          <GoogleTagManager gtmId={env.NEXT_PUBLIC_GTM_ID} />
+        ) : null} */}
       </body>
     </html >
   );

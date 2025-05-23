@@ -34,7 +34,7 @@ export default function DestinationDropdown() {
         <div className="relative" ref={dropdownRef}>
             <button
                 onClick={() => setOpen((prev) => !prev)}
-                className="flex items-center text-sm font-medium text-black hover:bg-gray-100 px-3 py-2 rounded-md"
+                className="flex items-center text-sm  text-black hover:bg-gray-100 px-3 py-2 rounded-md font-bold"
             >
                 Destinations
                 <FaChevronDown fontSize={'sm'} className="w-4 h-4 ml-1" />

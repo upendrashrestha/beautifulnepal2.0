@@ -16,7 +16,7 @@ export default function PageLayout({
     return (
         <div>
             <PageTitle>{title}</PageTitle>
-            <div className="mt-10">
+            <div className="mt-10 backgroud-slate">
                 {children}
             </div>
 

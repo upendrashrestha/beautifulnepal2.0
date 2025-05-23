@@ -4,7 +4,8 @@ import { Destination } from "@/types";
 import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import PageLayout from "@/layouts/PageLayout";
+import PageLayout from "@/components/layouts/PageLayout";
+import { Card, CardContent } from "@/components/ui/card";
 
 export async function generateMetadata(): Promise<Metadata> {
     return { title: "Destinations", description: "Destinations list page." };
@@ -14,9 +15,9 @@ export default async function DestinationListPage() {
     const destinations = await fetchDestinations();
     return (
         <PageLayout title="Destinations">
-            <ul className="space-y-6">
+            <div className="grid gap-8 sm:grid-cols-1 lg:grid-cols-2">
                 {destinations.map((d: Destination) => (
-                    <li key={d._id}>
+                    <Card key={d._id} className="overflow-hidden border-0 transition-transform duration-300 hover:scale-105">
                         <Link
                             href={`/destinations/${d.slug.current}`}
                             className="flex flex-col sm:flex-row items-start gap-4 bg-white shadow-sm hover:shadow-md transition overflow-hidden"
@@ -32,16 +33,16 @@ export default async function DestinationListPage() {
                                 </div>
                             )}
 
-                            <div className="p-4 flex-1">
+                            <CardContent className="pt-4">
                                 <h2 className="text-xl font-extrabold text-gray-800 mb-1 group-hover:text-blue-700 transition">
                                     {d.name}
                                 </h2>
                                 <p className="text-gray-600 text-sm line-clamp-3">{d.intro || ""}</p>
-                            </div>
+                            </CardContent>
                         </Link>
-                    </li>
+                    </Card>
                 ))}
-            </ul>
+            </div>
         </PageLayout>
     );
 }

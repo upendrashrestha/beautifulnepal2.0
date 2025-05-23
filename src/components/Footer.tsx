@@ -4,7 +4,7 @@ import Link from "next/link";
 export default async function Footer() {
     const company = await fetchCompany();
     return (
-        <footer className="mt-10 bg-gray-50">
+        <footer className="bg-gray-100">
             <div className="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 text-sm text-gray-700">
                 <div>
                     <h4 className="font-semibold mb-2">BeautifulNepal</h4>

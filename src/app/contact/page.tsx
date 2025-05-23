@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import PageLayout from "@/layouts/PageLayout";
+import PageLayout from "@/components/layouts/PageLayout";
 
 export default function ContactPage() {
     const [formData, setFormData] = useState({

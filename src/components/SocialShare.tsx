@@ -48,14 +48,14 @@ const SocialShare: React.FC<SocialShareProps> = ({ className = '' }) => {
         <div className={`flex gap-2 items-center ${className}`}>
             <button
                 onClick={() => shareToSocialMedia('facebook')}
-                className="p-2 rounded-full bg-blue-600 hover:bg-blue-700 text-white"
+                className="p-2 cursor-pointer rounded-full bg-blue-600 hover:bg-blue-700 text-white"
                 title="Share on Facebook"
             >
                 <FaFacebookF className="w-5 h-5" />
             </button>
             <button
                 onClick={() => shareToSocialMedia('twitter')}
-                className="p-2 rounded-full bg-sky-500 hover:bg-sky-600 text-white"
+                className="p-2 cursor-pointer rounded-full bg-sky-500 hover:bg-sky-600 text-white"
                 title="Share on Twitter"
             >
                 <FaTwitter className="w-5 h-5" />
@@ -63,14 +63,14 @@ const SocialShare: React.FC<SocialShareProps> = ({ className = '' }) => {
             </button>
             <button
                 onClick={() => shareToSocialMedia('linkedin')}
-                className="p-2 rounded-full bg-blue-700 hover:bg-blue-800 text-white"
+                className="p-2 cursor-pointer rounded-full bg-blue-700 hover:bg-blue-800 text-white"
                 title="Share on LinkedIn"
             >
                 <FaLinkedin className="w-5 h-5" />
             </button>
             <button
                 onClick={() => shareToSocialMedia('copy')}
-                className="p-2 rounded-full bg-teal-500 hover:bg-teal-600 text-white"
+                className="p-2 cursor-pointer rounded-full bg-teal-500 hover:bg-teal-600 text-white"
                 title="Copy URL">
                 <FaShare className="w-5 h-5" />
 

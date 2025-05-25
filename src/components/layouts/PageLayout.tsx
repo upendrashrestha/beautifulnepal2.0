@@ -21,7 +21,7 @@ export default function PageLayout({
                 <PageTitle>{title}</PageTitle>
             </div>
 
-            <div className="mt-10 bg-slate-50 rounded p-4">
+            <div className="mt-10 bg-slate-50 rounded p-4 dark:bg-gray-900 dark:text-white">
                 {children}
             </div>
 

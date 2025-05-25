@@ -110,7 +110,7 @@ function PostView(post: Post) {
                                         alt={post.mainImage?.asset?.alt || post.title}
                                         width={1000}
                                         height={500}
-                                        className="rounded-lg object-cover w-full"
+                                        className="rounded-lg object-cover w-full p-12"
                                     />
                                 </div>
                             )}

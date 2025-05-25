@@ -26,7 +26,7 @@ export default function FeaturedPost() {
         <section className="my-16">
             <div className="flex items-center gap-2 mb-6">
                 <FaStar className="text-black-500" />
-                <h2 className="text-2xl font-semibold text-black">Featured</h2>
+                <h2 className="text-2xl font-semibold text-black dark:text-white">Featured</h2>
             </div>
 
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
@@ -49,7 +49,7 @@ export default function FeaturedPost() {
                                 />
                             </div>
                             <CardContent className="pt-4">
-                                <h3 className="text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors">
+                                <h3 className="text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors dark:text-white">
                                     {post.title}
                                 </h3>
                             </CardContent>

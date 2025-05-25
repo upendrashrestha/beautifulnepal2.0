@@ -40,7 +40,7 @@ export default function SearchBox() {
                         placeholder="Search blog, destination or guides..."
                         value={term}
                         onChange={(e) => setTerm(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-white"
                     />
                 </div>
 

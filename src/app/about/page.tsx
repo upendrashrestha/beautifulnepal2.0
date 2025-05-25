@@ -21,7 +21,7 @@ export default async function AboutPage() {
                     About Us
                 </h1>
                 <div className="flex justify-center">
-                    <p className="max-w-2xl text-base text-gray-700 dark:text-gray-300 leading-relaxed px-4 sm:px-6">
+                    <p className="max-w-2xl text-base text-gray-700 dark:text-white leading-relaxed px-4 sm:px-6">
                         {companyAbout.description}
                     </p>
                 </div>

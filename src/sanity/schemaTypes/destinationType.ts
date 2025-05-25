@@ -44,5 +44,9 @@ export const destinationType = defineType({
       type: "datetime",
       initialValue: () => new Date().toISOString(),
     }),
+    defineField({
+      name: "featured",
+      type: "boolean",
+    }),
   ],
 });

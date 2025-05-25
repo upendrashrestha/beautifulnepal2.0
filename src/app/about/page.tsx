@@ -7,20 +7,25 @@ export async function generateMetadata(): Promise<Metadata> {
     const companyAbout = await fetchCompanyAbout();
     return generateMetadataHelper({
         title: "About Us",
-        description: companyAbout.shortDescription || ""
+        description: companyAbout.shortDescription || "",
     });
 }
 
-
 export default async function AboutPage() {
     const companyAbout = await fetchCompanyAbout();
+
     return (
-        <PageLayout title="About Us">
-
-            <div className="text-gray-600 text-sm line-clamp-3">
-                {companyAbout.description}
-            </div>
-
-        </PageLayout >
+        <PageLayout title="">
+            <section className="text-center py-10">
+                <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">
+                    About Us
+                </h1>
+                <div className="flex justify-center">
+                    <p className="max-w-2xl text-base text-gray-700 dark:text-gray-300 leading-relaxed px-4 sm:px-6">
+                        {companyAbout.description}
+                    </p>
+                </div>
+            </section>
+        </PageLayout>
     );
 }

@@ -41,6 +41,7 @@ export type Post = {
   author?: Author;
   categories?: Category[];
   destination?: Destination;
+  featured: boolean;
 };
 
 export interface Guide {
@@ -59,6 +60,7 @@ export interface Guide {
   body?: PortableTextBlock[]; // Portable Text type
   excerpt?: string;
   type?: string; // "blog" or "guide"
+  featured: boolean;
 }
 
 export interface Destination {
@@ -77,6 +79,7 @@ export interface Destination {
   affiliateLinks?: AffiliateLink[];
   type?: string; // "blog" or "guide"
   publishedAt: string;
+  featured: boolean;
 }
 export interface SocialLink {
   _id: string;

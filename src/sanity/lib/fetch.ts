@@ -16,6 +16,13 @@ export function fetchPosts(): Promise<Post[]> {
   );
 }
 
+export async function fetchFeaturedPosts() {
+  const query = `*[_type == "post" && featured == true]{
+    _id, title, slug, mainImage, excerpt
+  }`;
+  return withCache("featuredPosts", () => client.fetch(query), true);
+}
+
 export function fetchGuides(): Promise<Guide[]> {
   return withCache(
     "guides",

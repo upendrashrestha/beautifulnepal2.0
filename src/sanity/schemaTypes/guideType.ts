@@ -57,6 +57,10 @@ export const guideType = defineType({
       validation: (Rule) =>
         Rule.max(160).warning("Excerpt should be less than 160 characters"),
     }),
+    defineField({
+      name: "featured",
+      type: "boolean",
+    }),
   ],
   preview: {
     select: {

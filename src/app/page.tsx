@@ -1,4 +1,5 @@
 "use client";
+import FeaturedPost from "@/components/FeaturedPosts";
 import SearchBox from "@/components/SearchBox";
 
 export default function HomePage() {
@@ -15,6 +16,7 @@ export default function HomePage() {
       <div className="p-6">
         <SearchBox />
       </div>
+      <FeaturedPost />
     </div>
   );
 }

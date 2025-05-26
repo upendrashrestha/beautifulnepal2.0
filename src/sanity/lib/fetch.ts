@@ -17,8 +17,15 @@ export function fetchPosts(): Promise<Post[]> {
 }
 
 export async function fetchFeaturedPosts() {
-  const query = `*[_type == "post" && featured == true]{
+  const query = `*[_type == "post" && featured == true] | order(publishedAt desc){
     _id, title, slug, mainImage, excerpt
+  }`;
+  return withCache("featuredPosts", () => client.fetch(query), true);
+}
+
+export async function fetchFeaturedDestinations() {
+  const query = `*[_type == "destination" && featured == true] | order(publishedAt desc){
+    _id, name, slug, intro, heroImage
   }`;
   return withCache("featuredPosts", () => client.fetch(query), true);
 }

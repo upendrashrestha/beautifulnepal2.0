@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { clearSanityCache } from "@/app/actions/clearCache";
 import { useSearchParams } from "next/navigation";
 
@@ -40,25 +40,25 @@ export default function ClearCachePage() {
     return (
         <main className="max-w-xl mx-auto py-16 px-4">
             <h1 className="text-2xl font-bold mb-6">Clear Sanity Cache</h1>
+            <Suspense fallback={<p className="text-gray-600">Loading...</p>}>
+                <form action={handleClearCache} className="space-y-4">
+                    <input
+                        type="text"
+                        name="key"
+                        placeholder="Enter cache key (leave blank to clear all)"
+                        value={key}
+                        onChange={(e) => setKey(e.target.value)}
+                        className="w-full px-4 py-2 border rounded-md text-black dark:text-white"
+                    />
 
-            <form action={handleClearCache} className="space-y-4">
-                <input
-                    type="text"
-                    name="key"
-                    placeholder="Enter cache key (leave blank to clear all)"
-                    value={key}
-                    onChange={(e) => setKey(e.target.value)}
-                    className="w-full px-4 py-2 border rounded-md text-black dark:text-white"
-                />
-
-                <button
-                    type="submit"
-                    className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-md"
-                >
-                    Clear Cache
-                </button>
-            </form>
-
+                    <button
+                        type="submit"
+                        className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-md"
+                    >
+                        Clear Cache
+                    </button>
+                </form>
+            </Suspense>
             {status === "success" && (
                 <p className="mt-4 text-green-600">✅ Cache cleared successfully.</p>
             )}

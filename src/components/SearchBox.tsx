@@ -29,43 +29,47 @@ export default function SearchBox() {
     }
 
     return (
-        <div className="max-w-screen-lg mx-auto py-6 px-4">
-            <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-4 mb-4">
+        <div className="max-w-3xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
+            <form
+                onSubmit={handleSearch}
+                className="flex flex-col sm:flex-row items-stretch gap-4 mb-6"
+            >
                 <div className="relative w-full">
                     <span className="absolute inset-y-0 left-3 flex items-center text-gray-500">
-                        <FaSearch fontSize="small" />
+                        <FaSearch className="text-sm" />
                     </span>
                     <input
                         type="text"
                         placeholder="Search blog, destination or guides..."
                         value={term}
                         onChange={(e) => setTerm(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-white"
+                        className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
                     />
                 </div>
 
                 <button
                     type="submit"
                     disabled={loading}
-                    className="min-w-[40px] px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 whitespace-nowrap flex items-center justify-center"
+                    className="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 flex items-center justify-center"
                 >
-                    {loading ? <FaCircle fontSize={"sm"} /> : <FaSearch fontSize="small" />}
+                    {loading ? <FaCircle className="animate-pulse text-sm" /> : <FaSearch className="text-sm" />}
+                    <span className="ml-2 hidden sm:inline">Search</span>
                 </button>
             </form>
 
-            {loading && <p className="text-gray-500">Searching...</p>}
+            {loading && <p className="text-gray-500 dark:text-gray-400">Searching...</p>}
 
             {results && (
-                <ul className="space-y-2">
+                <ul className="space-y-3 mt-4">
                     {[...results.posts, ...results.guides, ...results.destinations, ...results.categories].map((item) => (
-                        <li key={item._id} className="flex items-center">
+                        <li key={item._id} className="flex items-center gap-2 text-sm">
                             <Link
                                 href={`/${item.type}/${item.slug.current}`}
-                                className="text-blue-600 hover:underline"
+                                className="text-blue-600 dark:text-blue-400 hover:underline font-medium"
                             >
                                 {"title" in item ? item.title : item.name}
                             </Link>
-                            <span className="ml-2 text-sm text-gray-500">({item.type})</span>
+                            <span className="text-gray-500 dark:text-gray-400">({item.type})</span>
                         </li>
                     ))}
                 </ul>

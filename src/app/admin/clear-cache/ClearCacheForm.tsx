@@ -2,14 +2,14 @@
 
 import { useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
-import { clearSanityCache } from "@/app/actions/clearCache";
 
 export default function ClearCacheForm() {
     const searchParams = useSearchParams();
     const secret = searchParams.get("secret");
     const [authorized, setAuthorized] = useState(false);
     const [key, setKey] = useState("");
-    const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+    const [loading, setLoading] = useState(false);
+    const [status, setStatus] = useState<"idle" | "success" | "error" | "unauthorized">("idle");
 
     useEffect(() => {
         if (secret === process.env.NEXT_PUBLIC_ADMIN_CACHE_SECRET) {
@@ -18,13 +18,20 @@ export default function ClearCacheForm() {
     }, [secret]);
 
     async function handleClearCache(formData: FormData) {
-        try {
-            await clearSanityCache(formData);
-            setStatus("success");
-        } catch (err) {
-            console.error("Cache clear failed", err);
-            setStatus("error");
-        }
+        setLoading(true);
+        const key = formData.get("key")?.toString();
+        const res = await fetch("/api/clear-cache", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${secret}`,
+            },
+            body: JSON.stringify({ key }),
+        });
+
+        const data = await res.json();
+        setStatus(data.message);
+        setLoading(false);
     }
 
     if (!authorized) {
@@ -50,15 +57,19 @@ export default function ClearCacheForm() {
             <button
                 type="submit"
                 className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-md"
+                disabled={loading}
             >
                 Clear Cache
             </button>
-
+            {loading && <p>Clearing cache...</p>}
             {status === "success" && (
                 <p className="mt-4 text-green-600">✅ Cache cleared successfully.</p>
             )}
             {status === "error" && (
                 <p className="mt-4 text-red-600">❌ Failed to clear the cache.</p>
+            )}
+            {status === "unauthorized" && (
+                <p className="mt-4 text-red-600">❌ Unauthorized to clear the cache.</p>
             )}
         </form>
     );

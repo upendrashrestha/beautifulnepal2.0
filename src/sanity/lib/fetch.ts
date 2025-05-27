@@ -1,6 +1,6 @@
 import { Author, Category, Company, Destination, Guide, Post } from "@/types";
 import { client } from "./client";
-import { withCache } from "./cache";
+import { withCache } from "./redis-cache";
 import { ITEM_PER_PAGE } from "@/utils/constant";
 export function fetchPosts(): Promise<Post[]> {
   return withCache(

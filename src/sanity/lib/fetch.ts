@@ -43,7 +43,7 @@ export function fetchCompanyAbout(): Promise<Company> {
     "companyAbout",
     () =>
       client.fetch(`*[_type == "company"][0]{description,shortDescription}`),
-    false
+    true
   );
 }
 
@@ -51,7 +51,7 @@ export function fetchCompanyTerms(): Promise<Company> {
   return withCache(
     "companyTerms",
     () => client.fetch(`*[_type == "company"][0]{termsAndConditions}`),
-    false
+    true
   );
 }
 
@@ -92,15 +92,19 @@ export function fetchDestinations(): Promise<Destination[]> {
 }
 
 export function fetchCategories(): Promise<Category[]> {
-  return withCache("categories", () =>
-    client.fetch(`*[_type == "category"]{_id, title, slug}`)
+  return withCache(
+    "categories",
+    () => client.fetch(`*[_type == "category"]{_id, title, slug}`),
+    true
   );
 }
 
 export function fetchPostBySlug(slug: string): Promise<Post> {
-  return withCache(`post:${slug}`, () =>
-    client.fetch(
-      `*[_type == "post" && slug.current == $slug][0]{
+  return withCache(
+    `post:${slug}`,
+    () =>
+      client.fetch(
+        `*[_type == "post" && slug.current == $slug][0]{
         title,
         body,
         mainImage,
@@ -114,8 +118,9 @@ export function fetchPostBySlug(slug: string): Promise<Post> {
           image
         }
       }`,
-      { slug }
-    )
+        { slug }
+      ),
+    true
   );
 }
 
@@ -143,9 +148,11 @@ export async function fetchPaginatedPosts(page: number) {
 }
 
 export function fetchGuideBySlug(slug: string): Promise<Guide> {
-  return withCache(`guide:${slug}`, () =>
-    client.fetch(
-      `*[_type == "guide" && slug.current == $slug][0]{
+  return withCache(
+    `guide:${slug}`,
+    () =>
+      client.fetch(
+        `*[_type == "guide" && slug.current == $slug][0]{
         title,
         body,
         mainImage,
@@ -154,8 +161,9 @@ export function fetchGuideBySlug(slug: string): Promise<Guide> {
         destination->{ name, slug },
         author->{ name, slug }
       }`,
-      { slug }
-    )
+        { slug }
+      ),
+    true
   );
 }
 
@@ -186,31 +194,40 @@ export function fetchDestinationBySlug(slug: string): Promise<Destination> {
 }
 
 export function fetchPostsByCategory(categorySlug: string): Promise<Post[]> {
-  return withCache(`posts:category:${categorySlug}`, () =>
-    client.fetch(
-      `*[_type == "post" && references(*[_type == "category" && slug.current == $categorySlug]._id)]`,
-      { categorySlug }
-    )
+  return withCache(
+    `posts:category:${categorySlug}`,
+    () =>
+      client.fetch(
+        `*[_type == "post" && references(*[_type == "category" && slug.current == $categorySlug]._id)]`,
+        { categorySlug }
+      ),
+    true
   );
 }
 
 export function fetchPostsByAuthor(authorSlug: string): Promise<Post[]> {
-  return withCache(`posts:author:${authorSlug}`, () =>
-    client.fetch(
-      `*[_type == "post" && references(*[_type == "author" && slug.current == $authorSlug]._id)]`,
-      { authorSlug }
-    )
+  return withCache(
+    `posts:author:${authorSlug}`,
+    () =>
+      client.fetch(
+        `*[_type == "post" && references(*[_type == "author" && slug.current == $authorSlug]._id)]`,
+        { authorSlug }
+      ),
+    true
   );
 }
 
 export function fetchPostsByDestination(
   destinationSlug: string
 ): Promise<Destination[]> {
-  return withCache(`posts:destination:${destinationSlug}`, () =>
-    client.fetch(
-      `*[_type == "post" && references(*[_type == "destination" && slug.current == $destinationSlug]._id)]`,
-      { destinationSlug }
-    )
+  return withCache(
+    `posts:destination:${destinationSlug}`,
+    () =>
+      client.fetch(
+        `*[_type == "post" && references(*[_type == "destination" && slug.current == $destinationSlug]._id)]`,
+        { destinationSlug }
+      ),
+    true
   );
 }
 
@@ -227,16 +244,22 @@ export function fetchPostsByDestinationAndCategory(
 }
 
 export function fetchAuthorBySlug(slug: string): Promise<Author> {
-  return withCache(`author:${slug}`, () => {
-    return client.fetch(
-      `*[_type == "author" && slug.current == $slug][0]{_id, name, slug, bio, image}`,
-      { slug }
-    );
-  });
+  return withCache(
+    `author:${slug}`,
+    () => {
+      return client.fetch(
+        `*[_type == "author" && slug.current == $slug][0]{_id, name, slug, bio, image}`,
+        { slug }
+      );
+    },
+    true
+  );
 }
 
 export function fetchAuthors(): Promise<Author[]> {
-  return withCache("authors", () =>
-    client.fetch(`*[_type == "author"]{_id, name, slug, image}`)
+  return withCache(
+    "authors",
+    () => client.fetch(`*[_type == "author"]{_id, name, slug, image}`),
+    true
   );
 }

@@ -8,7 +8,7 @@ export default function HomePage() {
   return (
     <div className="max-w-screen-lg mx-auto px-4 py-16 sm:py-20">
       <header className="text-center mb-12">
-        <h1 className="text-3xl sm:text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-red-600 to-blue-600 bg-clip-text text-transparent animate-fade-in-up">
+        <h1 className="text-3xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-red-600 to-blue-600 bg-clip-text text-transparent animate-fade-in-up">
           Welcome to Beautiful Nepal
         </h1>
         <p className="mt-4 text-lg text-gray-700 dark:text-gray-300 max-w-2xl mx-auto animate-fade-in delay-200">

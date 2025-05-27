@@ -34,7 +34,7 @@ export default function DestinationDropdown() {
         <div className="relative inline-block text-left" ref={dropdownRef}>
             <button
                 onClick={() => setOpen((prev) => !prev)}
-                className="flex items-center gap-1 text-sm font-semibold text-gray-800 px-4 py-2 rounded-md hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="flex items-center gap-1 text-sm text-gray-800 px-4 py-2 rounded-md hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
                 aria-haspopup="true"
                 aria-expanded={open}
             >

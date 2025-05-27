@@ -1,4 +1,3 @@
-// lib/sanity/redis-cache.ts
 import { Redis } from "@upstash/redis";
 
 const redis = new Redis({

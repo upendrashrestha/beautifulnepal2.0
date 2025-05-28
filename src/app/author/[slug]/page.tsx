@@ -3,9 +3,9 @@ import { fetchAuthorBySlug, fetchPostsByAuthor } from "@/sanity/lib/fetch";
 import { urlFor } from "@/sanity/lib/image";
 import { Post } from "@/types";
 import Image from '@/components/Image';
-import { PortableText } from "next-sanity";
 import { Metadata } from "next";
 import { generateMetadataHelper } from "@/utils/generateMetadataHelper";
+import BlockContent from "@/components/ui/blockContent";
 
 type PageProps = {
     params: Promise<{ slug: string }>;
@@ -51,7 +51,7 @@ export default async function AuthorPage(props: PageProps) {
                         <h1 className="text-3xl font-bold text-gray-900 mb-2">{author.name}</h1>
                         {author.bio && (
                             <div className="prose prose-gray max-w-none text-gray-700">
-                                <PortableText value={author.bio} />
+                                <BlockContent value={author.bio} />
                             </div>
                         )}
                     </div>

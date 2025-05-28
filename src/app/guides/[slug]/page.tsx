@@ -1,6 +1,5 @@
 
 import { notFound } from "next/navigation";
-import { PortableText } from "@portabletext/react";
 import { urlFor } from "@/sanity/lib/image";
 import { Metadata } from "next";
 import { fetchGuideBySlug } from "@/sanity/lib/fetch";
@@ -9,6 +8,7 @@ import Image from "next/image";
 import SocialShare from "@/components/SocialShare";
 import Link from "@/components/Link";
 import PageLayout from "@/components/layouts/PageLayout";
+import BlockContent from "@/components/ui/blockContent";
 export const dynamic = "force-dynamic"; // Or use generateStaticParams below
 
 
@@ -70,7 +70,7 @@ export default async function GuidePage(props: { params: Promise<{ slug: string 
 
             {/* Body */}
             <div className="prose max-w-none prose-lg prose-gray">
-                {guide.body && <PortableText value={guide.body} />}
+                {guide.body && <BlockContent value={guide.body} />}
             </div>
         </article>
     </PageLayout>

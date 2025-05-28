@@ -6,10 +6,10 @@ import PageTitle from "@/components/PageTitle";
 import SectionContainer from "@/components/SectionContainer";
 import SocialShare from "@/components/SocialShare";
 import { urlFor } from "@/sanity/lib/image";
-import { PortableText } from "next-sanity";
 import Link from "next/link";
 import Image from '@/components/Image';
 import { Post } from "@/types";
+import BlockContent from "@/components/ui/blockContent";
 
 export const dynamic = "force-dynamic"; // or use generateStaticParams
 
@@ -117,7 +117,7 @@ function PostView(post: Post) {
 
                             {/* PortableText body */}
                             <div className="prose dark:prose-invert max-w-none">
-                                <PortableText value={post.body} />
+                                <BlockContent value={post.body} />
                             </div>
                         </section>
                     )}

@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import { PortableText } from "@portabletext/react";
 import { Metadata } from "next";
 import { fetchDestinationBySlug } from "@/sanity/lib/fetch";
 import { generateMetadataHelper } from "@/utils/generateMetadataHelper";
@@ -7,6 +6,7 @@ import { urlFor } from "@/sanity/lib/image";
 import Image from "next/image";
 import SocialShare from "@/components/SocialShare";
 import PageLayout from "@/components/layouts/PageLayout";
+import BlockContent from "@/components/ui/blockContent";
 
 export async function generateMetadata(
     props: { params: Promise<{ slug: string }> }
@@ -58,7 +58,7 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
                 )}
 
                 <div className="prose prose-gray max-w-none">
-                    {destination.details && <PortableText value={destination.details} />}
+                    {destination.details && <BlockContent value={destination.details} />}
                 </div>
             </article>
         </PageLayout>

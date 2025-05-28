@@ -6,7 +6,7 @@ export default async function Footer() {
 
     return (
         <footer className="bg-gray-100 dark:bg-gray-900">
-            <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 text-sm text-gray-700 dark:text-gray-300">
+            {company && <> <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 text-sm text-gray-700 dark:text-gray-300">
                 {/* Brand Info */}
                 <div>
                     <h4 className="text-lg font-semibold mb-3 text-gray-900 dark:text-white">BeautifulNepal</h4>
@@ -58,10 +58,11 @@ export default async function Footer() {
                 </div>
             </div>
 
-            {/* Footer bottom */}
-            <div className="border-t border-gray-200 dark:border-gray-700 text-center text-xs text-gray-500 dark:text-gray-400 py-4">
-                &copy; {new Date().getFullYear()} {company.name}. All rights reserved.
-            </div>
+                <div className="border-t border-gray-200 dark:border-gray-700 text-center text-xs text-gray-500 dark:text-gray-400 py-4">
+                    &copy; {new Date().getFullYear()} {company.name}. All rights reserved.
+                </div>
+            </>
+            }
         </footer>
     );
 }

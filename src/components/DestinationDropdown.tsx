@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { fetchDestinations } from "@/sanity/lib/fetch";
+import { fetchFeaturedDestinations } from "@/sanity/lib/fetch";
 import { Destination } from "@/types";
 import { FaChevronDown } from "react-icons/fa";
 
@@ -12,7 +12,7 @@ export default function DestinationDropdown() {
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        fetchDestinations().then(setDestinations);
+        fetchFeaturedDestinations().then(setDestinations);
     }, []);
 
     // Close dropdown when clicking outside

@@ -7,6 +7,7 @@ import Image from "next/image";
 import SocialShare from "@/components/SocialShare";
 import PageLayout from "@/components/layouts/PageLayout";
 import BlockContent from "@/components/ui/blockContent";
+import PageTitle from "@/components/PageTitle";
 
 export async function generateMetadata(
     props: { params: Promise<{ slug: string }> }
@@ -36,12 +37,10 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
     return (
         <PageLayout title={`Destination`}>
             <article className="max-w-5xl mx-auto px-4 sm:px-6 py-8 space-y-6">
-                <div className="w-full text-center">
-                    <h1 className="text-2xl text-gray-900 sm:text-2xl md:text-3xl  dark:text-white">
-                        {destination.name}
-                    </h1>
-                </div>
-                <div className="flex justify-end">
+
+
+                <div className="flex justify-between">
+                    <PageTitle className="text-center">{destination.name}</PageTitle>
                     <SocialShare />
                 </div>
 

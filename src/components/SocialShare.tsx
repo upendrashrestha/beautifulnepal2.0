@@ -51,14 +51,14 @@ const SocialShare: React.FC<SocialShareProps> = ({ className = '' }) => {
                 className="p-2 cursor-pointer rounded-full bg-blue-600 hover:bg-blue-700 text-white"
                 title="Share on Facebook"
             >
-                <FaFacebookF className="w-5 h-5" />
+                <FaFacebookF className="w-3 h-3" />
             </button>
             <button
                 onClick={() => shareToSocialMedia('twitter')}
                 className="p-2 cursor-pointer rounded-full bg-sky-500 hover:bg-sky-600 text-white"
                 title="Share on Twitter"
             >
-                <FaTwitter className="w-5 h-5" />
+                <FaTwitter className="w-3 h-3" />
 
             </button>
             <button
@@ -66,13 +66,13 @@ const SocialShare: React.FC<SocialShareProps> = ({ className = '' }) => {
                 className="p-2 cursor-pointer rounded-full bg-blue-700 hover:bg-blue-800 text-white"
                 title="Share on LinkedIn"
             >
-                <FaLinkedin className="w-5 h-5" />
+                <FaLinkedin className="w-3 h-3" />
             </button>
             <button
                 onClick={() => shareToSocialMedia('copy')}
                 className="p-2 cursor-pointer rounded-full bg-teal-500 hover:bg-teal-600 text-white"
                 title="Copy URL">
-                <FaShare className="w-5 h-5" />
+                <FaShare className="w-3 h-3" />
 
             </button>
 

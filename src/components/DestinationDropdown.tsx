@@ -6,16 +6,17 @@ import { fetchFeaturedDestinations } from "@/sanity/lib/fetch";
 import { Destination } from "@/types";
 import { FaChevronDown } from "react-icons/fa";
 
+import { usePathname } from "next/navigation";
+
 export default function DestinationDropdown() {
     const [open, setOpen] = useState(false);
     const [destinations, setDestinations] = useState<Destination[]>([]);
     const dropdownRef = useRef<HTMLDivElement>(null);
-
+    const pathUrl = usePathname();
     useEffect(() => {
         fetchFeaturedDestinations().then(setDestinations);
     }, []);
 
-    // Close dropdown when clicking outside
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
             if (
@@ -34,27 +35,28 @@ export default function DestinationDropdown() {
         <div className="relative inline-block text-left" ref={dropdownRef}>
             <button
                 onClick={() => setOpen((prev) => !prev)}
-                className="flex items-center gap-1 text-sm text-gray-800 px-4 py-2 rounded-md hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className={`flex items-center gap-1 text-sm text-gray-800 px-4 py-2 rounded-md hover:bg-gray-100 transition-colors ${pathUrl.startsWith("/destination")
+                    ? "text-primary hover:text-primary" : "hover:text-primary"}`}
                 aria-haspopup="true"
                 aria-expanded={open}
             >
-                Destinations
+                Explore Destinations
                 <FaChevronDown className={`w-3 h-3 transition-transform ${open ? "rotate-180" : ""}`} />
             </button>
 
             {open && (
                 <div
-                    className="absolute right-0 mt-2 w-64 sm:w-72 bg-white border border-gray-200 rounded-lg shadow-lg z-50 animate-fade-in"
+                    className="absolute z-50 mt-2 w-56 rounded-md bg-white shadow-lg"
                     role="menu"
                     aria-label="Destination dropdown"
                 >
-                    <ul className="py-2 max-h-72 overflow-y-auto">
+                    <ul className="py-1 h-auto">
                         {destinations.map((dest) => (
                             <li key={dest._id}>
                                 <Link
                                     href={`/destinations/${dest.slug.current}`}
                                     onClick={() => setOpen(false)}
-                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                     role="menuitem"
                                 >
                                     {dest.name}
@@ -65,7 +67,7 @@ export default function DestinationDropdown() {
                             <Link
                                 href="/destinations"
                                 onClick={() => setOpen(false)}
-                                className="block px-4 py-2 text-sm font-medium text-blue-600 hover:bg-gray-100 transition-colors"
+                                className="block px-4 py-2 text-sm font-medium text-blue-600 hover:bg-gray-100"
                                 role="menuitem"
                             >
                                 View All Destinations →

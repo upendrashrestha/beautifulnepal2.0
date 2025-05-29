@@ -23,7 +23,7 @@ export default function FeaturedPost() {
     if (!posts.length) return null;
 
     return (
-        <section className="my-20 px-4 sm:px-6 lg:px-8">
+        <section className="">
             <div className="mb-8 flex items-center gap-3">
                 <FaStar className="text-yellow-500 text-xl" />
                 <h2 className="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">

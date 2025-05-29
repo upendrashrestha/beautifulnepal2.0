@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Script from "next/script";
+import ScrollToTop from "@/components/ui/scrollToTop";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -46,7 +47,6 @@ export default function RootLayout({
       </Script>
 
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-
         <Header />
         <div
           className="
@@ -54,7 +54,7 @@ export default function RootLayout({
     mx-auto
     px-4 sm:px-6 lg:px-8
     pb-12
-    pt-6
+    pt-30    
     min-h-screen
     bg-gray-50
     dark:bg-gray-900
@@ -63,6 +63,7 @@ export default function RootLayout({
         </div>
 
         <Footer />
+        <ScrollToTop />
         {/* {env.NEXT_PUBLIC_GTM_ID ? (
           <GoogleTagManager gtmId={env.NEXT_PUBLIC_GTM_ID} />
         ) : null} */}

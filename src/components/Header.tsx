@@ -11,30 +11,28 @@ export default function Header() {
     const [stickyMenu, setStickyMenu] = useState(false);
     const [navigationOpen, setNavigationOpen] = useState(false);
     const pathUrl = usePathname();
-    // Sticky menu
-    const handleStickyMenu = () => {
-        if (window.scrollY >= 30) {
-            setStickyMenu(true);
-        } else {
-            setStickyMenu(false);
-        }
-    };
 
+    // Sticky menu
     useEffect(() => {
+        const handleStickyMenu = () => {
+            setStickyMenu(window.scrollY >= 30);
+        };
+
         window.addEventListener("scroll", handleStickyMenu);
-    });
+        return () => window.removeEventListener("scroll", handleStickyMenu);
+    }, []);
 
     return (
         <header
-            className={`fixed left-0 top-0 z-99999 w-full py-7 ${stickyMenu
-                ? "bg-white py-4! shadow-sm transition duration-100 dark:bg-black"
-                : ""
+            className={`fixed left-0 top-0 z-50 w-full transition duration-200 ${stickyMenu
+                ? "bg-white py-4 shadow-sm dark:bg-black"
+                : "py-7"
                 }`}
         >
             <div className="relative mx-auto w-full items-center justify-between px-4 md:px-8 xl:flex 2xl:px-0">
+                {/* Logo and Mobile Toggle */}
                 <div className="flex w-full items-center justify-between">
-
-                    <Link href="/" className="flex items-center gap-3 group">
+                    <Link href="/" className="flex items-center gap-3">
                         <Image
                             src={logo}
                             alt="Beautiful Nepal Logo"
@@ -42,62 +40,55 @@ export default function Header() {
                             height={60}
                             priority
                         />
-
                     </Link>
+
                     <button
-                        aria-label="hamburger Toggler"
-                        className="block xl:hidden"
+                        aria-label="Toggle Navigation"
+                        className="xl:hidden"
                         onClick={() => setNavigationOpen(!navigationOpen)}
                     >
-                        <span className="relative block h-5.5 w-5.5 cursor-pointer">
-                            <span className="absolute right-0 block h-full w-full">
-                                <span
-                                    className={`relative left-0 top-0 my-1 block h-0.5 rounded-sm bg-black delay-0 duration-200 ease-in-out dark:bg-white ${!navigationOpen ? "w-full! delay-300" : "w-0"
-                                        }`}
-                                ></span>
-                                <span
-                                    className={`relative left-0 top-0 my-1 block h-0.5 rounded-sm bg-black delay-150 duration-200 ease-in-out dark:bg-white ${!navigationOpen ? "delay-400 w-full!" : "w-0"
-                                        }`}
-                                ></span>
-                                <span
-                                    className={`relative left-0 top-0 my-1 block h-0.5 rounded-sm bg-black delay-200 duration-200 ease-in-out dark:bg-white ${!navigationOpen ? "w-full! delay-500" : "w-0"
-                                        }`}
-                                ></span>
-                            </span>
-                            <span className="du-block absolute right-0 h-full w-full rotate-45">
-                                <span
-                                    className={`absolute left-2.5 top-0 block h-full w-0.5 rounded-sm bg-black delay-300 duration-200 ease-in-out dark:bg-white ${!navigationOpen ? "h-0! delay-0" : "h-full"
-                                        }`}
-                                ></span>
-                                <span
-                                    className={`delay-400 absolute left-0 top-2.5 block h-0.5 w-full rounded-sm bg-black duration-200 ease-in-out dark:bg-white ${!navigationOpen ? "h-0! delay-200" : "h-0.5"
-                                        }`}
-                                ></span>
-                            </span>
-                        </span>
+                        <svg
+                            className="h-6 w-6 text-black dark:text-white"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            {navigationOpen ? (
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M6 18L18 6M6 6l12 12"
+                                />
+                            ) : (
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M4 6h16M4 12h16M4 18h16"
+                                />
+                            )}
+                        </svg>
                     </button>
                 </div>
 
+                {/* Navigation Menu */}
                 <div
-                    className={`invisible h-0 w-full items-end justify-end xl:visible xl:flex xl:h-auto xl:w-full ${navigationOpen &&
-                        "navbar visible! mt-4 h-auto rounded-md bg-white p-7.5 shadow-solid-5 dark:bg-blacksection xl:h-auto xl:p-0 xl:shadow-none xl:dark:bg-transparent"
+                    className={`w-full xl:flex xl:items-center xl:justify-end xl:gap-6 ${navigationOpen ? "block mt-4 bg-white dark:bg-black p-4 rounded-md shadow-md xl:mt-0 xl:bg-transparent xl:p-0 xl:shadow-none" : "hidden"
                         }`}
                 >
-                    <nav className="flex flex-row gap-1">
-
+                    <nav className="flex flex-col xl:flex-row xl:items-center gap-2 xl:gap-4">
                         <DestinationDropdown />
                         <Link
-                            href={`/contact`}
-                            className={
-                                `text-sm ${pathUrl === "/contact"
-                                    ? "text-primary px-4 py-2 transition-colors  hover:text-primary"
-                                    : "text-gray-800  hover:text-primary hover:bg-gray-100 rounded-md  px-4 py-2"
-                                }`
-                            }
+                            href="/contact"
+                            className={`text-sm px-4 py-2 rounded-md transition-colors ${pathUrl === "/contact"
+                                ? "text-primary"
+                                : "text-gray-800 hover:text-primary hover:bg-gray-100"
+                                }`}
                         >
                             Contact
                         </Link>
-
                     </nav>
                 </div>
             </div>

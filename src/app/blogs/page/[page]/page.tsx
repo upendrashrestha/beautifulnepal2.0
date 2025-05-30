@@ -8,6 +8,7 @@ import PageLayout from "@/components/layouts/PageLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { urlFor } from "@/sanity/lib/image";
 import { Post } from "@/types";
+import AnimatedSection from "@/components/AnimatedSection";
 
 export default async function BlogPage(props: { params: Promise<{ page: string }> }) {
     const params = await props.params;
@@ -18,18 +19,19 @@ export default async function BlogPage(props: { params: Promise<{ page: string }
 
     return (
         <PageLayout title="Blogs">
-
-            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-                {posts.map((post: Post) => (
-                    <PostCard key={post._id} post={post} />
-                ))}
-            </div>
-
-            {totalPages > 1 && (
-                <div className="mt-12">
-                    <Pagination pageName="blogs" currentPage={currentPage} totalPages={totalPages} />
+            <AnimatedSection>
+                <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                    {posts.map((post: Post) => (
+                        <PostCard key={post._id} post={post} />
+                    ))}
                 </div>
-            )}
+
+                {totalPages > 1 && (
+                    <div className="mt-12">
+                        <Pagination pageName="blogs" currentPage={currentPage} totalPages={totalPages} />
+                    </div>
+                )}
+            </AnimatedSection>
         </PageLayout>
 
     );

@@ -62,10 +62,8 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
                     {destination.details && <BlockContent value={destination.details} />}
                 </div>
                 <div className="divide-b divide-gray-200 dark:xl:divide-gray-700">
-                    <Guides destinationSlug={destination.slug.current} title="test" />
+                    <Guides destinationSlug={destination.slug.current} title="Guides" />
                     <Posts destinationSlug={destination.slug.current} title="Related Blogs" />
-
-
                 </div>
             </article>
         </PageLayout>

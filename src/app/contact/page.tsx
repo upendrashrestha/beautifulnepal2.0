@@ -44,119 +44,120 @@ export default function ContactPage() {
     };
 
     return (
-        <PageLayout title="">
-            <div className="max-w-2xl mx-auto px-4">
-                <h1 className="text-3xl p-4 font-bold text-gray-800 text-center">Contact Us</h1>
-                <p className="text-gray-600 text-sm">
-                    We would love to hear from you! Please fill out the form below and we will get back to you as soon as possible.
-                </p>
-                <form className="mt-10 space-y-6" onSubmit={handleSubmit} noValidate>
-                    {/* Honeypot field */}
-                    <input
-                        type="text"
-                        name="website"
-                        value={formData.website}
-                        onChange={handleChange}
-                        className="hidden"
-                        autoComplete="off"
-                        tabIndex={-1}
-                    />
+        <PageLayout title="Contact Us" className="text-center">
+            <div className="flex flex-col-reverse flex-wrap gap-8 md:flex-row md:flex-nowrap md:justify-between xl:gap-20">
+                <div className="animate_top w-full rounded-lg bg-white p-7.5 shadow-solid-8 dark:border dark:border-strokedark dark:bg-black md:w-3/5 lg:w-3/4 xl:p-15">
 
-                    <div>
-                        <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                            Your Name
-                        </label>
-                        <div className="mt-1">
+                    <p className="text-gray-600 text-sm pb-5">
+                        We would love to hear from you! Please fill out the form below and we will get back to you as soon as possible.
+                    </p>
+                    <form className="mt-10 space-y-6" onSubmit={handleSubmit} noValidate>
+                        {/* Honeypot field */}
+                        <input
+                            type="text"
+                            name="website"
+                            value={formData.website}
+                            onChange={handleChange}
+                            className="hidden"
+                            autoComplete="off"
+                            tabIndex={-1}
+                        />
+
+
+                        <div className="mb-7.5 flex flex-col gap-7.5 lg:flex-row lg:justify-between lg:gap-14">
                             <input
-                                id="name"
-                                name="name"
                                 type="text"
-                                required
+                                placeholder="Full name"
+                                name="name"
                                 value={formData.name}
                                 onChange={handleChange}
-                                className="w-full rounded-md border border-gray-300 px-4 py-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                                required
+                                className="w-full border-b border-stroke bg-transparent pb-3.5 focus:border-waterloo focus:placeholder:text-black focus-visible:outline-hidden dark:border-strokedark dark:focus:border-manatee dark:focus:placeholder:text-white lg:w-1/2"
                             />
-                        </div>
-                    </div>
 
-                    <div>
-                        <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                            Your Email
-                        </label>
-                        <div className="mt-1">
                             <input
-                                id="email"
                                 name="email"
                                 type="email"
                                 required
                                 value={formData.email}
                                 onChange={handleChange}
-                                className="w-full rounded-md border border-gray-300 px-4 py-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                                placeholder="Email address"
+                                className="w-full border-b border-stroke bg-transparent pb-3.5 focus:border-waterloo focus:placeholder:text-black focus-visible:outline-hidden dark:border-strokedark dark:focus:border-manatee dark:focus:placeholder:text-white lg:w-1/2"
                             />
                         </div>
-                    </div>
 
-                    <div>
-                        <label htmlFor="message" className="block text-sm font-medium text-gray-700">
-                            Your Message
-                        </label>
-                        <div className="mt-1">
+
+                        <div className="mb-11.5 flex">
                             <textarea
                                 id="message"
                                 name="message"
-                                rows={5}
+                                placeholder="Message"
                                 required
                                 value={formData.message}
                                 onChange={handleChange}
-                                className="w-full rounded-md border border-gray-300 px-4 py-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
-                            />
+                                rows={4}
+                                className="w-full border-b border-stroke bg-transparent focus:border-waterloo focus:placeholder:text-black focus-visible:outline-hidden dark:border-strokedark dark:focus:border-manatee dark:focus:placeholder:text-white"
+                            ></textarea>
                         </div>
-                    </div>
 
-                    <div>
-                        <button
-                            type="submit"
-                            disabled={loading}
-                            className="inline-flex items-center justify-center w-full px-4 py-2 border border-transparent rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
-                        >
-                            {loading && (
+
+
+                        <div>
+                            <button
+                                type="submit"
+                                disabled={loading}
+                                className="inline-flex items-center gap-2.5 rounded-full bg-black px-6 py-3 font-medium text-white duration-300 ease-in-out hover:bg-blackho dark:bg-btndark"
+                            >
+                                {loading ? "Sending..." : "Send Message"}
                                 <svg
-                                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="fill-white"
+                                    width="14"
+                                    height="14"
+                                    viewBox="0 0 14 14"
                                     fill="none"
-                                    viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg"
                                 >
-                                    <circle
-                                        className="opacity-25"
-                                        cx="12"
-                                        cy="12"
-                                        r="10"
-                                        stroke="currentColor"
-                                        strokeWidth="4"
-                                    ></circle>
                                     <path
-                                        className="opacity-75"
-                                        fill="currentColor"
-                                        d="M4 12a8 8 0 018-8v4l3.536-3.536A9.966 9.966 0 002 12h2z"
-                                    ></path>
+                                        d="M10.4767 6.16664L6.00668 1.69664L7.18501 0.518311L13.6667 6.99998L7.18501 13.4816L6.00668 12.3033L10.4767 7.83331H0.333344V6.16664H10.4767Z"
+                                        fill=""
+                                    />
                                 </svg>
-                            )}
-                            {loading ? "Sending..." : "Send Message"}
-                        </button>
-                    </div>
-                </form>
 
-                {status === "success" && (
-                    <div className="mt-6 rounded-md bg-green-100 text-green-700 px-4 py-3 text-sm">
-                        Thank you! Your message has been sent.
+                            </button>
+                        </div>
+                    </form>
+
+                    {
+                        status === "success" && (
+                            <div className="mt-6 rounded-md bg-green-100 text-green-700 px-4 py-3 text-sm">
+                                Thank you! Your message has been sent.
+                            </div>
+                        )
+                    }
+                    {
+                        status === "error" && (
+                            <div className="mt-6 rounded-md bg-red-100 text-red-700 px-4 py-3 text-sm">
+                                Something went wrong. Please try again.
+                            </div>
+                        )
+                    }
+                </div >
+
+                <div className="animate_top w-full md:w-2/5 md:p-7.5 lg:w-[26%] xl:pt-15"
+                >
+                    <h2 className="mb-12.5 text-3xl font-semibold text-black dark:text-white xl:text-sectiontitle2">
+                        Our Locations
+                    </h2>
+
+                    <div className="5 mb-7">
+                        <h3 className="mb-4 text-metatitle3 font-medium text-black dark:text-white">
+                            Offices
+                        </h3>
+                        <p className="p-2">Nepal: Kathmandu</p>
+                        <p>USA: Arlington, TX </p>
                     </div>
-                )}
-                {status === "error" && (
-                    <div className="mt-6 rounded-md bg-red-100 text-red-700 px-4 py-3 text-sm">
-                        Something went wrong. Please try again.
-                    </div>
-                )}
+                </div>
             </div>
-        </PageLayout>
+        </PageLayout >
     );
 }

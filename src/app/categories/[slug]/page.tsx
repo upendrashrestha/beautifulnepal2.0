@@ -7,8 +7,6 @@ import Link from "next/link";
 import Image from "next/image";
 import PageLayout from "@/components/layouts/PageLayout";
 import { Post } from "@/types";
-
-import { motion } from "framer-motion";
 import AnimatedSection from "@/components/AnimatedSection";
 export async function generateMetadata(
     props: {

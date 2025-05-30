@@ -7,7 +7,7 @@ import { urlFor } from "@/sanity/lib/image";
 import { Post } from "@/types";
 import { fetchFeaturedPosts, fetchPostsByDestination } from "@/sanity/lib/fetch";
 import { Card, CardContent } from "./ui/card";
-import { motion } from "framer-motion";
+import AnimatedSection from "./AnimatedSection";
 
 interface PostProps {
     featured?: boolean;
@@ -36,24 +36,7 @@ export default function Posts({ featured, destinationSlug, title }: PostProps) {
 
     return (
         <section className="mb-10">
-            <motion.div
-                variants={{
-                    hidden: {
-                        opacity: 0,
-                        x: -20,
-                    },
-
-                    visible: {
-                        opacity: 1,
-                        x: 0,
-                    },
-                }}
-                initial="hidden"
-                whileInView="visible"
-                transition={{ duration: 0.5, delay: 0.1 }}
-                viewport={{ once: true }}
-                className="animate_left relative mx-auto hidden h-auto md:block md:w-full"
-            >
+            <AnimatedSection>
                 {title && <div className="mb-8 flex items-center gap-3">
                     <h2 className="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">
                         {title}
@@ -95,7 +78,7 @@ export default function Posts({ featured, destinationSlug, title }: PostProps) {
                         </Card>
                     ))}
                 </div>
-            </motion.div>
+            </AnimatedSection>
         </section>
     );
 }

@@ -7,7 +7,7 @@ import { urlFor } from "@/sanity/lib/image";
 import { Destination } from "@/types";
 import { fetchFeaturedDestinations } from "@/sanity/lib/fetch";
 import { Card, CardContent } from "./ui/card";
-import { motion } from "framer-motion";
+import AnimatedSection from "./AnimatedSection";
 
 export default function FeaturedDestination() {
     const [destinations, setDestinations] = useState<Destination[]>([]);
@@ -24,24 +24,7 @@ export default function FeaturedDestination() {
 
     return (
         <section className="my-16">
-            <motion.div
-                variants={{
-                    hidden: {
-                        opacity: 0,
-                        x: -20,
-                    },
-
-                    visible: {
-                        opacity: 1,
-                        x: 0,
-                    },
-                }}
-                initial="hidden"
-                whileInView="visible"
-                transition={{ duration: 0.5, delay: 0.1 }}
-                viewport={{ once: true }}
-                className="animate_left relative mx-auto hidden md:block md:w-full h-auto"
-            >
+            <AnimatedSection>
                 <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
                     {destinations.map((d: Destination) => (
                         <Card
@@ -77,7 +60,7 @@ export default function FeaturedDestination() {
                         </Card>
                     ))}
                 </div>
-            </motion.div>
+            </AnimatedSection>
         </section>
     );
 }

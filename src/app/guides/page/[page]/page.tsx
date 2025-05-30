@@ -7,8 +7,8 @@ import { Guide } from "@/types";
 import { urlFor } from "@/sanity/lib/image";
 import Pagination from "@/components/Pagination";
 import PageLayout from "@/components/layouts/PageLayout";
+import AnimatedSection from "@/components/AnimatedSection";
 
-import { motion } from "framer-motion";
 export default async function GuidePage(props: { params: Promise<{ page: string }> }) {
     const params = await props.params;
     const currentPage = parseInt(params.page || "1", 10);
@@ -18,24 +18,7 @@ export default async function GuidePage(props: { params: Promise<{ page: string 
 
     return (
         <PageLayout title="Guides">
-            <motion.div
-                variants={{
-                    hidden: {
-                        opacity: 0,
-                        x: -20,
-                    },
-
-                    visible: {
-                        opacity: 1,
-                        x: 0,
-                    },
-                }}
-                initial="hidden"
-                whileInView="visible"
-                transition={{ duration: 0.5, delay: 0.1 }}
-                viewport={{ once: true }}
-                className="animate_left relative mx-auto hidden md:block md:w-full h-auto"
-            >
+            <AnimatedSection>
                 <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
                     {guides.map((guide: Guide) => (
                         <Link
@@ -68,7 +51,7 @@ export default async function GuidePage(props: { params: Promise<{ page: string 
                         <Pagination pageName="guides" currentPage={currentPage} totalPages={totalPages} />
                     </div>
                 )}
-            </motion.div>
+            </AnimatedSection>
         </PageLayout>
 
     );

@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import PageLayout from "@/components/layouts/PageLayout";
-
-import { motion } from "framer-motion";
+import AnimatedSection from "@/components/AnimatedSection";
 export default function ContactPage() {
     const [formData, setFormData] = useState({
         name: "",
@@ -46,24 +45,7 @@ export default function ContactPage() {
 
     return (
         <PageLayout title="Contact Us" className="text-center">
-            <motion.div
-                variants={{
-                    hidden: {
-                        opacity: 0,
-                        x: -20,
-                    },
-
-                    visible: {
-                        opacity: 1,
-                        x: 0,
-                    },
-                }}
-                initial="hidden"
-                whileInView="visible"
-                transition={{ duration: 0.5, delay: 0.1 }}
-                viewport={{ once: true }}
-                className="animate_left relative mx-auto hidden h-auto md:block md:w-full"
-            >
+            <AnimatedSection>
                 <div className="flex flex-col-reverse flex-wrap gap-8 md:flex-row md:flex-nowrap md:justify-between xl:gap-20">
                     <div className="animate_top w-full rounded-lg bg-white p-7.5 shadow-solid-8 dark:border dark:border-strokedark dark:bg-black md:w-3/5 lg:w-3/4 xl:p-15">
 
@@ -177,7 +159,7 @@ export default function ContactPage() {
                         </div>
                     </div>
                 </div>
-            </motion.div>
+            </AnimatedSection>
         </PageLayout >
     );
 }

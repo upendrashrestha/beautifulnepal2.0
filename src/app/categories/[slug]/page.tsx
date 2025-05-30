@@ -9,6 +9,7 @@ import PageLayout from "@/components/layouts/PageLayout";
 import { Post } from "@/types";
 
 import { motion } from "framer-motion";
+import AnimatedSection from "@/components/AnimatedSection";
 export async function generateMetadata(
     props: {
         params: Promise<{ slug: string }>;
@@ -26,24 +27,7 @@ export default async function CategoriesPage(props: { params: Promise<{ slug: st
 
     return (
         <PageLayout title={params.slug}>
-            <motion.div
-                variants={{
-                    hidden: {
-                        opacity: 0,
-                        x: -20,
-                    },
-
-                    visible: {
-                        opacity: 1,
-                        x: 0,
-                    },
-                }}
-                initial="hidden"
-                whileInView="visible"
-                transition={{ duration: 0.5, delay: 0.1 }}
-                viewport={{ once: true }}
-                className="animate_left relative mx-auto hidden md:block md:w-full h-auto"
-            >
+            <AnimatedSection>
                 <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
                     {posts.map((post: Post) => (
                         <Link
@@ -71,9 +55,7 @@ export default async function CategoriesPage(props: { params: Promise<{ slug: st
                         </Link>
                     ))}
                 </div>
-            </motion.div>
-
-
+            </AnimatedSection>
         </PageLayout>
     );
 }

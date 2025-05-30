@@ -1,32 +1,15 @@
 "use client";
 
+import AnimatedSection from "@/components/AnimatedSection";
 import FeaturedDestination from "@/components/FeaturedDestinations";
 import FeaturedPost from "@/components/Posts";
 import SearchBox from "@/components/SearchBox";
 
-import { motion } from "framer-motion";
 
 export default function HomePage() {
   return (
     <div className="max-w-screen-lg mx-auto px-4 py-16 sm:py-20">
-      <motion.div
-        variants={{
-          hidden: {
-            opacity: 0,
-            x: -20,
-          },
-
-          visible: {
-            opacity: 1,
-            x: 0,
-          },
-        }}
-        initial="hidden"
-        whileInView="visible"
-        transition={{ duration: 0.5, delay: 0.1 }}
-        viewport={{ once: true }}
-        className="animate_top relative mx-auto hidden h-auto md:block md:w-full"
-      >
+      <AnimatedSection>
         <header className="text-center min-h-screen">
           <h1 className="text-3xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-red-600 to-blue-600 bg-clip-text text-transparent animate-fade-in-up">
             Welcome to Beautiful Nepal
@@ -38,7 +21,7 @@ export default function HomePage() {
             <SearchBox />
           </section>
         </header>
-      </motion.div>
+      </AnimatedSection>
 
 
 

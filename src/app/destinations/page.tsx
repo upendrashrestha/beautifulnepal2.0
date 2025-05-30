@@ -6,7 +6,6 @@ import Link from "next/link";
 import Image from "next/image";
 import PageLayout from "@/components/layouts/PageLayout";
 import { Card, CardContent } from "@/components/ui/card";
-
 export async function generateMetadata(): Promise<Metadata> {
     return { title: "Destinations", description: "Destinations list page." };
 }
@@ -16,7 +15,9 @@ export default async function DestinationListPage() {
 
     return (
         <PageLayout title="Destinations">
+
             <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
+
                 {destinations.map((d: Destination) => (
                     <Card
                         key={d._id}
@@ -50,7 +51,9 @@ export default async function DestinationListPage() {
                         </Link>
                     </Card>
                 ))}
+
+
             </div>
-        </PageLayout>
+        </PageLayout >
     );
 }

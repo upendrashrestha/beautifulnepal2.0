@@ -8,6 +8,8 @@ import SocialShare from "@/components/SocialShare";
 import PageLayout from "@/components/layouts/PageLayout";
 import BlockContent from "@/components/ui/blockContent";
 import PageTitle from "@/components/PageTitle";
+import Posts from "@/components/Posts";
+import Guides from "@/components/Guides";
 
 export async function generateMetadata(
     props: { params: Promise<{ slug: string }> }
@@ -39,11 +41,11 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
             <article className="max-w-5xl mx-auto px-4 sm:px-6 py-8 space-y-6">
 
 
-                <div className="flex justify-between">
+                <div className="flex justify-center">
                     <PageTitle className="text-center">{destination.name}</PageTitle>
-                    <SocialShare />
-                </div>
 
+                </div>
+                <SocialShare />
                 {destination.heroImage && (
                     <div className="relative w-full h-64 sm:h-96 rounded-lg overflow-hidden shadow-sm">
                         <Image
@@ -56,8 +58,14 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
                     </div>
                 )}
 
-                <div className="prose prose-gray max-w-none">
+                <div className="mb-20 prose prose-gray max-w-none">
                     {destination.details && <BlockContent value={destination.details} />}
+                </div>
+                <div className="divide-b divide-gray-200 dark:xl:divide-gray-700">
+                    <Guides destinationSlug={destination.slug.current} title="test" />
+                    <Posts destinationSlug={destination.slug.current} title="Related Blogs" />
+
+
                 </div>
             </article>
         </PageLayout>

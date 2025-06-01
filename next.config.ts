@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "cdn.sanity.io",
-        pathname: "/images/ihu6bwun/bn-dataset/**",
+        pathname: "/images/ihu6bwun/**",
       },
       // You can add more domains or patterns here
     ],

@@ -42,14 +42,20 @@ export function fetchGuides(): Promise<Guide[]> {
 }
 
 export function fetchCommunityEvents(): Promise<CommunityEvent[]> {
-  return withCache(
-    "events",
-    () =>
-      client.fetch(
-        `*[_type == "event"]{_id, title, slug, description, location, eventDate, eventTime}`
-      ),
-    true
+  return withCache("events", () =>
+    client.fetch(
+      `*[_type == "event"]{_id, title, slug, location, eventDate, eventTime}`
+    )
   );
+}
+export function fetchCommunityEventBySlug(
+  slug: string
+): Promise<CommunityEvent> {
+  {
+    return withCache(`event:${slug}`, () =>
+      client.fetch(`*[_type == "event" && slug.current == $slug][0]`, { slug })
+    );
+  }
 }
 
 export async function fetchFeaturedGuides() {

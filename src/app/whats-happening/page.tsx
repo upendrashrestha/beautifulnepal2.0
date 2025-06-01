@@ -43,15 +43,21 @@ export default async function WhatsHappeningPage() {
                     <AnimatedSection>
                         <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
                             {events.map((event: CommunityEvent) => (
-                                <Card key={event._id} className="overflow-hidden border border-gray-100 shadow-sm hover:shadow-md hover:scale-[1.02] transition-all duration-300 bg-white">
-                                    <CardContent className="flex flex-col justify-between p-4 w-full">
-                                        <h2 className="text-xl font-semibold">
-                                            {event.title}</h2>
-                                        <p><strong>Event Date:</strong> {new Date(event.eventDate).toLocaleString()}</p>
-                                        <p><strong>Event Time:</strong> {event.eventTime}</p>
-                                        {event.location && <p><strong>Location:</strong> {event.location}</p>}
-                                    </CardContent>
-                                </Card>
+                                <Link
+                                    key={event._id}
+                                    href={event.slug && `/whats-happening/${event.slug.current}` || "#"}
+                                    className="group rounded-lg bg-white overflow-hidden hover:shadow-md transition"
+                                >
+                                    <Card key={event._id} className="overflow-hidden border border-gray-100 shadow-sm hover:shadow-md hover:scale-[1.02] transition-all duration-300 bg-white">
+                                        <CardContent className="flex flex-col justify-between p-4 w-full">
+                                            <h2 className="text-xl font-semibold">
+                                                {event.title}</h2>
+                                            <p><strong>Event Date:</strong> {new Date(event.eventDate).toLocaleString()}</p>
+                                            <p><strong>Event Time:</strong> {event.eventTime}</p>
+                                            {event.location && <p><strong>Location:</strong> {event.location}</p>}
+                                        </CardContent>
+                                    </Card>
+                                </Link>
                             ))}
                         </div></AnimatedSection>
                 </section>

@@ -52,6 +52,11 @@ export const eventType = defineType({
       type: "string",
     }),
     defineField({
+      name: "website",
+      title: "Website",
+      type: "string",
+    }),
+    defineField({
       name: "createdAt",
       title: "Created At",
       type: "datetime",

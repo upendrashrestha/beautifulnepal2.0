@@ -10,6 +10,7 @@ import { contactType } from "./contactType";
 import { companyType } from "./companyType";
 import { socialLinkType } from "./socialLinkType";
 import { guideType } from "./guideType";
+import { eventType } from "./eventType";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -23,5 +24,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     companyType,
     socialLinkType,
     guideType,
+    eventType,
   ],
 };

@@ -1,4 +1,12 @@
-import { Author, Category, Company, Destination, Guide, Post } from "@/types";
+import {
+  Author,
+  Category,
+  CommunityEvent,
+  Company,
+  Destination,
+  Guide,
+  Post,
+} from "@/types";
 import { client } from "./client";
 import { withCache } from "./redis-cache";
 import { ITEM_PER_PAGE } from "@/utils/constant";
@@ -30,6 +38,17 @@ export async function fetchFeaturedDestinations() {
 export function fetchGuides(): Promise<Guide[]> {
   return withCache("guides", () =>
     client.fetch(`*[_type == "guide"]{_id, title, slug, mainImage}`)
+  );
+}
+
+export function fetchCommunityEvents(): Promise<CommunityEvent[]> {
+  return withCache(
+    "events",
+    () =>
+      client.fetch(
+        `*[_type == "event"]{_id, title, slug, description, location, eventDate, eventTime}`
+      ),
+    true
   );
 }
 

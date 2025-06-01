@@ -81,6 +81,15 @@ export default function Header() {
                     <nav className="flex flex-col xl:flex-row xl:items-center gap-2 xl:gap-4">
                         <DestinationDropdown />
                         <Link
+                            href="/whats-happening"
+                            className={`text-sm px-4 py-2 rounded-md transition-colors ${pathUrl === "/whats-happening"
+                                ? "text-primary"
+                                : "text-gray-800 hover:text-primary hover:bg-gray-100"
+                                }`}
+                        >
+                            What&apos;s happening?
+                        </Link>
+                        <Link
                             href="/contact"
                             className={`text-sm px-4 py-2 rounded-md transition-colors ${pathUrl === "/contact"
                                 ? "text-primary"

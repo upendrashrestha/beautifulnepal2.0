@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { serverClient as client } from "@/sanity/lib/serverclient";
+import { sendEmail } from "@/utils/sendMail";
 
 export async function POST(req: Request) {
   const data = await req.json();
@@ -25,6 +26,12 @@ export async function POST(req: Request) {
     };
 
     await client.create(doc);
+    // Email notification
+    await sendEmail({
+      to: process.env.NOTIFY_EMAIL!,
+      subject: "New Message",
+      text: `A new message by "${name}".`,
+    });
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Error submitting contact form:", error);

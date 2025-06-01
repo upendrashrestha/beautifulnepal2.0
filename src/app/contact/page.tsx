@@ -3,6 +3,8 @@
 import { useState } from "react";
 import PageLayout from "@/components/layouts/PageLayout";
 import AnimatedSection from "@/components/AnimatedSection";
+
+
 export default function ContactPage() {
     const [formData, setFormData] = useState({
         name: "",

@@ -51,7 +51,7 @@ export default function Guides({ featured, destinationSlug, title }: GuideProps)
                             key={guide._id}
                             className="group overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg transition-shadow duration-300 rounded-2xl"
                         >
-                            <Link href={`/blogs/${guide.slug.current}`}>
+                            <Link href={`/guides/${guide.slug.current}`}>
                                 <div className="relative h-52 w-full">
                                     <Image
                                         src={

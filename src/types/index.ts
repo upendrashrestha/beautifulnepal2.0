@@ -154,3 +154,17 @@ export type SearchQueryResult = {
   guides: Guide[];
   categories: Category[];
 };
+
+export interface CommunityEvent {
+  _id: string;
+  title: string;
+  location: string;
+  eventDate: string;
+  eventTime: string;
+  description: string;
+  organizerName: string;
+  organizerEmail: string;
+  website?: string;
+  slug?: Slug;
+  country?: string;
+}

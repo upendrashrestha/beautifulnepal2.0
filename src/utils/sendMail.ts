@@ -11,8 +11,8 @@ export async function sendEmail({ to, subject, text }: EmailOptions) {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: process.env.NOTIFY_EMAIL,
-      pass: process.env.NOTIFY_EMAIL_PASS,
+      user: process.env.NEXT_PUBLIC_NOTIFY_EMAIL,
+      pass: process.env.NEXT_PUBLIC_NOTIFY_EMAIL_PASS,
     },
   });
 

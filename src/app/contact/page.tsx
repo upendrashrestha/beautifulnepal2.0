@@ -4,7 +4,6 @@ import { useState } from "react";
 import PageLayout from "@/components/layouts/PageLayout";
 import AnimatedSection from "@/components/AnimatedSection";
 
-
 export default function ContactPage() {
     const [formData, setFormData] = useState({
         name: "",
@@ -12,17 +11,49 @@ export default function ContactPage() {
         message: "",
         website: "",
     });
+
+    const [errors, setErrors] = useState<{ [key: string]: string }>({});
     const [status, setStatus] = useState("");
     const [loading, setLoading] = useState(false);
+
+    const validate = () => {
+        const newErrors: { [key: string]: string } = {};
+
+        if (!formData.name.trim()) {
+            newErrors.name = "Name is required.";
+        } else if (formData.name.length < 2) {
+            newErrors.name = "Name must be at least 2 characters.";
+        }
+
+        if (!formData.email.trim()) {
+            newErrors.email = "Email is required.";
+        } else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formData.email)) {
+            newErrors.email = "Invalid email format.";
+        }
+
+        if (!formData.message.trim()) {
+            newErrors.message = "Message is required.";
+        } else if (formData.message.length < 10) {
+            newErrors.message = "Message must be at least 10 characters.";
+        }
+
+
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
+        setErrors((prev) => ({ ...prev, [e.target.name]: "" }));
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (!validate()) return;
+
         setLoading(true);
         setStatus("");
 
@@ -50,10 +81,10 @@ export default function ContactPage() {
             <AnimatedSection>
                 <div className="flex flex-col-reverse flex-wrap gap-8 md:flex-row md:flex-nowrap md:justify-between xl:gap-20">
                     <div className="animate_top w-full rounded-lg bg-white p-7.5 shadow-solid-8 dark:border dark:border-strokedark dark:bg-black md:w-3/5 lg:w-3/4 xl:p-15">
-
                         <p className="text-gray-600 text-sm pb-5">
                             We would love to hear from you! Please fill out the form below and we will get back to you as soon as possible.
                         </p>
+
                         <form className="mt-10 space-y-6" onSubmit={handleSubmit} noValidate>
                             {/* Honeypot field */}
                             <input
@@ -66,44 +97,43 @@ export default function ContactPage() {
                                 tabIndex={-1}
                             />
 
-
                             <div className="mb-7.5 flex flex-col gap-7.5 lg:flex-row lg:justify-between lg:gap-14">
-                                <input
-                                    type="text"
-                                    placeholder="Full name"
-                                    name="name"
-                                    value={formData.name}
-                                    onChange={handleChange}
-                                    required
-                                    className="w-full border-b border-stroke bg-transparent pb-3.5 focus:border-waterloo focus:placeholder:text-black focus-visible:outline-hidden dark:border-strokedark dark:focus:border-manatee dark:focus:placeholder:text-white lg:w-1/2"
-                                />
+                                <div className="w-full lg:w-1/2">
+                                    <input
+                                        type="text"
+                                        placeholder="Full name"
+                                        name="name"
+                                        value={formData.name}
+                                        onChange={handleChange}
+                                        className="w-full border-b border-stroke bg-transparent pb-3.5 focus:border-waterloo focus-visible:outline-hidden dark:border-strokedark dark:focus:border-manatee"
+                                    />
+                                    {errors.name && <p className="text-sm text-red-500 mt-1">{errors.name}</p>}
+                                </div>
 
-                                <input
-                                    name="email"
-                                    type="email"
-                                    required
-                                    value={formData.email}
-                                    onChange={handleChange}
-                                    placeholder="Email address"
-                                    className="w-full border-b border-stroke bg-transparent pb-3.5 focus:border-waterloo focus:placeholder:text-black focus-visible:outline-hidden dark:border-strokedark dark:focus:border-manatee dark:focus:placeholder:text-white lg:w-1/2"
-                                />
+                                <div className="w-full lg:w-1/2">
+                                    <input
+                                        name="email"
+                                        type="email"
+                                        value={formData.email}
+                                        onChange={handleChange}
+                                        placeholder="Email address"
+                                        className="w-full border-b border-stroke bg-transparent pb-3.5 focus:border-waterloo focus-visible:outline-hidden dark:border-strokedark dark:focus:border-manatee"
+                                    />
+                                    {errors.email && <p className="text-sm text-red-500 mt-1">{errors.email}</p>}
+                                </div>
                             </div>
 
-
-                            <div className="mb-11.5 flex">
+                            <div className="mb-11.5">
                                 <textarea
-                                    id="message"
                                     name="message"
                                     placeholder="Message"
-                                    required
                                     value={formData.message}
                                     onChange={handleChange}
                                     rows={4}
-                                    className="w-full border-b border-stroke bg-transparent focus:border-waterloo focus:placeholder:text-black focus-visible:outline-hidden dark:border-strokedark dark:focus:border-manatee dark:focus:placeholder:text-white"
+                                    className="w-full border-b border-stroke bg-transparent focus:border-waterloo focus-visible:outline-hidden dark:border-strokedark dark:focus:border-manatee"
                                 ></textarea>
+                                {errors.message && <p className="text-sm text-red-500 mt-1">{errors.message}</p>}
                             </div>
-
-
 
                             <div>
                                 <button
@@ -112,56 +142,39 @@ export default function ContactPage() {
                                     className="inline-flex items-center gap-2.5 rounded-full bg-black px-6 py-3 font-medium text-white duration-300 ease-in-out hover:bg-blackho dark:bg-btndark"
                                 >
                                     {loading ? "Sending..." : "Send Message"}
-                                    <svg
-                                        className="fill-white"
-                                        width="14"
-                                        height="14"
-                                        viewBox="0 0 14 14"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                        <path
-                                            d="M10.4767 6.16664L6.00668 1.69664L7.18501 0.518311L13.6667 6.99998L7.18501 13.4816L6.00668 12.3033L10.4767 7.83331H0.333344V6.16664H10.4767Z"
-                                            fill=""
-                                        />
+                                    <svg className="fill-white" width="14" height="14" viewBox="0 0 14 14">
+                                        <path d="M10.4767 6.16664L6.00668 1.69664L7.18501 0.518311L13.6667 6.99998L7.18501 13.4816L6.00668 12.3033L10.4767 7.83331H0.333344V6.16664H10.4767Z" />
                                     </svg>
-
                                 </button>
                             </div>
                         </form>
 
-                        {
-                            status === "success" && (
-                                <div className="mt-6 rounded-md bg-green-100 text-green-700 px-4 py-3 text-sm">
-                                    Thank you! Your message has been sent.
-                                </div>
-                            )
-                        }
-                        {
-                            status === "error" && (
-                                <div className="mt-6 rounded-md bg-red-100 text-red-700 px-4 py-3 text-sm">
-                                    Something went wrong. Please try again.
-                                </div>
-                            )
-                        }
-                    </div >
+                        {status === "success" && (
+                            <div className="mt-6 rounded-md bg-green-100 text-green-700 px-4 py-3 text-sm">
+                                Thank you! Your message has been sent.
+                            </div>
+                        )}
+                        {status === "error" && (
+                            <div className="mt-6 rounded-md bg-red-100 text-red-700 px-4 py-3 text-sm">
+                                Something went wrong. Please try again.
+                            </div>
+                        )}
+                    </div>
 
-                    <div className="animate_top w-full md:w-2/5 md:p-7.5 lg:w-[26%] xl:pt-15"
-                    >
+                    <div className="animate_top w-full md:w-2/5 md:p-7.5 lg:w-[26%] xl:pt-15">
                         <h2 className="mb-12.5 text-3xl font-semibold text-black dark:text-white xl:text-sectiontitle2">
                             Our Locations
                         </h2>
-
                         <div className="5 mb-7">
                             <h3 className="mb-4 text-metatitle3 font-medium text-black dark:text-white">
                                 Offices
                             </h3>
                             <p className="p-2">Nepal: Kathmandu</p>
-                            <p>USA: Arlington, TX </p>
+                            <p>USA: Arlington, TX</p>
                         </div>
                     </div>
                 </div>
             </AnimatedSection>
-        </PageLayout >
+        </PageLayout>
     );
 }

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useState } from "react";
 import PageLayout from "@/components/layouts/PageLayout";
 import AnimatedSection from "@/components/AnimatedSection";
@@ -18,18 +18,40 @@ export default function EventFormPage() {
     });
     const [status, setStatus] = useState("");
     const [loading, setLoading] = useState(false);
+    const [validationErrors, setValidationErrors] = useState<{ [key: string]: string }>({});
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
+        setValidationErrors((prev) => ({ ...prev, [e.target.name]: "" })); // clear error on change
+    };
+
+    const validateForm = () => {
+        const errors: { [key: string]: string } = {};
+
+        if (!formData.title.trim()) errors.title = "Event title is required.";
+        if (!formData.location.trim()) errors.location = "Location is required.";
+        if (!formData.eventDate.trim()) errors.eventDate = "Event date is required.";
+        if (!formData.description.trim()) errors.description = "Description is required.";
+        if (!formData.organizerName.trim()) errors.organizerName = "Your name is required.";
+        if (!formData.organizerEmail.trim()) {
+            errors.organizerEmail = "Email is required.";
+        } else if (!/\S+@\S+\.\S+/.test(formData.organizerEmail)) {
+            errors.organizerEmail = "Please enter a valid email.";
+        }
+
+        setValidationErrors(errors);
+        return Object.keys(errors).length === 0;
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setLoading(true);
         setStatus("");
 
+        if (!validateForm()) return;
+
+        setLoading(true);
         try {
             const res = await fetch("/api/whats-happening", {
                 method: "POST",
@@ -75,90 +97,104 @@ export default function EventFormPage() {
 
                         <form className="mt-10 space-y-6" onSubmit={handleSubmit} noValidate>
                             <input
-                                type="country"
-                                placeholder="Country"
+                                type="hidden"
                                 name="country"
                                 value={formData.country}
                                 onChange={handleChange}
-                                className="hidden"
                             />
-                            <input
-                                type="text"
-                                placeholder="Event Title"
-                                name="title"
-                                value={formData.title}
-                                onChange={handleChange}
-                                required
-                                className="w-full border-b border-stroke bg-transparent pb-3.5 focus:border-waterloo focus-visible:outline-hidden dark:border-strokedark dark:focus:border-manatee"
-                            />
-                            <input
-                                type="text"
-                                placeholder="Location"
-                                name="location"
-                                value={formData.location}
-                                onChange={handleChange}
-                                required
-                                className="w-full border-b border-stroke bg-transparent pb-3.5 focus:border-waterloo focus-visible:outline-hidden dark:border-strokedark dark:focus:border-manatee"
-                            />
-                            <input
-                                type="date"
-                                name="eventDate"
-                                value={formData.eventDate}
-                                onChange={handleChange}
-                                required
-                                className="w-full border-b border-stroke bg-transparent pb-3.5 focus:border-waterloo focus-visible:outline-hidden dark:border-strokedark dark:focus:border-manatee"
-                            />
+
+                            <div>
+                                <input
+                                    type="text"
+                                    placeholder="Event Title"
+                                    name="title"
+                                    value={formData.title}
+                                    onChange={handleChange}
+                                    className="w-full focus-visible:outline-hidden border-b border-stroke bg-transparent pb-3.5 focus:border-waterloo dark:border-strokedark dark:focus:border-manatee"
+                                />
+                                {validationErrors.title && <p className="text-sm text-red-500">{validationErrors.title}</p>}
+                            </div>
+
+                            <div>
+                                <input
+                                    type="text"
+                                    placeholder="Location"
+                                    name="location"
+                                    value={formData.location}
+                                    onChange={handleChange}
+                                    className="w-full focus-visible:outline-hidden border-b border-stroke bg-transparent pb-3.5 focus:border-waterloo dark:border-strokedark dark:focus:border-manatee"
+                                />
+                                {validationErrors.location && <p className="text-sm text-red-500">{validationErrors.location}</p>}
+                            </div>
+
+                            <div>
+                                <input
+                                    type="date"
+                                    name="eventDate"
+                                    value={formData.eventDate}
+                                    onChange={handleChange}
+                                    className="w-full focus-visible:outline-hidden border-b border-stroke bg-transparent pb-3.5 focus:border-waterloo dark:border-strokedark dark:focus:border-manatee"
+                                />
+                                {validationErrors.eventDate && <p className="text-sm text-red-500">{validationErrors.eventDate}</p>}
+                            </div>
+
                             <input
                                 type="time"
                                 name="eventTime"
                                 placeholder="Time"
                                 value={formData.eventTime}
                                 onChange={handleChange}
-                                className="w-full border-b border-stroke bg-transparent pb-3.5 focus:border-waterloo focus-visible:outline-none dark:border-strokedark dark:focus:border-manatee"
+                                className="w-full focus-visible:outline-hidden border-b border-stroke bg-transparent pb-3.5 focus:border-waterloo dark:border-strokedark dark:focus:border-manatee"
                             />
 
-                            <textarea
-                                name="description"
-                                placeholder="Event Description"
-                                required
-                                value={formData.description}
-                                onChange={handleChange}
-                                rows={4}
-                                className="w-full border-b border-stroke bg-transparent focus:border-waterloo focus-visible:outline-hidden dark:border-strokedark dark:focus:border-manatee"
-                            ></textarea>
+                            <div>
+                                <textarea
+                                    name="description"
+                                    placeholder="Event Description"
+                                    value={formData.description}
+                                    onChange={handleChange}
+                                    rows={4}
+                                    className="w-full focus-visible:outline-hidden border-b border-stroke bg-transparent focus:border-waterloo dark:border-strokedark dark:focus:border-manatee"
+                                ></textarea>
+                                {validationErrors.description && <p className="text-sm text-red-500">{validationErrors.description}</p>}
+                            </div>
 
                             <div className="mb-7.5 flex flex-col gap-7.5 lg:flex-row lg:justify-between lg:gap-14">
-                                <input
-                                    type="text"
-                                    placeholder="Your Full Name"
-                                    name="organizerName"
-                                    value={formData.organizerName}
-                                    onChange={handleChange}
-                                    required
-                                    className="w-full border-b focus-visible:outline-hidden  border-stroke bg-transparent pb-3.5 focus:border-waterloo dark:border-strokedark dark:focus:border-manatee lg:w-1/2"
-                                />
+                                <div className="w-full lg:w-1/2">
+                                    <input
+                                        type="text"
+                                        placeholder="Your Full Name"
+                                        name="organizerName"
+                                        value={formData.organizerName}
+                                        onChange={handleChange}
+                                        className="w-full focus-visible:outline-hidden border-b border-stroke bg-transparent pb-3.5 focus:border-waterloo dark:border-strokedark dark:focus:border-manatee"
+                                    />
+                                    {validationErrors.organizerName && <p className="text-sm text-red-500">{validationErrors.organizerName}</p>}
+                                </div>
 
-
-
-                                <input
-                                    name="organizerEmail"
-                                    type="email"
-                                    required
-                                    value={formData.organizerEmail}
-                                    onChange={handleChange}
-                                    placeholder="Email address"
-                                    className="w-full focus-visible:outline-hidden border-b border-stroke bg-transparent pb-3.5 focus:border-waterloo dark:border-strokedark dark:focus:border-manatee lg:w-1/2"
-                                />
+                                <div className="w-full lg:w-1/2">
+                                    <input
+                                        name="organizerEmail"
+                                        type="email"
+                                        value={formData.organizerEmail}
+                                        onChange={handleChange}
+                                        placeholder="Email address"
+                                        className="w-full focus-visible:outline-hidden border-b border-stroke bg-transparent pb-3.5 focus:border-waterloo dark:border-strokedark dark:focus:border-manatee"
+                                    />
+                                    {validationErrors.organizerEmail && <p className="text-sm text-red-500">{validationErrors.organizerEmail}</p>}
+                                </div>
                             </div>
+
                             <input
                                 type="text"
                                 name="website"
                                 placeholder="Website"
                                 value={formData.website || ""}
                                 onChange={handleChange}
-                                className="w-full border-b border-stroke bg-transparent pb-3.5 focus:border-waterloo focus-visible:outline-hidden dark:border-strokedark dark:focus:border-manatee"
+                                className="w-full focus-visible:outline-hidden border-b border-stroke bg-transparent pb-3.5 focus:border-waterloo dark:border-strokedark dark:focus:border-manatee"
                                 autoComplete="off"
                             />
+
                             <button
                                 type="submit"
                                 disabled={loading}
@@ -179,8 +215,6 @@ export default function EventFormPage() {
                             </div>
                         )}
                     </div>
-
-
                 </div>
             </AnimatedSection>
         </PageLayout>

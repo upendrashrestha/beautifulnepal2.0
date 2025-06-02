@@ -1,24 +1,17 @@
 // lib/sendEmail.ts
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 
 interface EmailOptions {
-  to: string;
   subject: string;
   text: string;
 }
 
-export async function sendEmail({ to, subject, text }: EmailOptions) {
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.NEXT_PUBLIC_NOTIFY_EMAIL,
-      pass: process.env.NEXT_PUBLIC_NOTIFY_EMAIL_PASS,
-    },
-  });
+export async function sendEmail({subject, text }: EmailOptions) {
+  const resend = new Resend(process.env.NEXT_PUBLIC_RESEND_API_KEY);
 
-  await transporter.sendMail({
-    from: `"Notifier" <${process.env.NOTIFY_EMAIL}>`,
-    to,
+  await resend.emails.send({
+    from: `"Notifier" <${process.env.NEXT_PUBLIC_RESEND_EMAIL}>`,
+    to: `${process.env.NEXT_PUBLIC_NOTIFY_EMAIL}`,
     subject,
     text,
   });

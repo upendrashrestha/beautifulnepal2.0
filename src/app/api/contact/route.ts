@@ -28,7 +28,6 @@ export async function POST(req: Request) {
     await client.create(doc);
     // Email notification
     await sendEmail({
-      to: process.env.NOTIFY_EMAIL!,
       subject: "New Message",
       text: `A new message by "${name}".`,
     });

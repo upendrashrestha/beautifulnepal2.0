@@ -53,7 +53,6 @@ export async function POST(req: Request) {
 
     // Email notification
     await sendEmail({
-      to: process.env.NOTIFY_EMAIL!,
       subject: "New Event Submitted",
       text: `A new event titled "${title}" was submitted for review.`,
     });

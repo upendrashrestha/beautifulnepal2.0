@@ -5,6 +5,7 @@ import {
   fetchAuthors,
   fetchCompanyAbout,
   fetchCompanyTerms,
+  fetchCommunityEvents,
 } from "@/sanity/lib/fetch";
 import { MetadataRoute } from "next";
 
@@ -24,6 +25,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const authors = await fetchAuthors();
   const companyAbout = await fetchCompanyAbout();
   const companyTerms = await fetchCompanyTerms();
+  const communityEvents = await fetchCommunityEvents();
 
   const blogEntries: MetadataRoute.Sitemap = blogs.map((blog) => ({
     url: `${baseUrl}/blogs/${blog.slug.current}`,
@@ -52,6 +54,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
     changeFrequency: "yearly",
   }));
+
+  const communityEventEntries: MetadataRoute.Sitemap = communityEvents
+    .filter((e) => e && e.slug && e.slug.current)
+    .map((e) => ({
+      url: `${baseUrl}/whats-happening/${e.slug?.current}`,
+      lastModified: formatDate(e.eventDate) || new Date().toISOString(),
+      priority: 0.5,
+      changeFrequency: "daily",
+    }));
 
   const companyEntries: MetadataRoute.Sitemap = [
     {
@@ -87,5 +98,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...guideEntries,
     ...authorEntries,
     ...companyEntries,
+    ...communityEventEntries,
   ];
 }

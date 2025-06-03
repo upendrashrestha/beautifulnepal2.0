@@ -99,29 +99,31 @@ function PostView(post: Post) {
                         <SocialShare />
                     </aside>
 
-                    {/* Main Body */}
-                    {post.body && (
-                        <section className="xl:col-span-3 xl:row-span-2 xl:pb-0 pt-6 xl:pt-0">
-                            {/* Main Image */}
-                            {post.mainImage?.asset?._ref && (
-                                <div className="mb-8">
-                                    <Image
-                                        src={urlFor(post.mainImage.asset._ref).url()}
-                                        alt={post.mainImage?.asset?.alt || post.title}
-                                        width={1000}
-                                        height={500}
-                                        className="rounded-lg object-cover w-full p-12"
-                                    />
-                                </div>
-                            )}
 
-                            {/* PortableText body */}
+                    <section className="xl:col-span-3 xl:row-span-2 xl:pb-0 pt-6 xl:pt-0">
+                        {/* Main Image */}
+                        {post.mainImage?.asset?._ref && (
+                            <div className="mb-8">
+                                <Image
+                                    src={urlFor(post.mainImage.asset._ref).url()}
+                                    alt={post.mainImage?.asset?.alt || post.title}
+                                    width={1000}
+                                    height={500}
+                                    className="rounded-lg object-cover w-full p-12"
+                                />
+                            </div>
+                        )}
+                        {/* Main Body */}
+                        {post.body &&
                             <div className="prose dark:prose-invert max-w-none">
                                 <BlockContent value={post.body} />
                             </div>
-                        </section>
-                    )}
+                        }
+                    </section>
 
+                    {post.affiliateLinks?.map(l => (
+                        <Link key={l.url} href={l.url}>{l.title}</Link>
+                    ))}
                     {/* Footer */}
                     <footer className="pt-6 xl:pt-10 xl:col-start-1 xl:row-start-2">
                         <Link

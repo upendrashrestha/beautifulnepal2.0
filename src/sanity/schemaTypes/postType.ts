@@ -67,6 +67,17 @@ export const postType = defineType({
       name: "featured",
       type: "boolean",
     }),
+    defineField({
+      name: "affiliateLinks",
+      title: "Affiliate Links",
+      type: "array",
+      of: [
+        defineArrayMember({
+          type: "reference",
+          to: [{ type: "affiliateLink" }],
+        }),
+      ],
+    }),
   ],
   preview: {
     select: {

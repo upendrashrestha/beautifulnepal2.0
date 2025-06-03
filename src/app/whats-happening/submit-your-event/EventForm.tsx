@@ -15,6 +15,7 @@ export default function EventFormPage() {
         organizerName: "",
         organizerEmail: "",
         website: "",
+        createdAt:""
     });
     const [status, setStatus] = useState("");
     const [loading, setLoading] = useState(false);
@@ -71,6 +72,7 @@ export default function EventFormPage() {
                 organizerName: "",
                 organizerEmail: "",
                 website: "",
+                createdAt: ""
             });
             setStatus("success");
         } catch (err) {

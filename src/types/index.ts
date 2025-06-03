@@ -42,6 +42,7 @@ export type Post = {
   categories?: Category[];
   destination?: Destination;
   featured: boolean;
+  affiliateLinks?: AffiliateLink[];
 };
 
 export interface Guide {
@@ -167,4 +168,5 @@ export interface CommunityEvent {
   website?: string;
   slug?: Slug;
   country?: string;
+  createdAt: string;
 }

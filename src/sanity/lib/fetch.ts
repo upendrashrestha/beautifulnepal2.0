@@ -44,7 +44,7 @@ export function fetchGuides(): Promise<Guide[]> {
 export function fetchCommunityEvents(): Promise<CommunityEvent[]> {
   return withCache("events", () =>
     client.fetch(
-      `*[_type == "event"]{_id, title, slug, location, eventDate, eventTime}`
+      `*[_type == "event"]{_id, title, slug, location, eventDate, eventTime, createdAt}`
     )
   );
 }
@@ -112,9 +112,11 @@ export function fetchCategories(): Promise<Category[]> {
 }
 
 export function fetchPostBySlug(slug: string): Promise<Post> {
-  return withCache(`post:${slug}`, () =>
-    client.fetch(
-      `*[_type == "post" && slug.current == $slug][0]{
+  return withCache(
+    `post:${slug}`,
+    () =>
+      client.fetch(
+        `*[_type == "post" && slug.current == $slug][0]{
         title,
         body,
         mainImage,
@@ -126,10 +128,16 @@ export function fetchPostBySlug(slug: string): Promise<Post> {
           name,
           slug,
           image
-        }
+        },
+        affiliateLinks[]->{
+        title,
+        url,
+        vendor
+        },
       }`,
-      { slug }
-    )
+        { slug }
+      ),
+    true
   );
 }
 

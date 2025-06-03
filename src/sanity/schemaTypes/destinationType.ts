@@ -1,4 +1,4 @@
-import { defineField, defineType } from "sanity";
+import { defineArrayMember, defineField, defineType } from "sanity";
 
 export const destinationType = defineType({
   name: "destination",
@@ -37,7 +37,12 @@ export const destinationType = defineType({
       name: "affiliateLinks",
       title: "Affiliate Links",
       type: "array",
-      of: [{ type: "reference", to: [{ type: "affiliateLink" }] }],
+      of: [
+        defineArrayMember({
+          type: "reference",
+          to: [{ type: "affiliateLink" }],
+        }),
+      ],
     }),
     defineField({
       name: "publishedAt",

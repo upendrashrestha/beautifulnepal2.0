@@ -59,7 +59,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .filter((e) => e && e.slug && e.slug.current)
     .map((e) => ({
       url: `${baseUrl}/whats-happening/${e.slug?.current}`,
-      lastModified: formatDate(e.eventDate) || new Date().toISOString(),
+      lastModified: formatDate(e.createdAt) || new Date().toISOString(),
       priority: 0.5,
       changeFrequency: "daily",
     }));

@@ -32,7 +32,7 @@ function EventPageClient({ event }: EventPageClientProps) {
     if (!event) return null;
 
     return (
-        <PageLayout title="">
+        <PageLayout>
             <article className="max-w-5xl mx-auto px-4 py-8">
                 <div className="flex flex-col gap-4 mb-8">
                     <div className="text-center space-y-4">

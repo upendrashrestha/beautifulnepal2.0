@@ -32,7 +32,7 @@ export default async function AuthorPage(props: PageProps) {
     const author = await fetchAuthorBySlug(slug);
 
     return (
-        <PageLayout title={`Author - ${author.name}`}>
+        <PageLayout title={`Author Detail`}>
             <div className="max-w-4xl mx-auto px-4 py-10">
                 {/* Profile Section */}
                 <div className="bg-white rounded-2xl shadow-md p-6 flex flex-col sm:flex-row items-center gap-6 mb-10">

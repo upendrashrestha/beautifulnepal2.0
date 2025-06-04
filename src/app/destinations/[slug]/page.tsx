@@ -37,7 +37,7 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
     if (!destination) return notFound();
 
     return (
-        <PageLayout title={`Destination`}>
+        <PageLayout>
             <article className="max-w-5xl mx-auto px-4 sm:px-6 py-8 space-y-6">
 
 

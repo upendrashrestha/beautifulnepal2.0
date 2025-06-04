@@ -35,7 +35,7 @@ export default async function GuidePage(props: { params: Promise<{ slug: string 
     const guide = await fetchGuideBySlug(slug);
     if (!guide) return notFound();
 
-    return (<PageLayout title={`Guide - ${guide.title}`}>
+    return (<PageLayout title={`${guide.title}`}>
         <article className="max-w-5xl mx-auto">
             <div className="mb-4">
                 <SocialShare />

@@ -2,10 +2,11 @@
 
 import PageTitle from '@/components/PageTitle';
 import BackButton from '../ui/backButton';
+import HomeButton from '../ui/homeButton';
 
 
 type PageLayoutProps = {
-    title: React.ReactNode;
+    title?: React.ReactNode;
     children: React.ReactNode;
     className?: string;
 };
@@ -17,16 +18,16 @@ export default function PageLayout({
 }: PageLayoutProps) {
 
     return (
-        <div className={`${className}`}>
-            <div className="flex items-center">
-                <BackButton className="mr-4" />
-                <PageTitle>{title}</PageTitle>
+        <div className={className}>
+            <div className="m-5 flex flex-row justify-between z-50 ">
+                <HomeButton />
+                <BackButton />
             </div>
-
-            <main className="mx-auto p-6 dark:bg-gray-900 dark:text-white">
+            {title && <PageTitle className="w-full flex items-center justify-center mb-6">{title}</PageTitle>}
+            <main className="mx-auto dark:bg-gray-900 dark:text-white">
                 {children}
             </main>
-
         </div>
+
     )
 }

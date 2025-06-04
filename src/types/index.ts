@@ -154,6 +154,7 @@ export type SearchQueryResult = {
   destinations: Destination[];
   guides: Guide[];
   categories: Category[];
+  events: CommunityEvent[];
 };
 
 export interface CommunityEvent {
@@ -169,4 +170,5 @@ export interface CommunityEvent {
   slug?: Slug;
   country?: string;
   createdAt: string;
+  type?: string;
 }

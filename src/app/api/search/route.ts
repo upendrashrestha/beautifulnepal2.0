@@ -6,7 +6,13 @@ export async function GET(req: Request) {
   const q = searchParams.get("q");
 
   if (!q || q.trim() === "") {
-    return NextResponse.json({ posts: [], destinations: [], categories: [] });
+    return NextResponse.json({
+      posts: [],
+      destinations: [],
+      categories: [],
+      guides: [],
+      events: [],
+    });
   }
 
   const query = `
@@ -34,6 +40,12 @@ export async function GET(req: Request) {
         title,
         slug,
         "type": "categories"
+      },
+      "events":*[_type == "event" && title match $q || location match $q || organizerName match $q || eventDate match $q]{
+      _id,
+      title,
+      slug,
+      "type":"whats-happening"
       }
     }
   `;

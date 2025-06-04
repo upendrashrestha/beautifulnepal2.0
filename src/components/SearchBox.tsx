@@ -40,7 +40,7 @@ export default function SearchBox() {
                     </span>
                     <input
                         type="text"
-                        placeholder="Search blog, destination or guides..."
+                        placeholder="Search blog, destination, guides or events..."
                         value={term}
                         onChange={(e) => setTerm(e.target.value)}
                         className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
@@ -61,15 +61,15 @@ export default function SearchBox() {
 
             {results && (
                 <ul className="space-y-3 mt-4">
-                    {[...results.posts, ...results.guides, ...results.destinations, ...results.categories].map((item) => (
+                    {[...results.posts, ...results.guides, ...results.destinations, ...results.categories, ...results.events].map((item) => (
                         <li key={item._id} className="flex items-center gap-2 text-sm">
                             <Link
-                                href={`/${item.type}/${item.slug.current}`}
+                                href={`/${item.type}/${item.slug?.current}`}
                                 className="text-blue-600 dark:text-blue-400 hover:underline font-medium"
                             >
                                 {"title" in item ? item.title : item.name}
                             </Link>
-                            <span className="text-gray-500 dark:text-gray-400">({item.type})</span>
+                            <span className="text-gray-500 dark:text-gray-400">({item.type === "whats-happening" ? "events" : item.type})</span>
                         </li>
                     ))}
                 </ul>

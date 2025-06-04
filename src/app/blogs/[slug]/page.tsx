@@ -6,10 +6,10 @@ import PageTitle from "@/components/PageTitle";
 import SectionContainer from "@/components/SectionContainer";
 import SocialShare from "@/components/SocialShare";
 import { urlFor } from "@/sanity/lib/image";
-import Link from "next/link";
 import Image from '@/components/Image';
 import { Post } from "@/types";
 import BlockContent from "@/components/ui/blockContent";
+import Link from "@/components/Link";
 
 export const dynamic = "force-dynamic"; // or use generateStaticParams
 
@@ -71,7 +71,7 @@ function PostView(post: Post) {
                 </header>
 
                 {/* Content Grid */}
-                <div className="grid grid-cols-1 xl:grid-cols-4 xl:gap-x-6 divide-y xl:divide-y-0 divide-gray-200 dark:divide-gray-700 pb-8">
+                <div className="grid grid-cols-1 xl:grid-cols-4 xl:gap-x-6 divide-y xl:divide-y-0 divide-gray-200 dark:divide-gray-700 py-8">
                     {/* Sidebar */}
                     <aside className="p-4 xl:border-b xl:border-gray-200 xl:dark:border-gray-700">
                         <div className="flex items-center gap-4 mb-6">
@@ -97,6 +97,15 @@ function PostView(post: Post) {
                             </div>
                         </div>
                         <SocialShare />
+                        <div className="pt-6 xl:pt-10 xl:col-start-1 xl:row-start-2">
+                            <Link
+                                href="/blogs"
+                                className="text-primary-600 hover:underline text-sm font-medium"
+                                aria-label="Back to the blogs"
+                            >
+                                ← Back to the blogs
+                            </Link>
+                        </div>
                     </aside>
 
 
@@ -109,7 +118,9 @@ function PostView(post: Post) {
                                     alt={post.mainImage?.asset?.alt || post.title}
                                     width={1000}
                                     height={500}
-                                    className="rounded-lg object-cover w-full p-12"
+                                    priority
+                                    loading="eager"
+                                    className="rounded-lg object-cover w-full"
                                 />
                             </div>
                         )}
@@ -121,20 +132,31 @@ function PostView(post: Post) {
                         }
                     </section>
 
-                    {post.affiliateLinks?.map(l => (
-                        <Link key={l.url} href={l.url}>{l.title}</Link>
-                    ))}
-                    {/* Footer */}
-                    <footer className="pt-6 xl:pt-10 xl:col-start-1 xl:row-start-2">
-                        <Link
-                            href="/blogs"
-                            className="text-primary-600 hover:underline text-sm font-medium"
-                            aria-label="Back to the blogs"
-                        >
-                            ← Back to the blogs
-                        </Link>
-                    </footer>
+
+
                 </div>
+                {post.affiliateLinks && post.affiliateLinks.length > 0 &&
+                    <div className="p-4">
+                        <h2 className="mb-4 text-black text-lg font-semibold">Useful Links</h2>
+
+                        <ul className="space-y-2">
+                            {post.affiliateLinks.map(link => (
+                                <li key={link.url}>
+                                    <span className="font-medium">{link.vendor}:</span>{" "}
+                                    <Link
+                                        href={link.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-blue-600 hover:underline"
+                                    >
+                                        {link.title}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+
+                    </div>}
+
             </article>
         </SectionContainer>
     );

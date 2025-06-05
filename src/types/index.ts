@@ -116,6 +116,7 @@ export interface BnMetadata {
   keywords?: string;
   author?: string;
   publishedAt?: string;
+  
 }
 
 export interface Company {

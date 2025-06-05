@@ -8,15 +8,19 @@ import Image from "next/image";
 import PageLayout from "@/components/layouts/PageLayout";
 import { Post } from "@/types";
 import AnimatedSection from "@/components/AnimatedSection";
-export async function generateMetadata(
-    props: {
-        params: Promise<{ slug: string }>;
-    }
-): Promise<Metadata> {
-    const params = await props.params;
-    return { title: params.slug };
-}
+import { generateMetadataHelper } from "@/utils/generateMetadataHelper";
 
+
+export async function generateMetadata(props: {
+    params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+
+    return generateMetadataHelper({
+        title: `Category|${(await props.params).slug}`,
+        description: "Explore stories and insights from Nepal—organized by the topics you care about most. From adventure travel and culture to food and local tips, find the blogs that match your interests.",
+        keywords: "blog, more, info, expore, stories, insights, topics, food, local tips, blogs, interest"
+    });
+}
 
 export default async function CategoriesPage(props: { params: Promise<{ slug: string }> }) {
     const params = await props.params;

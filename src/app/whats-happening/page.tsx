@@ -6,7 +6,8 @@ import WhatsHappeningClient from './whatsHappeningClient';
 export async function generateMetadata(): Promise<Metadata> {
     return generateMetadataHelper({
         title: "What's happening in Nepal",
-        description: "Explore what’s happening in Nepal — from vibrant festivals to local events, adventures, and must-see moments."
+        description: "Explore what’s happening in Nepal — from vibrant festivals to local events, adventures, and must-see moments.",
+        keywords: "events, fesitvals, adventures, must-see, moments, vibrant, color, holidays"
     });
 }
 

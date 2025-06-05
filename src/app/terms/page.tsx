@@ -8,7 +8,8 @@ export async function generateMetadata(): Promise<Metadata> {
 
     return generateMetadataHelper({
         title: "Terms And Conditions",
-        description: ""
+        description: "",
+        keywords: "terms and conditions, travel nepal"
     });
 }
 

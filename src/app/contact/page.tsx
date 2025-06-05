@@ -3,6 +3,17 @@
 import { useState } from "react";
 import PageLayout from "@/components/layouts/PageLayout";
 import AnimatedSection from "@/components/AnimatedSection";
+import { Metadata } from "next";
+import { generateMetadataHelper } from "@/utils/generateMetadataHelper";
+
+export async function generateMetadata(): Promise<Metadata> {
+
+    return generateMetadataHelper({
+        title: "Contact",
+        description: "",
+        keywords: "contact us, address, location, office"
+    });
+}
 
 export default function ContactPage() {
     const [formData, setFormData] = useState({

@@ -27,6 +27,7 @@ export async function generateMetadata(
         openGraphImageUrl: destination.heroImage
             ? urlFor(destination.heroImage.asset._ref).url()
             : undefined,
+        keywords: "destination, explore, location, city, village, local, experience"
     });
 }
 

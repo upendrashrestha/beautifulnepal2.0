@@ -28,7 +28,7 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
         title: post.title,
         description: post.excerpt || "",
         keywords: post.categories?.map(c => c.title).join(", "),
-        openGraphImageUrl: post.imageURL ?? undefined,
+        openGraphImageUrl: post.mainImage ? urlFor(post.mainImage.asset._ref).url() ?? undefined : undefined,
         author: post.author?.name,
     });
 }

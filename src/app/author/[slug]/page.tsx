@@ -20,7 +20,7 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
     return generateMetadataHelper({
         title: author.name,
         description: author.bio ? author.bio[0].children[0].text : "",
-        openGraphImageUrl: author.image?.asset.url ?? undefined,
+        openGraphImageUrl: author.image && urlFor(author.image.asset._ref).url(),
         author: author.name
     });
 }

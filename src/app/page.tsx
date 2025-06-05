@@ -1,5 +1,3 @@
-"use client";
-
 import AnimatedSection from "@/components/AnimatedSection";
 import FeaturedDestination from "@/components/FeaturedDestinations";
 import Link from "@/components/Link";

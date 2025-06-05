@@ -50,11 +50,12 @@ export default function SearchBox() {
                 <button
                     type="submit"
                     disabled={loading}
-                    className="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 flex items-center justify-center"
+                    className="px-5 py-2 sm:py-0 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 flex items-center justify-center"
                 >
                     {loading ? <FaCircle className="animate-pulse text-sm" /> : <FaSearch className="text-sm" />}
-                    <span className="ml-2 hidden sm:inline">Search</span>
+                    <span className="ml-2 inline">Search</span>
                 </button>
+
             </form>
 
             {loading && <p className="text-gray-500 dark:text-gray-400">Searching...</p>}

@@ -63,5 +63,27 @@ export const eventType = defineType({
       readOnly: true,
       initialValue: () => new Date().toISOString(),
     }),
+    defineField({
+      name: "image",
+      type: "image",
+      title: "Main Image",
+      options: {
+        hotspot: true,
+      },
+      fields: [
+        defineField({
+          name: "alt",
+          type: "string",
+          title: "Alternative text",
+        }),
+      ],
+    }),
   ],
+  preview: {
+    select: {
+      title: "title",
+      eventBy: "organizerName",
+      media: "image",
+    },
+  },
 });

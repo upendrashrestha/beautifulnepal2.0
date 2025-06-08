@@ -116,7 +116,6 @@ export interface BnMetadata {
   keywords?: string;
   author?: string;
   publishedAt?: string;
-  
 }
 
 export interface Company {
@@ -172,4 +171,11 @@ export interface CommunityEvent {
   country?: string;
   createdAt: string;
   type?: string;
+  image?: {
+    asset: {
+      alt: string;
+      _ref: string;
+    };
+    alt?: string;
+  };
 }

@@ -5,8 +5,11 @@ import AnimatedSection from '@/components/AnimatedSection';
 import PageLayout from '@/components/layouts/PageLayout';
 import Link from '@/components/Link';
 import { Card, CardContent } from '@/components/ui/card';
+import { urlFor } from '@/sanity/lib/image';
 import { CommunityEvent } from '@/types';
 import { FaRegCalendarAlt, FaRegClock, FaMapMarkerAlt } from 'react-icons/fa';
+
+import Image from "next/image";
 
 type WhatsHappeningClientProps = {
     events: CommunityEvent[];
@@ -42,6 +45,16 @@ export default function WhatsHappeningClient({ events }: WhatsHappeningClientPro
                                     className="group transition-transform hover:scale-[1.02]"
                                 >
                                     <Card className="h-full rounded-xl overflow-hidden border border-gray-100 shadow-md bg-white hover:shadow-lg transition-all duration-300">
+                                        {event.image &&
+                                            <div className="relative h-48 w-full">
+                                                <Image
+                                                    src={event.image?.asset._ref ? urlFor(event.image.asset._ref).url() : ""}
+                                                    alt={event.image?.asset?.alt || event.title}
+                                                    layout="fill"
+                                                    objectFit="cover"
+                                                />
+                                            </div>
+                                        }
                                         <CardContent className="p-6 space-y-4">
                                             <h2 className="text-xl font-bold text-gray-800 group-hover:text-primary">
                                                 {event.title}

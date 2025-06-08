@@ -42,18 +42,26 @@ export function fetchGuides(): Promise<Guide[]> {
 }
 
 export function fetchCommunityEvents(): Promise<CommunityEvent[]> {
-  return withCache("events", () =>
-    client.fetch(
-      `*[_type == "event"]{_id, title, slug, location, eventDate, eventTime, createdAt}`
-    )
+  return withCache(
+    "events",
+    () =>
+      client.fetch(
+        `*[_type == "event"]{_id, title, slug, location, eventDate, eventTime, createdAt, image}`
+      ),
+    true
   );
 }
 export function fetchCommunityEventBySlug(
   slug: string
 ): Promise<CommunityEvent> {
   {
-    return withCache(`event:${slug}`, () =>
-      client.fetch(`*[_type == "event" && slug.current == $slug][0]`, { slug })
+    return withCache(
+      `event:${slug}`,
+      () =>
+        client.fetch(`*[_type == "event" && slug.current == $slug][0]`, {
+          slug,
+        }),
+      true
     );
   }
 }
@@ -112,11 +120,9 @@ export function fetchCategories(): Promise<Category[]> {
 }
 
 export function fetchPostBySlug(slug: string): Promise<Post> {
-  return withCache(
-    `post:${slug}`,
-    () =>
-      client.fetch(
-        `*[_type == "post" && slug.current == $slug][0]{
+  return withCache(`post:${slug}`, () =>
+    client.fetch(
+      `*[_type == "post" && slug.current == $slug][0]{
         title,
         body,
         mainImage,
@@ -135,9 +141,8 @@ export function fetchPostBySlug(slug: string): Promise<Post> {
         vendor
         },
       }`,
-        { slug }
-      ),
-    true
+      { slug }
+    )
   );
 }
 

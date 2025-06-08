@@ -15,12 +15,13 @@ export default function EventFormPage() {
         organizerName: "",
         organizerEmail: "",
         website: "",
-        createdAt:""
+        createdAt: "",
+        image: undefined,
     });
     const [status, setStatus] = useState("");
     const [loading, setLoading] = useState(false);
     const [validationErrors, setValidationErrors] = useState<{ [key: string]: string }>({});
-
+    // const [imageFile, setImageFile] = useState<File | null>(null);
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
@@ -46,6 +47,14 @@ export default function EventFormPage() {
         return Object.keys(errors).length === 0;
     };
 
+    // const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     if (e.target.files && e.target.files[0]) {
+    //         setImageFile(e.target.files[0]);
+    //     } else {
+    //         setImageFile(null);
+    //     }
+    // };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setStatus("");
@@ -54,6 +63,35 @@ export default function EventFormPage() {
 
         setLoading(true);
         try {
+
+            // const imageUrl = null;
+            // const imageAlt = formData.image?.alt || formData.title; // Use title as default alt if not provided
+
+            // if (imageFile) {
+            //     const imageFormData = new FormData();
+            //     imageFormData.append('file', imageFile);
+
+            //     const uploadRes = await fetch('/api/upload-image', {
+            //         method: 'POST',
+            //         body: imageFormData,
+            //     });
+
+            //     if (!uploadRes.ok) {
+            //         throw new Error('Failed to upload image.');
+            //     }
+
+            //     const imageData = await uploadRes.json();
+            //     imageUrl = imageData.imageUrl; // This will be the Sanity asset ID or URL
+
+            //     // Update formData with the Sanity image asset reference
+            //     formData.image = {
+            //         asset: {
+            //             _ref: imageUrl,
+            //         },
+            //         alt: imageAlt
+            //     };
+            // }
+
             const res = await fetch("/api/whats-happening", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -104,7 +142,16 @@ export default function EventFormPage() {
                                 value={formData.country}
                                 onChange={handleChange}
                             />
-
+                            {/* <div>
+                                <input
+                                    type="file"
+                                    id="image"
+                                    name="image"
+                                    accept="image/*"
+                                    onChange={handleImageChange}
+                                    className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+                                />
+                            </div> */}
                             <div>
                                 <input
                                     type="text"

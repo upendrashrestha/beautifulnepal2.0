@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Script from "next/script";
 import ScrollToTop from "@/components/ui/scrollToTop";
+import PageProgressBar from "@/components/PageProgressBar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -47,7 +48,9 @@ export default function RootLayout({
       </Script>
 
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <PageProgressBar />
         <Header />
+
         <div
           className="
     max-w-7xl

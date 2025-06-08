@@ -7,6 +7,9 @@ import PageLayout from "@/components/layouts/PageLayout";
 import { fetchCommunityEventBySlug } from "@/sanity/lib/fetch";
 import PageTitle from "@/components/PageTitle";
 import { FaRegCalendarAlt, FaRegClock, FaMapMarkerAlt, FaGlobe } from "react-icons/fa";
+import { urlFor } from "@/sanity/lib/image";
+
+import Image from "next/image";
 
 export const dynamic = "force-dynamic";
 
@@ -19,7 +22,11 @@ export async function generateMetadata(
     return generateMetadataHelper({
         title: event.title,
         description: event.description || "",
-        author: event.organizerName
+        author: event.organizerName,
+        openGraphImageUrl: event.image
+            ? urlFor(event.image.asset._ref).url()
+            : undefined,
+        keywords: "event, happening now, location, city, culture, festivals"
     });
 }
 
@@ -37,7 +44,17 @@ function EventPageClient({ event }: EventPageClientProps) {
                 <div className="flex flex-col gap-4 mb-8">
                     <div className="text-center space-y-4">
                         <PageTitle className="text-3xl font-bold text-gray-800">{event.title}</PageTitle>
-
+                        {event.image && (
+                            <div className="relative w-full h-64 sm:h-96 rounded-lg overflow-hidden shadow-sm">
+                                <Image
+                                    src={urlFor(event.image.asset._ref).url()}
+                                    alt={event.title}
+                                    fill
+                                    priority
+                                    className="object-cover"
+                                />
+                            </div>
+                        )}
                         <div className="flex flex-wrap justify-center gap-6 text-gray-600 text-sm">
                             <div className="flex items-center gap-2">
                                 <FaRegCalendarAlt className="text-orange-500" />
@@ -64,8 +81,8 @@ function EventPageClient({ event }: EventPageClientProps) {
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-6 mb-8">
-                    <div className="bg-gray-50 p-6 rounded-lg shadow-sm">
-                        <h3 className="font-semibold text-gray-700 mb-2">Organizer</h3>
+                    <div className="bg-gray-50 p-6 rounded-lg">
+                        <h3 className="font-bold text-gray-700 mb-2">Organizer</h3>
                         <p><span className="font-medium text-gray-600">Name:</span> {event.organizerName}</p>
                         <p><span className="font-medium text-gray-600">Email:</span> {event.organizerEmail}</p>
                     </div>

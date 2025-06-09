@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import Script from "next/script";
 import ScrollToTop from "@/components/ui/scrollToTop";
 import PageProgressBar from "@/components/PageProgressBar";
+import { Suspense } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -48,7 +49,10 @@ export default function RootLayout({
       </Script>
 
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <PageProgressBar />
+
+        <Suspense fallback={<p className="text-gray-500">Loading...</p>}>
+          <PageProgressBar />
+        </Suspense>
         <Header />
 
         <div

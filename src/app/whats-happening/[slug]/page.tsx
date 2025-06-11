@@ -58,12 +58,16 @@ function EventPageClient({ event }: EventPageClientProps) {
                         <div className="flex flex-wrap justify-center gap-6 text-gray-600 text-sm">
                             <div className="flex items-center gap-2">
                                 <FaRegCalendarAlt className="text-orange-500" />
-                                <span>{event.eventDate}</span>
+                                <span>{event.eventDate}
+                                    {event.eventEndDate ? ` - ${event.eventEndDate}` : ""}
+                                </span>
                             </div>
                             {event.eventTime && (
                                 <div className="flex items-center gap-2">
                                     <FaRegClock className="text-blue-500" />
-                                    <span>{event.eventTime}</span>
+                                    <span>{event.eventTime}
+                                        {event.eventEndTime ? ` - ${event.eventEndTime}` : ""}
+                                    </span>
                                 </div>
                             )}
                             {event.location && (

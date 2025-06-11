@@ -11,6 +11,8 @@ export default function EventFormPage() {
         location: "",
         eventDate: "",
         eventTime: "",
+        eventEndDate: "",
+        eventEndTime: "",
         description: "",
         organizerName: "",
         organizerEmail: "",
@@ -106,6 +108,8 @@ export default function EventFormPage() {
                 location: "",
                 eventDate: "",
                 eventTime: "",
+                eventEndDate: "",
+                eventEndTime: "",
                 description: "",
                 organizerName: "",
                 organizerEmail: "",
@@ -176,26 +180,53 @@ export default function EventFormPage() {
                                 {validationErrors.location && <p className="text-sm text-red-500">{validationErrors.location}</p>}
                             </div>
 
-                            <div>
-                                <input
-                                    type="date"
-                                    name="eventDate"
-                                    value={formData.eventDate}
-                                    onChange={handleChange}
-                                    className="w-full focus-visible:outline-hidden border-b border-stroke bg-transparent pb-3.5 focus:border-waterloo dark:border-strokedark dark:focus:border-manatee"
-                                />
-                                {validationErrors.eventDate && <p className="text-sm text-red-500">{validationErrors.eventDate}</p>}
+
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label className="block text-left font-bold text-gray-700 dark:text-gray-200 mb-1">Event Start Date</label>
+                                    <input
+                                        type="date"
+                                        name="eventDate"
+                                        value={formData.eventDate}
+                                        onChange={handleChange}
+                                        className="w-full focus-visible:outline-hidden border-b border-stroke bg-transparent pb-3.5 focus:border-waterloo dark:border-strokedark dark:focus:border-manatee"
+                                    />
+                                    {validationErrors.eventDate && <p className="text-sm text-red-500 mt-1">{validationErrors.eventDate}</p>}
+                                </div>
+                                <div>
+                                    <label className="block font-bold text-gray-700 dark:text-gray-200 text-left mb-1">Event Start Time</label>
+                                    <input
+                                        type="time"
+                                        name="eventTime"
+                                        value={formData.eventTime}
+                                        onChange={handleChange}
+                                        className="w-full focus-visible:outline-hidden border-b border-stroke bg-transparent pb-3.5 focus:border-waterloo dark:border-strokedark dark:focus:border-manatee"
+                                    />
+                                </div>
                             </div>
-
-                            <input
-                                type="time"
-                                name="eventTime"
-                                placeholder="Time"
-                                value={formData.eventTime}
-                                onChange={handleChange}
-                                className="w-full focus-visible:outline-hidden border-b border-stroke bg-transparent pb-3.5 focus:border-waterloo dark:border-strokedark dark:focus:border-manatee"
-                            />
-
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label className="block text-left font-bold text-gray-700 dark:text-gray-200 mb-1">Event End Date</label>
+                                    <input
+                                        type="date"
+                                        name="eventEndDate"
+                                        value={formData.eventEndDate}
+                                        onChange={handleChange}
+                                        className="w-full focus-visible:outline-hidden border-b border-stroke bg-transparent pb-3.5 focus:border-waterloo dark:border-strokedark dark:focus:border-manatee"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block font-bold text-gray-700 dark:text-gray-200 text-left mb-1">Event End Time</label>
+                                    <input
+                                        type="time"
+                                        name="eventEndTime"
+                                        value={formData.eventEndTime}
+                                        onChange={handleChange}
+                                        className="w-full focus-visible:outline-hidden border-b border-stroke bg-transparent pb-3.5 focus:border-waterloo dark:border-strokedark dark:focus:border-manatee"
+                                    />
+                                </div>
+                            </div>
                             <div>
                                 <textarea
                                     name="description"
@@ -252,6 +283,7 @@ export default function EventFormPage() {
                                 {loading ? "Submitting..." : "Submit Event"}
                             </button>
                         </form>
+
 
                         {status === "success" && (
                             <div className="mt-6 rounded-md bg-green-100 text-green-700 px-4 py-3 text-sm">

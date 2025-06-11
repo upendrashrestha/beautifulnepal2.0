@@ -46,7 +46,7 @@ export function fetchCommunityEvents(): Promise<CommunityEvent[]> {
     "events",
     () =>
       client.fetch(
-        `*[_type == "event"]{_id, title, slug, location, eventDate, eventTime, createdAt, image}`
+        `*[_type == "event"]{_id, title, slug, location, eventDate, eventTime, eventEndDate, eventEndTime, createdAt, image}`
       ),
     true
   );

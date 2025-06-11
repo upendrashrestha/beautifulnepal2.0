@@ -163,6 +163,8 @@ export interface CommunityEvent {
   location: string;
   eventDate: string;
   eventTime: string;
+  eventEndDate: string;
+  eventEndTime: string;
   description: string;
   organizerName: string;
   organizerEmail: string;

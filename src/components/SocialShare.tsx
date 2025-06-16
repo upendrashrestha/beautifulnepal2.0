@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from 'react';
-import { FaFacebookF, FaLinkedin, FaShare, FaTwitter } from 'react-icons/fa';
+import { FaFacebookF, FaLinkedin, FaCopy, FaTwitter } from 'react-icons/fa';
 
 interface SocialShareProps {
     className?: string;
@@ -72,7 +72,7 @@ const SocialShare: React.FC<SocialShareProps> = ({ className = '' }) => {
                 onClick={() => shareToSocialMedia('copy')}
                 className="p-2 cursor-pointer rounded-full bg-teal-500 hover:bg-teal-600 text-white"
                 title="Copy URL">
-                <FaShare className="w-3 h-3" />
+                <FaCopy className="w-3 h-3" />
 
             </button>
 

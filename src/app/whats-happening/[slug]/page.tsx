@@ -5,7 +5,6 @@ import SocialShare from "@/components/SocialShare";
 import Link from "@/components/Link";
 import PageLayout from "@/components/layouts/PageLayout";
 import { fetchCommunityEventBySlug } from "@/sanity/lib/fetch";
-import PageTitle from "@/components/PageTitle";
 import { FaRegCalendarAlt, FaRegClock, FaMapMarkerAlt, FaGlobe } from "react-icons/fa";
 import { urlFor } from "@/sanity/lib/image";
 
@@ -39,11 +38,10 @@ function EventPageClient({ event }: EventPageClientProps) {
     if (!event) return null;
 
     return (
-        <PageLayout>
+        <PageLayout title={event.title}>
             <article className="max-w-5xl mx-auto px-4 py-8">
                 <div className="flex flex-col gap-4 mb-8">
                     <div className="text-center space-y-4">
-                        <PageTitle className="text-3xl font-bold text-gray-800">{event.title}</PageTitle>
                         {event.image && (
                             <div className="relative w-full h-64 sm:h-96 rounded-lg overflow-hidden shadow-sm">
                                 <Image

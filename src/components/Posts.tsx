@@ -35,7 +35,7 @@ export default function Posts({ featured, destinationSlug, title }: PostProps) {
     if (!posts.length) return null;
 
     return (
-        <section className="mb-10">
+        <section className="mb-10 mt-10">
             <AnimatedSection>
                 {title && <div className="mb-8 flex items-center gap-3">
                     <h2 className="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">

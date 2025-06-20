@@ -2,7 +2,6 @@ import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { fetchPostBySlug } from "@/sanity/lib/fetch";
 import { generateMetadataHelper } from "@/utils/generateMetadataHelper";
-import PageTitle from "@/components/PageTitle";
 import SectionContainer from "@/components/SectionContainer";
 import SocialShare from "@/components/SocialShare";
 import { urlFor } from "@/sanity/lib/image";
@@ -52,7 +51,7 @@ function PostView(post: Post) {
         : "Unknown date";
 
     return (
-        <PageLayout>
+        <PageLayout title={post.title}>
             <SectionContainer>
                 <article className="xl:divide-y xl:divide-gray-200 dark:xl:divide-gray-700">
                     {/* Header */}
@@ -68,7 +67,7 @@ function PostView(post: Post) {
                                     </ul>
                                 )}
                             </div>
-                            <PageTitle>{post.title}</PageTitle>
+
                         </div>
                     </header>
 

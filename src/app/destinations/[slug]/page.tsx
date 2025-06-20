@@ -7,7 +7,6 @@ import Image from "next/image";
 import SocialShare from "@/components/SocialShare";
 import PageLayout from "@/components/layouts/PageLayout";
 import BlockContent from "@/components/ui/blockContent";
-import PageTitle from "@/components/PageTitle";
 import Posts from "@/components/Posts";
 import Guides from "@/components/Guides";
 
@@ -31,21 +30,15 @@ export async function generateMetadata(
     });
 }
 
-export default async function BlogPostPage(props: { params: Promise<{ slug: string }> }) {
+export default async function DestinationPage(props: { params: Promise<{ slug: string }> }) {
     const { slug } = await props.params;
     const destination = await fetchDestinationBySlug(slug);
 
     if (!destination) return notFound();
 
     return (
-        <PageLayout>
+        <PageLayout title={destination.name}>
             <article className="max-w-5xl mx-auto px-4 sm:px-6 py-8 space-y-6">
-
-
-                <div className="flex justify-center">
-                    <PageTitle className="text-center">{destination.name}</PageTitle>
-
-                </div>
                 <SocialShare />
                 {destination.heroImage && (
                     <div className="relative w-full h-64 sm:h-96 rounded-lg overflow-hidden shadow-sm">

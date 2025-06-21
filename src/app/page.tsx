@@ -28,6 +28,9 @@ export default function HomePage() {
           </p>
           <section className="animate-fade-in-up delay-300">
             <SearchBox />
+
+          </section>
+          <section className="mt-8 mb-15 flex justify-center items-center">
             <Link
               href="/whats-happening"
               className="inline-block text-sm px-5 py-2.5 rounded-full font-bold text-white bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 hover:from-pink-600 hover:via-red-600 hover:to-yellow-600 transition-all duration-300 shadow-md hover:shadow-lg ml-4 text-center"

@@ -47,7 +47,7 @@ export default function RootLayout({
 
         gtag('config', 'G-Z6J9XCLJKJ');`}
       </Script>
-<meta name="google-site-verification" content="iN2yAIxp64iNnrFzQLw4I5lw0iEMXyVsbjzEDTAqx1k" />
+      <meta name="google-site-verification" content="iN2yAIxp64iNnrFzQLw4I5lw0iEMXyVsbjzEDTAqx1k" />
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
 
         <Suspense fallback={<p className="text-gray-500">Loading...</p>}>
@@ -57,7 +57,6 @@ export default function RootLayout({
 
         <div
           className="
-    max-w-7xl
     mx-auto
     px-4 sm:px-6 lg:px-8
     pb-12

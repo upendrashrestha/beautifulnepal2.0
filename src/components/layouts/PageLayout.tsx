@@ -21,7 +21,7 @@ export default function PageLayout({
             <PageTitle className='mb-10'>{title}</PageTitle>
 
 
-            <main className="mx-auto dark:bg-gray-900 dark:text-white">
+            <main className="mx-auto ">
                 {children}
             </main>
         </div>

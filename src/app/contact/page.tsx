@@ -16,10 +16,10 @@ export default function ContactPage() {
     return (
         <PageLayout title="Contact Us" className="text-center">
             <AnimatedSection>
-                <div className="flex flex-col-reverse flex-wrap gap-8 md:flex-row md:flex-nowrap md:justify-between xl:gap-20">
+                <div className="flex flex-col-reverse flex-wrap gap-8 md:flex-row md:flex-nowrap md:justify-between xl:gap-20 flex flex-col-reverse flex-wrap gap-8 md:flex-row md:flex-nowrap md:justify-center xl:gap-20">
                     <ContactForm />
 
-                    <div className="animate_top w-full md:w-2/5 md:p-7.5 lg:w-[26%] xl:pt-15">
+                    {/* <div className="animate_top w-full md:w-2/5 md:p-7.5 lg:w-[26%] xl:pt-15">
                         <h2 className="mb-12.5 text-3xl font-semibold text-black dark:text-white xl:text-sectiontitle2">
                             Our Locations
                         </h2>
@@ -30,7 +30,7 @@ export default function ContactPage() {
                             <p className="p-2">Nepal: Kathmandu</p>
                             <p>USA: Arlington, TX</p>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </AnimatedSection>
         </PageLayout>

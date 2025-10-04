@@ -17,14 +17,10 @@ export default function PageLayout({
 
     return (
         <div className={className}>
-
-            <PageTitle className='m-20'>{title}</PageTitle>
-
-
+            <PageTitle>{title}</PageTitle>
             <main className="mx-auto ">
                 {children}
             </main>
         </div>
-
     )
 }

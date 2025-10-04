@@ -1,5 +1,4 @@
 import { ReactNode } from 'react'
-import BackButton from './ui/backButton';
 
 interface Props {
     children: ReactNode
@@ -8,14 +7,10 @@ interface Props {
 
 export default function PageTitle({ children, className }: Props) {
     return (
-        <div className={`relative flex items-center justify-center ${className}`}>
-            <div className="absolute left-0">
-                <BackButton />
-            </div>
-            <h1 className="text-xl leading-9 font-extrabold tracking-tight text-gray-900 sm:text-2xl sm:leading-10 md:text-3xl md:leading-14 dark:text-white text-center">
+        <div className={`relative flex items-center justify-center m-10 ${className}`}>
+            <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white text-center leading-tight">
                 {children}
             </h1>
         </div>
-
     )
 }

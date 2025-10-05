@@ -6,6 +6,7 @@ import logo from "@/assets/logo.png";
 import DestinationDropdown from "./DestinationDropdown";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import { FaCalendarAlt, FaEnvelope } from "react-icons/fa";
 
 export default function Header() {
     const [stickyMenu, setStickyMenu] = useState(false);
@@ -82,21 +83,20 @@ export default function Header() {
                         <DestinationDropdown />
                         <Link
                             href="/whats-happening"
-                            className={`text-sm px-4 py-2 rounded-md transition-colors ${pathUrl === "/whats-happening"
+                            className={`flex items-center gap-2 text-sm px-4 py-2 rounded-md transition-colors ${pathUrl === "/whats-happening"
                                 ? "text-primary"
                                 : "text-gray-800 hover:text-primary hover:bg-gray-100"
                                 }`}
                         >
-                            What&apos;s happening?
+                            <FaCalendarAlt /> What&apos;s happening?
                         </Link>
                         <Link
                             href="/contact"
-                            className={`text-sm px-4 py-2 rounded-md transition-colors ${pathUrl === "/contact"
+                            className={`flex items-center gap-2 text-sm px-4 py-2 rounded-md transition-colors ${pathUrl === "/contact"
                                 ? "text-primary"
                                 : "text-gray-800 hover:text-primary hover:bg-gray-100"
                                 }`}
-                        >
-                            Contact
+                        ><FaEnvelope />  Contact
                         </Link>
                     </nav>
                 </div>

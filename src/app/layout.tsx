@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, Montserrat } from 'next/font/google'
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -8,15 +8,9 @@ import ScrollToTop from "@/components/ui/scrollToTop";
 import PageProgressBar from "@/components/PageProgressBar";
 import { Suspense } from "react";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+const inter = Inter({ subsets: ['latin'], weight: ['400', '700'], variable: '--font-inter' })
+const montserrat = Montserrat({ subsets: ['latin'], weight: ['400', '700'], variable: '--font-montserrat' })
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const viewport = {
   themeColor: "#FFF",
@@ -38,7 +32,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html className={`${inter.variable} ${montserrat.variable}`} lang="en">
       <Script src="https://www.googletagmanager.com/gtag/js?id=G-Z6J9XCLJKJ"></Script>
       <Script id="google-analytics">
         {`window.dataLayer = window.dataLayer || [];
@@ -48,7 +42,7 @@ export default function RootLayout({
         gtag('config', 'G-Z6J9XCLJKJ');`}
       </Script>
       <meta name="google-site-verification" content="iN2yAIxp64iNnrFzQLw4I5lw0iEMXyVsbjzEDTAqx1k" />
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`font-inter`}>
 
         <Suspense fallback={<p className="text-gray-500">Loading...</p>}>
           <PageProgressBar />

@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { fetchFeaturedDestinations } from "@/sanity/lib/fetch";
 import { Destination } from "@/types";
-import { FaChevronDown } from "react-icons/fa";
+import { FaChevronDown, FaMapPin } from "react-icons/fa";
 import { usePathname } from "next/navigation";
 
 export default function DestinationDropdown() {
@@ -36,12 +36,13 @@ export default function DestinationDropdown() {
             <button
                 onClick={() => setOpen((prev) => !prev)}
                 className={`flex items-center gap-1 text-sm text-gray-800 px-4 py-2 rounded-md hover:bg-gray-100 transition-colors ${pathUrl.startsWith("/destination")
-                        ? "text-primary hover:text-primary"
-                        : "hover:text-primary"
+                    ? "text-primary hover:text-primary"
+                    : "hover:text-primary"
                     }`}
                 aria-haspopup="true"
                 aria-expanded={open}
             >
+                <FaMapPin />
                 Explore Destinations
                 <FaChevronDown
                     className={`w-3 h-3 transition-transform ${open ? "rotate-180" : ""}`}

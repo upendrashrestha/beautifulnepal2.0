@@ -26,7 +26,7 @@ export default function Header() {
     return (
         <header
             className={`fixed left-0 top-0 z-50 w-full transition duration-200 ${stickyMenu
-                ? "bg-white p-4 shadow-sm dark:bg-black"
+                ? "bg-gray-50 p-4 shadow-sm dark:bg-black"
                 : "p-7"
                 }`}
         >

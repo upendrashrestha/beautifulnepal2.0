@@ -9,7 +9,7 @@ import { fetchFeaturedDestinations } from "@/sanity/lib/fetch";
 import { Card, CardContent } from "./ui/card";
 import AnimatedSection from "./AnimatedSection";
 
-export default function FeaturedDestination() {
+export default function FeaturedDestination({ title }: { title?: string }) {
     const [destinations, setDestinations] = useState<Destination[]>([]);
 
     useEffect(() => {
@@ -25,6 +25,12 @@ export default function FeaturedDestination() {
     return (
         <section className="my-16">
             <AnimatedSection>
+                {title && <div className="mb-8 flex items-center gap-3">
+                    <h2 className="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">
+                        {title}
+                    </h2>
+                </div>
+                }
                 <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
                     {destinations.map((d: Destination) => (
                         <Card

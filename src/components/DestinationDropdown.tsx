@@ -52,21 +52,24 @@ export default function DestinationDropdown() {
             {open && (
                 <div
                     className={`
-                        absolute left-0 right-0 z-50 mt-2 w-full sm:w-56
-                        rounded-md bg-white shadow-lg
-                        max-h-[70vh] overflow-y-auto
-                        sm:absolute sm:left-auto sm:right-auto
-                    `}
+    absolute left-0 right-0 z-50 mt-3 w-full sm:w-64
+    rounded-2xl bg-white/90 backdrop-blur-md shadow-xl
+    max-h-[70vh] overflow-y-auto transition-all duration-200
+  `}
                     role="menu"
                     aria-label="Destination dropdown"
                 >
-                    <ul className="py-1">
+                    <ul className="py-2 divide-y divide-gray-50">
                         {destinations.map((dest) => (
                             <li key={dest._id}>
                                 <Link
                                     href={`/destinations/${dest.slug.current}`}
                                     onClick={() => setOpen(false)}
-                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                    className="
+            block px-5 py-2 text-[15px] font-medium text-gray-800
+            hover:text-blue-600
+            transition-colors duration-150
+          "
                                     role="menuitem"
                                 >
                                     {dest.name}
@@ -77,7 +80,11 @@ export default function DestinationDropdown() {
                             <Link
                                 href="/destinations"
                                 onClick={() => setOpen(false)}
-                                className="block px-4 py-2 text-sm font-medium text-blue-600 hover:bg-gray-100"
+                                className="
+          block px-5 py-3 text-[15px] font-semibold text-gray-400
+          hover:text-blue-700
+          transition-colors duration-150
+        "
                                 role="menuitem"
                             >
                                 View All Destinations →
@@ -85,6 +92,7 @@ export default function DestinationDropdown() {
                         </li>
                     </ul>
                 </div>
+
             )}
         </div>
     );

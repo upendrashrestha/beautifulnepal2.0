@@ -8,6 +8,8 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { FaCalendarAlt, FaEnvelope } from "react-icons/fa";
 
+import DashboardMenuItems from "./DashboardMenuItems";
+
 export default function Header() {
     const [stickyMenu, setStickyMenu] = useState(false);
     const [navigationOpen, setNavigationOpen] = useState(false);
@@ -80,6 +82,9 @@ export default function Header() {
                         }`}
                 >
                     <nav className="flex flex-col xl:flex-row xl:items-center gap-2 xl:gap-4">
+
+                        <DashboardMenuItems />
+
                         <DestinationDropdown />
                         <Link
                             href="/whats-happening"
@@ -98,6 +103,8 @@ export default function Header() {
                                 }`}
                         ><FaEnvelope />  Contact
                         </Link>
+
+
                     </nav>
                 </div>
             </div>

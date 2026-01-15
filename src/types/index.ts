@@ -223,12 +223,6 @@ export interface AuthResponse {
   refreshToken: string;
 }
 
-export interface Message {
-  id: string;
-  text: string;
-  createdOn: string;
-}
-
 export interface Lead {
   id: string;
   fullName: string;
@@ -245,9 +239,55 @@ export interface Lead {
 
 export type LeadCreate = Omit<Lead, "id" | "messages">;
 
+export type LeadUpdate = Omit<Lead, "messages">;
+
 export interface PaginatedResponse<T> {
   pageIndex: number;
   pageSize: number;
   count: number;
   data: T[];
+}
+
+export interface BaseSpecParams {
+  pageIndex: number;
+  pageSize: number;
+  sort?: string;
+  search?: string;
+  id?: string; // Guid → string
+  clientId?: string; // Guid → string
+  publicId?: string;
+  status?: string;
+}
+
+export interface Client {
+  id: string;
+  name: string;
+  logoUrl?: string;
+  bio?: string;
+  address?: string;
+  phoneNumber?: string;
+  email?: string;
+  website?: string;
+  type?: string;
+  sponsored: boolean;
+  status: string;
+  statusId: string;
+  verified: boolean;
+  hasUserAccess: boolean;
+  isPrimary: boolean;
+}
+
+export interface LeadAssignment {
+  leadId: string;
+  clientId: string;
+  remarks?: string;
+  status: string;
+}
+
+export interface Message {
+  id?: string;
+  content: string;
+  category: string;
+  createdBy: string;
+  createdOn?: string;
 }

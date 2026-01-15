@@ -31,7 +31,7 @@ export default function CountrySelect({ label, value, onChange }: Props) {
 
     return (
         <div ref={ref} className="relative">
-            {label && <label className="block text-sm font-medium text-gray-700">
+            {label && <label className="block font-bold text-gray-700 dark:text-gray-200 text-left mb-1">
                 {label}
             </label>}
             <input

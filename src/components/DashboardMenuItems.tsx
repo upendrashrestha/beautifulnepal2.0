@@ -2,115 +2,145 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { FaBars, FaSignOutAlt } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import {
+    FaSignOutAlt,
+    FaTachometerAlt,
+    FaUsers,
+    FaEnvelope,
+    FaBusinessTime,
+} from "react-icons/fa";
 import { useAuth } from "@/contexts/AuthContext";
+import NineDotsIcon from "./ui/NineDotsIcon";
 
 export default function DashboardMenuItems() {
     const [open, setOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const router = useRouter();
     const { user, logout } = useAuth();
+
     const handleLogout = async () => {
         await logout();
         router.replace("/login");
     };
 
     useEffect(() => {
-        function handleClickOutside(event: MouseEvent) {
+        const handleClickOutside = (event: MouseEvent) => {
             if (
                 dropdownRef.current &&
                 !dropdownRef.current.contains(event.target as Node)
             ) {
                 setOpen(false);
             }
-        }
+        };
 
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
-    return user &&
-        <div className="relative inline-block text-left" ref={dropdownRef}>
-            <button
-                onClick={() => setOpen((prev) => !prev)}
-                className={`flex items-center gap-1 text-sm text-red-800 px-4 py-2 rounded-md hover:bg-gray-100 transition-colors`}
-                aria-haspopup="true"
-                aria-expanded={open}
-            >
-                <FaBars />
-                Admin
-            </button>
+    if (!user) return null;
 
-            {open && (
-                <div
-                    className={`
-    absolute left-0 right-0 z-50 mt-3 w-full sm:w-64
-    rounded-2xl bg-white/90 backdrop-blur-md shadow-xl
-    max-h-[70vh] overflow-y-auto transition-all duration-200
-  `}
-                    role="menu"
-                    aria-label="Dashboard dropdown"
+    return (
+        <div
+            className={"w-full flex items-center justify-end gap-4 "}
+        >
+            <div className="relative" ref={dropdownRef}>
+                {/* Trigger button */}
+                <button
+                    onClick={() => setOpen((prev) => !prev)}
+                    aria-haspopup="true"
+                    aria-expanded={open}
+                    className="flex items-center gap-1 text-sm text-black px-4 py-2 rounded-md hover:bg-gray-100 transition-colors hover:text-black dark:text-white dark:hover:bg-gray-700 dark:hover:text-white cursor-pointer"
                 >
-                    <ul className="py-2 divide-y divide-gray-50">
+                    <NineDotsIcon />
+                </button>
 
-                        <li key="dashboard">
-                            <Link
-                                href={`/dashboard`}
-                                onClick={() => setOpen(false)}
-                                className="
-            block px-5 py-2 text-[15px] font-medium text-gray-800
-            hover:text-blue-600
-            transition-colors duration-150
+                {/* Dropdown */}
+                {open && (
+                    <div
+                        className="
+            absolute right-0 mt-3 z-50 w-142
+            rounded-2xl bg-white
+            shadow-2xl border border-gray-100
+            p-3
           "
-                                role="menuitem"
-                            >
-                                Dashboard
-                            </Link>
-                        </li>
-                        <li key="leads">
-                            <Link
-                                href={`/dashboard/leads`}
+                        role="menu"
+                    >
+                        <div className="grid grid-cols-3 gap-3">
+                            <MenuItem
+                                href="/dashboard"
+                                icon={<FaTachometerAlt />}
+                                label="Dashboard"
                                 onClick={() => setOpen(false)}
-                                className="
-            block px-5 py-2 text-[15px] font-medium text-gray-800
-            hover:text-blue-600
-            transition-colors duration-150
-          "
-                                role="menuitem"
-                            >
-                                Leads
-                            </Link>
-                        </li>
-                        <li key="messages">
-                            <Link
-                                href={`/dashboard/messages`}
-                                onClick={() => setOpen(false)}
-                                className="
-            block px-5 py-2 text-[15px] font-medium text-gray-800
-            hover:text-blue-600
-            transition-colors duration-150
-          "
-                                role="menuitem"
-                            >
-                                Messages
-                            </Link>
-                        </li>
+                            />
 
-                        <li key="logout">
-                            <button
-                                onClick={handleLogout}
-                                className="flex items-center gap-2 text-sm px-4 py-2 rounded-md text-red-400 cursor-pointer hover:text-red-800 transition-colors w-full text-left"
-                            >
-                                <FaSignOutAlt />
-                                Logout
-                            </button>
-                        </li>
-                    </ul>
-                </div>
+                            <MenuItem
+                                href="/dashboard/leads"
+                                icon={<FaUsers />}
+                                label="Leads"
+                                onClick={() => setOpen(false)}
+                            />
 
-            )}
+                            <MenuItem
+                                href="/dashboard/clients"
+                                icon={<FaBusinessTime />}
+                                label="Clients"
+                                onClick={() => setOpen(false)}
+                            />
+
+                            <MenuItem
+                                href="/dashboard/messages"
+                                icon={<FaEnvelope />}
+                                label="Messages"
+                                onClick={() => setOpen(false)}
+                            />
+
+
+                        </div>
+                    </div>
+                )}
+
+
+
+            </div>
+            <button
+                onClick={handleLogout}
+                className="flex items-center gap-1 text-sm text-red px-4 py-2 rounded-md hover:bg-red-100 transition-colors hover:text-red-900 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white cursor-pointer"
+            >
+                <FaSignOutAlt />
+            </button>
         </div>
-        || <></>
+    );
+}
 
+/* ------------------ */
+/* Menu item card */
+/* ------------------ */
+function MenuItem({
+    href,
+    icon,
+    label,
+    onClick,
+}: {
+    href: string;
+    icon: React.ReactNode;
+    label: string;
+    onClick: () => void;
+}) {
+    return (
+        <Link
+            href={href}
+            onClick={onClick}
+            className="
+        flex flex-col items-center justify-center gap-2
+        rounded-xl border border-gray-100
+        bg-gray-50
+        py-4 transition
+        hover:bg-gray-100
+      "
+        >
+            <span className="text-gray-700">{icon}</span>
+            <span className="text-sm font-medium text-gray-800">{label}</span>
+        </Link>
+    );
 }

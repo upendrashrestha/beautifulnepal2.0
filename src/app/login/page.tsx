@@ -5,6 +5,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { validateEmail } from '@/utils/validations';
 import { useRouter } from 'next/navigation';
 import type { Login } from '@/types';
+import Input from '@/components/ui/Input';
 
 export default function Login() {
     const [identifier, setIdentifier] = useState('demo');
@@ -24,9 +25,7 @@ export default function Login() {
             return;
         }
 
-        const loginData: Login = {
-            password,
-        };
+        const loginData: Login = { password };
 
         if (validateEmail(identifier)) {
             loginData.email = identifier;
@@ -44,7 +43,6 @@ export default function Login() {
             await login(loginData);
             router.replace('/dashboard');
         } catch (err: any) {
-            console.error('Login failed:', err);
             setError(err?.message || 'Invalid credentials');
         } finally {
             setIsLoading(false);
@@ -54,48 +52,52 @@ export default function Login() {
     const loading = isLoading || authLoading;
 
     return (
-        <form onSubmit={handleLogin} className="w-full max-w-sm space-y-4">
-            <h1 className="text-2xl font-semibold text-center">
-                Sign In to Your Account
-            </h1>
+        <div className="flex justify-center bg-gray-50 ">
+            <div className="w-full max-w-md rounded-2xl bg-white p-5 shadow-lg">
+                <form onSubmit={handleLogin} className="space-y-5">
+                    <h1 className="text-center text-2xl font-semibold text-gray-900 p-5">
+                        Admin Login
+                    </h1>
 
-            {error && (
-                <div className="rounded bg-red-100 p-3 text-sm text-red-700">
-                    {error}
-                </div>
-            )}
+                    {error && (
+                        <div className="rounded-lg bg-red-50 p-3 text-sm text-red-700">
+                            {error}
+                        </div>
+                    )}
 
-            <input
-                type="text"
-                placeholder="Email or Username"
-                value={identifier}
-                onChange={(e) => setIdentifier(e.target.value)}
-                className="w-full rounded border px-3 py-2 focus:outline-none focus:ring"
-                autoComplete="username"
-                data-testid="identifier-input"
-            />
+                    <Input
+                        type="text"
+                        placeholder="Email or Username"
+                        value={identifier}
+                        onChange={(e) => setIdentifier(e.target.value)}
+                        autoComplete="username"
+                        data-testid="identifier-input"
+                    />
 
-            <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full rounded border px-3 py-2 focus:outline-none focus:ring"
-                autoComplete="current-password"
-                data-testid="password-input"
-            />
+                    <Input
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        autoComplete="current-password"
+                        data-testid="password-input"
+                    />
 
-            <button
-                type="submit"
-                disabled={loading}
-                className={`w-full rounded py-2 font-medium text-white transition ${loading
-                    ? 'cursor-not-allowed bg-gray-400'
-                    : 'bg-black hover:bg-gray-800'
-                    }`}
-                data-testid="login-button"
-            >
-                {loading ? 'Logging in…' : 'Login'}
-            </button>
-        </form>
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className={`
+              w-full rounded-lg py-2.5 text-sm font-medium text-white transition
+              ${loading
+                                ? 'cursor-not-allowed bg-gray-400'
+                                : 'bg-black hover:bg-gray-800'}
+            `}
+                        data-testid="login-button"
+                    >
+                        {loading ? 'Logging in…' : 'Login'}
+                    </button>
+                </form>
+            </div>
+        </div>
     );
 }

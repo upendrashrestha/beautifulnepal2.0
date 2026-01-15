@@ -1,14 +1,40 @@
+"use client";
+
 import api from "./api";
-import { Lead, LeadCreate, PaginatedResponse } from "@/types";
+import {
+  BaseSpecParams,
+  Lead,
+  LeadCreate,
+  LeadUpdate,
+  PaginatedResponse,
+} from "@/types";
 
 class LeadService {
-  async getLeads(params?: any): Promise<Lead[]> {
-    const response = await api.get<PaginatedResponse<Lead>>("/leads", {
-      params,
-    });
+  async getLeads(params: BaseSpecParams): Promise<PaginatedResponse<Lead>> {
+    const query = new URLSearchParams();
 
-    // 🔥 IMPORTANT
-    return response.data.data;
+    if (params?.pageIndex)
+      query.append("PageIndex", params.pageIndex.toString());
+
+    if (params?.pageSize) query.append("PageSize", params.pageSize.toString());
+
+    if (params?.search) query.append("Search", params.search);
+
+    if (params?.status) query.append("Status", params.status);
+
+    if (params?.clientId) query.append("ClientId", params.clientId);
+
+    if (params?.id) query.append("Id", params.id);
+
+    if (params?.publicId) query.append("PublicId", params.publicId);
+
+    if (params?.sort) query.append("Sort", params.sort);
+
+    const response = await api.get<PaginatedResponse<Lead>>(
+      `/leads?${query.toString()}`
+    );
+
+    return response.data;
   }
 
   async getLeadById(id: string): Promise<Lead> {
@@ -21,7 +47,7 @@ class LeadService {
     return response.data;
   }
 
-  async updateLead(id: string, data: Lead): Promise<Lead> {
+  async updateLead(data: LeadUpdate): Promise<Lead> {
     const response = await api.put<Lead>("/leads", data);
     return response.data;
   }

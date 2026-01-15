@@ -1,23 +1,27 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import LeadService from '@/services/lead.service';
-import { Lead, PaginatedResponse } from '@/types';
+import messageService from '@/services/message.service';
+import { Message, PaginatedResponse } from '@/types';
+import { FaTrash } from 'react-icons/fa';
+import ConfirmationModal from '@/components/ConfirmationModal';
 
 
 
-export default function LeadsPage() {
-    const [leads, setLeads] = useState<Lead[]>([]);
+export default function MessagesPage() {
+    const [messages, setMessages] = useState<Message[]>([]);
     const [loading, setLoading] = useState(true);
     const [pageSize, setPageSize] = useState(10);
     const [pageIndex, setPageIndex] = useState(1);
     const [totalCount, setTotalCount] = useState(0);
     const [searchInput, setSearchInput] = useState('');
     const [search, setSearch] = useState('');
-    const [status, setStatus] = useState('');
 
     const totalPages = Math.ceil(totalCount / pageSize);
+
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [selectedMessageId, setSelectedMessageId] = useState<string | null>(null);
+
     useEffect(() => {
         const timeout = setTimeout(() => {
             setPageIndex(1);
@@ -30,26 +34,40 @@ export default function LeadsPage() {
     useEffect(() => {
         setLoading(true);
 
-        LeadService.getLeads({
+        messageService.getMessages({
             pageIndex,
             pageSize,
             search: search || undefined,
             status: status || undefined
         })
-            .then((res: PaginatedResponse<Lead>) => {
-                setLeads(res.data);
+            .then((res: PaginatedResponse<Message>) => {
+                setMessages(res.data);
                 setTotalCount(res.count);
             })
             .finally(() => setLoading(false));
     }, [pageIndex, search, status, pageSize]);
 
-    if (loading) return <p className="p-4">Loading leads…</p>;
+    if (loading) return <p className="p-4">Loading messages…</p>;
+
+    const handleDelete = async () => {
+        if (!selectedMessageId) return;
+
+        try {
+            await messageService.deleteMessage(selectedMessageId);
+            setMessages(prev => prev.filter(m => m.id !== selectedMessageId));
+        } catch {
+            alert('Failed to delete message.');
+        } finally {
+            setShowConfirm(false);
+            setSelectedMessageId(null);
+        }
+    };
 
     return (
         <div className="p-6 space-y-4">
             {/* Header */}
             <div className="flex justify-between items-center">
-                <h1 className="text-2xl font-bold">Leads</h1>
+                <h1 className="text-2xl font-bold">Messages</h1>
             </div>
 
             {/* Filters */}
@@ -87,22 +105,7 @@ export default function LeadsPage() {
                         ✕
                     </button>)}
 
-                <select
-                    value={status}
-                    onChange={(e) => {
-                        setPageIndex(1);
-                        setStatus(e.target.value);
-                    }}
-                    className="border rounded px-3 py-2"
-                >
-                    <option value="">All Status</option>
-                    <option value="new">New</option>
-                    <option value="contacted">Contacted</option>
-                    <option value="inprogress">In Progress</option>
-                    <option value="assigned">Client Assigned</option>
-                    <option value="lost">Lost</option>
-                    <option value="cancelled">Cancelled</option>
-                </select>
+
                 <label className='p-2'>Page Size</label>
                 <select
                     value={pageSize}
@@ -124,43 +127,34 @@ export default function LeadsPage() {
                     <thead className="bg-gray-100 text-left">
                         <tr>
                             <th className="p-3 border-b">Name</th>
-                            <th className="p-3 border-b">Email</th>
-                            <th className="p-3 border-b">Interest</th>
-                            <th className="p-3 border-b">Travel Month & Year</th>
-                            <th className="p-3 border-b">Status</th>
-                            <th className="p-3 border-b">Actions</th>
+                            <th className="p-3 border-b">Category</th>
+                            <th className="p-3 border-b">Content</th>
+                            <th className="p-3 border-b">SendOn</th>
+                            <th className="p-3 border-b">Delete</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {leads.length === 0 && (
+                        {messages.length === 0 && (
                             <tr>
                                 <td colSpan={5} className="p-4 text-center text-gray-500">
-                                    No leads found
+                                    No messages found
                                 </td>
                             </tr>
                         )}
 
-                        {leads.map((lead) => (
-                            <tr key={lead.id} className="hover:bg-gray-50">
-                                <td className="p-3 border-b">{lead.fullName}</td>
-                                <td className="p-3 border-b">{lead.email}</td>
-                                <td className="p-3 border-b">{lead.interestType}</td>
-                                <td className="p-3 border-b">{lead.travelMonth}</td>
-                                <td className="p-3 border-b capitalize">{lead.status}</td>
-                                <td className="p-3 border-b">
-                                    <Link
-                                        href={`./leads/${lead.id}`}
-                                        className="text-blue-600 hover:underline"
-                                    >
-                                        Edit
-                                    </Link>
-                                    <span className="mx-1">|</span>
-                                    <Link
-                                        href={`./leadAssignments/${lead.id}`}
-                                        className="text-blue-600 hover:underline"
-                                    >
-                                        Assign Client (Agency)
-                                    </Link>
+                        {messages.map((message) => (
+                            <tr key={message.id} className="hover:bg-gray-50">
+                                <td className="p-3 border-b">{message.createdBy}</td>
+                                <td className="p-3 border-b capitalize">{message.category}</td>
+                                <td className="p-3 border-b">{message.content}</td>
+                                <td className="p-3 border-b">{message.createdOn}</td>
+                                <td className="p-3 border-b"><FaTrash
+                                    className="cursor-pointer text-gray-600 hover:text-red-600"
+                                    onClick={() => {
+                                        setSelectedMessageId(message.id!);
+                                        setShowConfirm(true);
+                                    }}
+                                />
                                 </td>
                             </tr>
                         ))}
@@ -192,6 +186,19 @@ export default function LeadsPage() {
                     </button>
                 </div>
             </div>
+
+            <ConfirmationModal
+                isOpen={showConfirm}
+                title="Delete Message"
+                message="Are you sure you want to delete this message?"
+                confirmText="Yes, Delete"
+                onCancel={() => {
+                    setShowConfirm(false);
+                    setSelectedMessageId(null);
+                }}
+                onConfirm={handleDelete}
+            />
+
         </div>
     );
 }

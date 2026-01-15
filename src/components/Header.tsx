@@ -2,19 +2,21 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/dbn.png";
 import DestinationDropdown from "./DestinationDropdown";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { FaCalendarAlt, FaEnvelope } from "react-icons/fa";
+import { FaCalendarAlt } from "react-icons/fa";
 
 import DashboardMenuItems from "./DashboardMenuItems";
+import CTAButton from "./CTAButton";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function Header() {
     const [stickyMenu, setStickyMenu] = useState(false);
     const [navigationOpen, setNavigationOpen] = useState(false);
     const pathUrl = usePathname();
-
+    const { isAuthenticated } = useAuth();
     // Sticky menu
     useEffect(() => {
         const handleStickyMenu = () => {
@@ -28,7 +30,7 @@ export default function Header() {
     return (
         <header
             className={`fixed left-0 top-0 z-50 w-full transition duration-200 ${stickyMenu
-                ? "bg-gray-50 p-4 shadow-sm dark:bg-black"
+                ? "p-7 bg-gray-50 p-4 shadow-sm dark:bg-black"
                 : "p-7"
                 }`}
         >
@@ -44,69 +46,70 @@ export default function Header() {
                             priority
                         />
                     </Link>
-
-                    <button
-                        aria-label="Toggle Navigation"
-                        className="xl:hidden"
-                        onClick={() => setNavigationOpen(!navigationOpen)}
-                    >
-                        <svg
-                            className="h-6 w-6 text-black dark:text-white"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
+                    {isAuthenticated && <DashboardMenuItems /> ||
+                        <button
+                            aria-label="Toggle Navigation"
+                            className="xl:hidden"
+                            onClick={() => setNavigationOpen(!navigationOpen)}
                         >
-                            {navigationOpen ? (
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M6 18L18 6M6 6l12 12"
-                                />
-                            ) : (
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M4 6h16M4 12h16M4 18h16"
-                                />
-                            )}
-                        </svg>
-                    </button>
+                            <svg
+                                className="h-6 w-6 text-black dark:text-white"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                {navigationOpen ? (
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M6 18L18 6M6 6l12 12"
+                                    />
+                                ) : (
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M4 6h16M4 12h16M4 18h16"
+                                    />
+                                )}
+                            </svg>
+                        </button>}
                 </div>
+                {isAuthenticated || (
+                    <div
+                        className={`w-full xl:flex xl:items-center xl:justify-end xl:gap-6 ${navigationOpen ? "block mt-4 bg-white dark:bg-black p-4 rounded-md shadow-md xl:mt-0 xl:bg-transparent xl:p-0 xl:shadow-none" : "hidden"
+                            }`}
+                    >
 
-                {/* Navigation Menu */}
-                <div
-                    className={`w-full xl:flex xl:items-center xl:justify-end xl:gap-6 ${navigationOpen ? "block mt-4 bg-white dark:bg-black p-4 rounded-md shadow-md xl:mt-0 xl:bg-transparent xl:p-0 xl:shadow-none" : "hidden"
-                        }`}
-                >
-                    <nav className="flex flex-col xl:flex-row xl:items-center gap-2 xl:gap-4">
+                        <nav className="flex flex-col xl:flex-row xl:items-center gap-2 xl:gap-4">
 
-                        <DashboardMenuItems />
 
-                        <DestinationDropdown />
-                        <Link
-                            href="/whats-happening"
-                            className={`flex items-center gap-2 text-sm px-4 py-2 rounded-md transition-colors ${pathUrl === "/whats-happening"
-                                ? "text-primary"
-                                : "text-gray-800 hover:text-primary hover:bg-gray-100"
-                                }`}
-                        >
-                            <FaCalendarAlt /> What&apos;s happening?
-                        </Link>
-                        <Link
+
+                            <DestinationDropdown />
+                            <Link
+                                href="/whats-happening"
+                                className={`flex items-center gap-2 text-sm px-4 py-2 rounded-md transition-colors ${pathUrl === "/whats-happening"
+                                    ? "text-primary"
+                                    : "text-gray-800 hover:text-primary hover:bg-gray-100"
+                                    }`}
+                            >
+                                <FaCalendarAlt /> What&apos;s happening?
+                            </Link>
+                            {/* <Link
                             href="/contact"
                             className={`flex items-center gap-2 text-sm px-4 py-2 rounded-md transition-colors ${pathUrl === "/contact"
                                 ? "text-primary"
                                 : "text-gray-800 hover:text-primary hover:bg-gray-100"
                                 }`}
                         ><FaEnvelope />  Contact
-                        </Link>
+                        </Link> */}
+                            <CTAButton label="Plan Your Trip" source="header" />
 
+                        </nav>
 
-                    </nav>
-                </div>
+                    </div>)}
             </div>
         </header>
     );

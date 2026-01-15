@@ -10,7 +10,6 @@ import React, {
 } from 'react';
 import { User, Login, Register } from '../types';
 import authService from '../services/auth.service';
-import { removeToken } from '@/utils/storage';
 import { authEvents } from '@/services/authEvents';
 import api from '@/services/api'; // Axios instance
 

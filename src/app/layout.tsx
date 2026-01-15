@@ -7,6 +7,7 @@ import Script from "next/script";
 import ScrollToTop from "@/components/ui/scrollToTop";
 import PageProgressBar from "@/components/PageProgressBar";
 import { Suspense } from "react";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 const inter = Inter({ subsets: ['latin'], weight: ['400', '700'], variable: '--font-inter' })
 const montserrat = Montserrat({ subsets: ['latin'], weight: ['400', '700'], variable: '--font-montserrat' })
@@ -43,7 +44,7 @@ export default function RootLayout({
       </Script>
       <meta name="google-site-verification" content="iN2yAIxp64iNnrFzQLw4I5lw0iEMXyVsbjzEDTAqx1k" />
       <body className={`font-inter`}>
-
+<AuthProvider>
         <Suspense fallback={<p className="text-gray-500">Loading...</p>}>
           <PageProgressBar />
         </Suspense>
@@ -63,7 +64,8 @@ export default function RootLayout({
         </div>
 
         <Footer />
-        <ScrollToTop />
+          <ScrollToTop />
+          </AuthProvider>
         {/* {env.NEXT_PUBLIC_GTM_ID ? (
           <GoogleTagManager gtmId={env.NEXT_PUBLIC_GTM_ID} />
         ) : null} */}

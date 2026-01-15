@@ -1,6 +1,8 @@
 // components/forms/ContactForm.tsx
 "use client";
 
+import messageService from "@/services/message.service";
+import { Message } from "@/types";
 import { useState } from "react";
 
 type ContactFormProps = {
@@ -58,14 +60,14 @@ export default function ContactForm({ className }: ContactFormProps) {
         setLoading(true);
         setStatus("");
 
-        try {
-            const res = await fetch("/api/contact", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formData),
-            });
 
-            if (!res.ok) throw new Error("Failed to submit");
+        try {
+            const msg: Message = {
+                createdBy: `${formData.name} (${formData.email})`,
+                content: formData.message,
+                category: 'contact',
+            };
+            await messageService.createMessage(msg);
 
             setFormData({ name: "", email: "", message: "", website: "" });
             setStatus("success");

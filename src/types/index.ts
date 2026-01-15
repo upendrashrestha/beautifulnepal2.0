@@ -181,3 +181,113 @@ export interface CommunityEvent {
     alt?: string;
   };
 }
+
+export interface Login {
+  userName?: string;
+  email?: string;
+  password: string;
+}
+
+export interface Register {
+  email: string;
+  password: string;
+  displayName?: string;
+  userName?: string;
+  phoneNumber?: string;
+  role?: string;
+  clientId?: string;
+}
+
+export interface ResetUserPassword {
+  currentPassword: string;
+  newPassword: string;
+  confirmNewPassword: string;
+}
+
+export interface User {
+  id: string;
+  displayName: string;
+  email: string;
+  token: string;
+  userName: string;
+  clientId: string;
+  phoneNumber: string;
+  role: string;
+  isActive: boolean;
+  clientName: string;
+}
+
+export interface AuthResponse {
+  user: User;
+  token: string;
+  refreshToken: string;
+}
+
+export interface Lead {
+  id: string;
+  fullName: string;
+  email: string;
+  interestType?: string;
+  phone?: string;
+  source?: string;
+  country?: string;
+  destination?: string;
+  travelMonth?: string;
+  status: string;
+  messages?: Message[];
+}
+
+export type LeadCreate = Omit<Lead, "id" | "messages">;
+
+export type LeadUpdate = Omit<Lead, "messages">;
+
+export interface PaginatedResponse<T> {
+  pageIndex: number;
+  pageSize: number;
+  count: number;
+  data: T[];
+}
+
+export interface BaseSpecParams {
+  pageIndex: number;
+  pageSize: number;
+  sort?: string;
+  search?: string;
+  id?: string; // Guid → string
+  clientId?: string; // Guid → string
+  publicId?: string;
+  status?: string;
+}
+
+export interface Client {
+  id: string;
+  name: string;
+  logoUrl?: string;
+  bio?: string;
+  address?: string;
+  phoneNumber?: string;
+  email?: string;
+  website?: string;
+  type?: string;
+  sponsored: boolean;
+  status: string;
+  statusId: string;
+  verified: boolean;
+  hasUserAccess: boolean;
+  isPrimary: boolean;
+}
+
+export interface LeadAssignment {
+  leadId: string;
+  clientId: string;
+  remarks?: string;
+  status: string;
+}
+
+export interface Message {
+  id?: string;
+  content: string;
+  category: string;
+  createdBy: string;
+  createdOn?: string;
+}

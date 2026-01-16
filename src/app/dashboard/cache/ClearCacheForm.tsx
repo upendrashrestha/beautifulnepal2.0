@@ -1,21 +1,13 @@
 "use client";
-
-import { useSearchParams } from "next/navigation";
-import { useState, useEffect } from "react";
+import Dropdown from "@/components/ui/Dropdown";
+import { useState } from "react";
 
 export default function ClearCacheForm() {
-    const searchParams = useSearchParams();
-    const secret = searchParams.get("secret");
-    const [authorized, setAuthorized] = useState(false);
     const [key, setKey] = useState("");
     const [loading, setLoading] = useState(false);
     const [status, setStatus] = useState<"idle" | "success" | "error" | "unauthorized">("idle");
 
-    useEffect(() => {
-        if (secret === process.env.NEXT_PUBLIC_ADMIN_CACHE_SECRET) {
-            setAuthorized(true);
-        }
-    }, [secret]);
+
 
     async function handleClearCache(formData: FormData) {
         setLoading(true);
@@ -24,7 +16,6 @@ export default function ClearCacheForm() {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${secret}`,
             },
             body: JSON.stringify({ key }),
         });
@@ -34,24 +25,25 @@ export default function ClearCacheForm() {
         setLoading(false);
     }
 
-    if (!authorized) {
-        return (
-            <div className="text-center py-10">
-                <h2 className="text-xl text-red-600 font-semibold">Unauthorized</h2>
-                <p className="mt-2 text-gray-600">Missing or invalid access token.</p>
-            </div>
-        );
-    }
+
 
     return (
         <form action={handleClearCache} className="space-y-4">
-            <input
-                type="text"
-                name="key"
-                placeholder="Enter cache key (leave blank to clear all)"
+        
+ <Dropdown
+                label="Select Cache Key"
                 value={key}
-                onChange={(e) => setKey(e.target.value)}
-                className="w-full px-4 py-2 border rounded-md text-black dark:text-white"
+                onChange={value => {
+                    setKey( value);
+                }}
+                options={[
+                    { label: 'All Keys', value: '' },
+                    { label: 'Company', value: 'company' },
+                    { label: 'Destinations', value: 'destinations' },
+                    { label: 'Posts', value: 'posts' },
+                    { label: 'Authors', value: 'authors' },
+                    { label: 'Guides', value: 'guides' },
+                ]}
             />
 
             <button

@@ -1,7 +1,6 @@
 // components/ui/Dropdown.tsx
 'use client';
 
-import { useId } from "react";
 
 interface Option {
     label: string;
@@ -17,16 +16,12 @@ interface Props {
 }
 
 export default function Dropdown({ label, value, options, required, onChange }: Props) {
-    const id = useId();
 
     return (
         <div className="space-y-1">
             {label && (
-                <label
-                    htmlFor={id}
-                    className="block text-sm font-medium text-gray-700 dark:text-gray-200"
-                >
-                    {label}
+                     <label className="block font-bold text-gray-700 dark:text-gray-200 text-left mb-1">{label}
+          
                     {required && <span className="ml-1 text-red-500">*</span>}
                 </label>
             )}

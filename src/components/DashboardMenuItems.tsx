@@ -10,6 +10,7 @@ import {
     FaEnvelope,
     FaBusinessTime,
     FaBars,
+    FaMemory,
 } from "react-icons/fa";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -95,7 +96,12 @@ export default function DashboardMenuItems() {
                                 onClick={() => setOpen(false)}
                             />
 
-
+ <MenuItem
+                                href="/dashboard/cache"
+                                icon={<FaMemory />}
+                                label="Cache Settings"
+                                onClick={() => setOpen(false)}
+                            />
                         </div>
                     </div>
                 )}

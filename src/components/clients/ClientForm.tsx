@@ -103,8 +103,8 @@ export default function ClientForm({
                 }}
                 options={[
                     { label: '', value: 'Select Status' },
-                    { label: 'Active', value: 'active' },
-                    { label: 'Inactive', value: 'inactive' },
+                    { label: 'Active', value: 'Active' },
+                    { label: 'Inactive', value: 'InActive' },
                 ]}
             />
             {/* Submit */}

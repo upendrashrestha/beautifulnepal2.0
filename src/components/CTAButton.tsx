@@ -19,7 +19,7 @@ export default function CTAButton({
                 pathname: href,
                 query: { source },
             }}
-            className="inline-flex items-center justify-center rounded-full bg-black px-6 py-3 text-sm font-semibold text-white transition hover:bg-gray-800"
+            className="inline-flex items-center justify-center rounded-full bg-black px-6 py-3 text-sm font-semibold text-gray-400 hover:text-white transition hover:bg-gray-800"
         >
             {label}
         </Link>

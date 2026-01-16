@@ -98,13 +98,14 @@ export default function WhatsHappeningClient({ events }: WhatsHappeningClientPro
     return (
         <PageLayout title="What's Happening in Nepal">
             <AnimatedSection>
-                <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-10 p-4 bg-gradient-to-r from-orange-100 to-yellow-50 rounded-xl shadow-sm">
-                    <h2 className="text-lg font-semibold text-gray-700 text-center">
+                <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-10 p-4 rounded-xl shadow-sm">
+                    <h6 className="text-lg font-semibold text-gray-700 text-center">
                         Hosting an event? Share it with the world!
-                    </h2>
+                    </h6>
+                    
                     <Link
                         href="/whats-happening/submit-your-event"
-                        className="text-sm px-5 py-2.5 rounded-full font-bold text-white bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 hover:from-pink-600 hover:via-red-600 hover:to-yellow-600 transition-all duration-300 shadow-md hover:shadow-lg"
+                        className="text-sm px-5 py-2.5 rounded-full font-bold bg-black text-gray-400 hover:text-white transition-all duration-300 shadow-md hover:shadow-lg"
                     >
                         Submit your event
                     </Link>

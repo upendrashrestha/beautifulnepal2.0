@@ -3,12 +3,13 @@ import { MetadataRoute } from "next";
 export default function robots(): MetadataRoute.Robots {
   const baseUrl =
     process.env.NEXT_PUBLIC_BASE_URL || "https://beautifulnepal.com";
+
   return {
     rules: [
       {
         userAgent: "*",
         allow: "/",
-        disallow: "/sanitystudio",
+        disallow: ["/sanitystudio", "/dashboard", "/login"], 
       },
     ],
     sitemap: `${baseUrl}/sitemap.xml`,

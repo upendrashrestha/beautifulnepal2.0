@@ -31,14 +31,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: `${baseUrl}/blogs/${blog.slug.current}`,
     lastModified: formatDate(blog.publishedAt) || new Date().toISOString(),
     priority: 0.8,
-    changeFrequency: "yearly",
+    changeFrequency: "monthly",
   }));
 
   const destinationEntries: MetadataRoute.Sitemap = destinations.map((d) => ({
     url: `${baseUrl}/destinations/${d.slug.current}`,
     lastModified: formatDate(d.publishedAt) || new Date().toISOString(),
     priority: 0.8,
-    changeFrequency: "yearly",
+    changeFrequency: "weekly",
   }));
 
   const guideEntries: MetadataRoute.Sitemap = guides.map((g) => ({

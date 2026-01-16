@@ -2,7 +2,7 @@
 
 import api from "./api";
 import { AuthResponse, Login, Register, User } from "../types";
-import { removeToken } from "@/utils/storage"; // clear localStorage or AsyncStorage
+import storage from "@/utils/storage"; // clear localStorage or AsyncStorage
 
 class AuthService {
   async login(credentials: Login): Promise<AuthResponse> {
@@ -10,7 +10,7 @@ class AuthService {
       "/account/login",
       credentials
     );
-
+    storage.setToken(response.data.token);
     // ✅ Cookies are set by backend
     return response.data;
   }
@@ -26,7 +26,7 @@ class AuthService {
       await api.post("/account/logout");
     } finally {
       // Clear any client-side tokens even if server fails
-      await removeToken();
+      await storage.removeToken();
     }
   }
 

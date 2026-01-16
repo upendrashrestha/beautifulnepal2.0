@@ -1,25 +1,28 @@
-// app/clients/[id]/page.tsx
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import clientService from '@/services/client.service';
 import ClientForm from '@/components/clients/ClientForm';
 import { Client } from '@/types';
 
-export default function UpdateClientPage({ params }: { params: { id: string } }) {
+export default function UpdateClientPage() {
     const router = useRouter();
+    const params = useParams<{ id: string }>();
     const [client, setClient] = useState<Client | null>(null);
 
+    const clientId = params?.id;
+
     useEffect(() => {
-        clientService.getClientById(params.id).then(setClient);
-    }, [params.id]);
+        if (!clientId) return;
+        clientService.getClientById(clientId).then(setClient);
+    }, [clientId]);
 
     if (!client) return <p className="p-6">Loading…</p>;
 
     return (
-        <div className="max-w-xl mx-auto p-6">
-            <h1 className="text-xl font-bold mb-4">Update Agency</h1>
+        <div className="mx-auto max-w-xl p-6">
+            <h1 className="mb-4 text-xl font-bold">Update Agency</h1>
 
             <ClientForm
                 initialData={client}

@@ -1,36 +1,33 @@
-const TOKEN_KEY = "beautifulnepal_token";
-const REFRESH_TOKEN_KEY = "beautifulnepal_refresh_token";
+const ACCESS_TOKEN_KEY = "accessToken";
 
-const isBrowser = (): boolean => typeof window !== "undefined";
+const isBrowser = typeof window !== "undefined";
 
-export const setToken = (token: string): void => {
-  if (!isBrowser()) return;
+const storage = {
+  getToken(): string | null {
+    if (!isBrowser) return null;
 
-  try {
-    localStorage.setItem(TOKEN_KEY, token);
-  } catch (error) {
-    console.error("Error saving token:", error);
-  }
+    try {
+      return localStorage.getItem(ACCESS_TOKEN_KEY);
+    } catch {
+      return null;
+    }
+  },
+
+  setToken(token: string) {
+    if (!isBrowser) return;
+
+    try {
+      localStorage.setItem(ACCESS_TOKEN_KEY, token);
+    } catch {}
+  },
+
+  removeToken() {
+    if (!isBrowser) return;
+
+    try {
+      localStorage.removeItem(ACCESS_TOKEN_KEY);
+    } catch {}
+  },
 };
 
-export const getToken = (): string | null => {
-  if (!isBrowser()) return null;
-
-  try {
-    return localStorage.getItem(TOKEN_KEY);
-  } catch (error) {
-    console.error("Error getting token:", error);
-    return null;
-  }
-};
-
-export const removeToken = (): void => {
-  if (!isBrowser()) return;
-
-  try {
-    localStorage.removeItem(TOKEN_KEY);
-    localStorage.removeItem(REFRESH_TOKEN_KEY);
-  } catch (error) {
-    console.error("Error removing token:", error);
-  }
-};
+export default storage;

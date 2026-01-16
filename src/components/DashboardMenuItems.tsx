@@ -9,9 +9,9 @@ import {
     FaUsers,
     FaEnvelope,
     FaBusinessTime,
+    FaBars,
 } from "react-icons/fa";
 import { useAuth } from "@/contexts/AuthContext";
-import NineDotsIcon from "./ui/NineDotsIcon";
 
 export default function DashboardMenuItems() {
     const [open, setOpen] = useState(false);
@@ -52,7 +52,7 @@ export default function DashboardMenuItems() {
                     aria-expanded={open}
                     className="flex items-center gap-1 text-sm text-black px-4 py-2 rounded-md hover:bg-gray-100 transition-colors hover:text-black dark:text-white dark:hover:bg-gray-700 dark:hover:text-white cursor-pointer"
                 >
-                    <NineDotsIcon />
+                    <FaBars />
                 </button>
 
                 {/* Dropdown */}
@@ -105,9 +105,9 @@ export default function DashboardMenuItems() {
             </div>
             <button
                 onClick={handleLogout}
-                className="flex items-center gap-1 text-sm text-red px-4 py-2 rounded-md hover:bg-red-100 transition-colors hover:text-red-900 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white cursor-pointer"
-            >
-                <FaSignOutAlt />
+                  className="flex items-center gap-1 text-md text-black px-4 py-2 rounded-md hover:bg-gray-100 hover:text-red-500 dark:hover:bg-red-700 dark:hover:text-white cursor-pointer"
+              >
+                <FaSignOutAlt/>
             </button>
         </div>
     );

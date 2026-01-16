@@ -1,19 +1,23 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import axios, {
   AxiosInstance,
   AxiosError,
+  AxiosResponse,
   InternalAxiosRequestConfig,
 } from "axios";
 import { authEvents } from "./authEvents";
 
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL ?? "https://api.beautifulnepal.com";
+  process.env.NEXT_PUBLIC_API_URL ?? "https://beautifulnepalapi.fly.dev/api";
 
 interface FailedRequest {
   resolve: (value?: unknown) => void;
   reject: (error?: unknown) => void;
+}
+
+interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
+  _retry?: boolean;
 }
 
 class ApiService {
@@ -52,14 +56,25 @@ class ApiService {
      * Response interceptor
      * ===================== */
     this.api.interceptors.response.use(
-      (response) => response,
-      async (error: AxiosError & { config?: any }) => {
-        const originalRequest = error.config;
+      (response: AxiosResponse) => response,
+      async (error: AxiosError) => {
+        // Handle network errors
+        if (!error.response) {
+          console.error("Network error:", error.message);
+          return Promise.reject(error);
+        }
+
+        const originalRequest = error.config as CustomAxiosRequestConfig;
+
+        // Ensure originalRequest exists
+        if (!originalRequest) {
+          return Promise.reject(error);
+        }
 
         if (
-          error.response?.status === 401 &&
+          error.response.status === 401 &&
           !this.isLoggingOut &&
-          !originalRequest?._retry
+          !originalRequest._retry
         ) {
           // If refresh already in progress, queue request
           if (this.isRefreshing) {
@@ -74,22 +89,20 @@ class ApiService {
           this.isRefreshing = true;
 
           try {
-            // 🔄 Refresh uses cookies
-            //await authService.refreshToken();
+            // 🔄 Refresh token endpoint
+            await this.api.post("/auth/refresh");
+
+            // Process queued requests
+            this.processQueue(null);
 
             // Retry original request (cookies updated by backend)
-            this.failedQueue.forEach((req) => req.resolve());
-            this.failedQueue = [];
-
             return this.api(originalRequest);
           } catch (refreshError) {
             // ❌ Refresh failed → logout everywhere
+            this.processQueue(refreshError);
             authEvents.emit("unauthorized");
 
-            this.failedQueue.forEach((req) => req.reject(refreshError));
-            this.failedQueue = [];
-
-            return Promise.reject(error);
+            return Promise.reject(refreshError);
           } finally {
             this.isRefreshing = false;
           }
@@ -98,6 +111,21 @@ class ApiService {
         return Promise.reject(error);
       }
     );
+  }
+
+  /** =====================
+   * Queue processing helper
+   * ===================== */
+  private processQueue(error: unknown) {
+    this.failedQueue.forEach((req) => {
+      if (error) {
+        req.reject(error);
+      } else {
+        req.resolve();
+      }
+    });
+
+    this.failedQueue = [];
   }
 
   /** =====================
@@ -120,8 +148,19 @@ class ApiService {
     return this.api.put<T>(url, data);
   }
 
+  patch<T>(url: string, data?: unknown) {
+    return this.api.patch<T>(url, data);
+  }
+
   delete<T>(url: string) {
     return this.api.delete<T>(url);
+  }
+
+  // Cleanup method for when service needs to be reset
+  public cleanup() {
+    this.failedQueue = [];
+    this.isRefreshing = false;
+    this.isLoggingOut = false;
   }
 }
 

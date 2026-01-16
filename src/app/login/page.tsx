@@ -8,8 +8,8 @@ import type { Login } from '@/types';
 import Input from '@/components/ui/Input';
 
 export default function Login() {
-    const [identifier, setIdentifier] = useState('demo');
-    const [password, setPassword] = useState('Pa$$w0rd');
+    const [identifier, setIdentifier] = useState('');
+    const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -25,6 +25,11 @@ export default function Login() {
             return;
         }
 
+        if (!password) {
+            setError('Please enter your password');
+            return;
+        }
+
         const loginData: Login = { password };
 
         if (validateEmail(identifier)) {
@@ -33,17 +38,16 @@ export default function Login() {
             loginData.userName = identifier;
         }
 
-        if (!password) {
-            setError('Please enter your password');
-            return;
-        }
-
         setIsLoading(true);
         try {
             await login(loginData);
             router.replace('/dashboard');
-        } catch (err: any) {
-            setError(err?.message || 'Invalid credentials');
+        } catch (err) {
+            if (err instanceof Error) {
+                setError(err.message);
+            } else {
+                setError('Invalid credentials');
+            }
         } finally {
             setIsLoading(false);
         }
@@ -52,10 +56,10 @@ export default function Login() {
     const loading = isLoading || authLoading;
 
     return (
-        <div className="flex justify-center bg-gray-50 ">
+        <div className="flex justify-center bg-gray-50">
             <div className="w-full max-w-md rounded-2xl bg-white p-5 shadow-lg">
                 <form onSubmit={handleLogin} className="space-y-5">
-                    <h1 className="text-center text-2xl font-semibold text-gray-900 p-5">
+                    <h1 className="p-5 text-center text-2xl font-semibold text-gray-900">
                         Admin Login
                     </h1>
 
@@ -71,7 +75,6 @@ export default function Login() {
                         value={identifier}
                         onChange={(e) => setIdentifier(e.target.value)}
                         autoComplete="username"
-                        data-testid="identifier-input"
                     />
 
                     <Input
@@ -80,19 +83,16 @@ export default function Login() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         autoComplete="current-password"
-                        data-testid="password-input"
                     />
 
                     <button
                         type="submit"
                         disabled={loading}
-                        className={`
-              w-full rounded-lg py-2.5 text-sm font-medium text-white transition
-              ${loading
+                        className={`w-full rounded-lg py-2.5 text-sm font-medium text-white transition ${
+                            loading
                                 ? 'cursor-not-allowed bg-gray-400'
-                                : 'bg-black hover:bg-gray-800'}
-            `}
-                        data-testid="login-button"
+                                : 'bg-black hover:bg-gray-800'
+                        }`}
                     >
                         {loading ? 'Logging in…' : 'Login'}
                     </button>

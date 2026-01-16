@@ -4,17 +4,15 @@ import { useEffect, useState } from 'react';
 import leadService from '@/services/lead.service';
 import { Lead } from '@/types';
 import Toast from '@/components/ui/Toast';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { FaTimes } from 'react-icons/fa';
 import LeadAssignmentForm from '@/components/leads/LeadAssignmentForm';
 
-export default function UpdateLeadPage({
-    params,
-}: {
-    params: { id: string };
-}) {
+export default function UpdateLeadPage() {
     const router = useRouter();
-    const { id } = params;
+    
+      const params = useParams<{ id: string }>();
+      const  id  = params?.id;
     const [showToast, setShowToast] = useState(false);
     const [lead, setLead] = useState<Lead | null>(null);
     const [loading, setLoading] = useState(true);

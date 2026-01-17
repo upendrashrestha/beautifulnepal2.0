@@ -1,7 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import SearchBox from "@/components/SearchBox";
+import Search from "@/components/Search";
 import TypingText from "@/components/ui/TypingText";
 
 export default function HeroHeader() {
@@ -40,7 +40,7 @@ export default function HeroHeader() {
                 transition={{ delay: 0.6, duration: 0.8 }}
                 className="my-6 w-full"
             >
-                <SearchBox />
+                <Search />
             </motion.section>
 
             {/* CTA Button */}

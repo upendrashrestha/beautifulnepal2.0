@@ -1,7 +1,7 @@
 "use client";
 
 import api from "./api";
-import { AuthResponse, Login, Register, User } from "../types";
+import { AuthResponse, Login, User } from "../types";
 import storage from "@/utils/storage"; // clear localStorage or AsyncStorage
 
 class AuthService {
@@ -12,12 +12,6 @@ class AuthService {
     );
     storage.setToken(response.data.token);
     // ✅ Cookies are set by backend
-    return response.data;
-  }
-
-  async register(data: Register): Promise<AuthResponse> {
-    const response = await api.post<AuthResponse>("/account/register", data);
-
     return response.data;
   }
 

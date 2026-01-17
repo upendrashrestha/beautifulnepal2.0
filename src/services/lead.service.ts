@@ -51,6 +51,11 @@ class LeadService {
     const response = await api.put<Lead>("/leads", data);
     return response.data;
   }
+
+  async deleteLead(data: string): Promise<Lead> {
+    const response = await api.delete<Lead>(`/leads/delete/${data}`);
+    return response.data;
+  }
 }
 const leadService = new LeadService();
 export default leadService;

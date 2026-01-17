@@ -8,7 +8,7 @@ import React, {
     ReactNode,
     useCallback,
 } from 'react';
-import { User, Login, Register } from '../types';
+import { User, Login } from '../types';
 import authService from '../services/auth.service';
 import { authEvents } from '@/services/authEvents';
 import api from '@/services/api'; // Axios instance
@@ -18,7 +18,6 @@ interface AuthContextType {
     isLoading: boolean;
     isAuthenticated: boolean;
     login: (credentials: Login) => Promise<void>;
-    register: (data: Register) => Promise<void>;
     logout: () => Promise<void>;
     reloadUser: () => Promise<void>;
     authLoading: boolean;
@@ -93,16 +92,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         }
     };
 
-    // Register
-    const register = async (data: Register) => {
-        const response = await authService.register(data);
-        setUser(response.user);
-        setIsAuthenticated(true);
-    };
 
     return (
         <AuthContext.Provider
-            value={{ user, isLoading, isAuthenticated, login, register, logout, reloadUser: loadUser, authLoading }}
+            value={{ user, isLoading, isAuthenticated, login, logout, reloadUser: loadUser, authLoading }}
         >
             {children}
         </AuthContext.Provider>

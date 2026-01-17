@@ -217,6 +217,23 @@ export interface User {
   clientName: string;
 }
 
+export interface RegisterUser {
+  email: string;
+  password: string;
+  displayName?: string;
+  userName?: string;
+  phoneNumber?: string;
+  role?: string;
+  clientId?: string;
+  isActive: boolean;
+}
+
+export interface ResetUserPassword {
+  currentPassword: string;
+  newPassword: string;
+  confirmNewPassword: string;
+}
+
 export interface AuthResponse {
   user: User;
   token: string;

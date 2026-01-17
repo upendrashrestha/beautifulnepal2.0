@@ -11,6 +11,7 @@ import {
     FaBusinessTime,
     FaBars,
     FaMemory,
+    FaAddressCard,
 } from "react-icons/fa";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -60,14 +61,14 @@ export default function DashboardMenuItems() {
                 {open && (
                     <div
                         className="
-            absolute right-0 mt-3 z-50 w-142
+            absolute right-0 mt-3 z-50 w-40 sm:w-140
             rounded-2xl bg-white
             shadow-2xl border border-gray-100
             p-3
           "
                         role="menu"
                     >
-                        <div className="grid grid-cols-3 gap-3">
+                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                             <MenuItem
                                 href="/dashboard"
                                 icon={<FaTachometerAlt />}
@@ -77,7 +78,7 @@ export default function DashboardMenuItems() {
 
                             <MenuItem
                                 href="/dashboard/leads"
-                                icon={<FaUsers />}
+                                icon={<FaAddressCard />}
                                 label="Leads"
                                 onClick={() => setOpen(false)}
                             />
@@ -96,10 +97,17 @@ export default function DashboardMenuItems() {
                                 onClick={() => setOpen(false)}
                             />
 
- <MenuItem
+                            <MenuItem
                                 href="/dashboard/cache"
                                 icon={<FaMemory />}
                                 label="Cache Settings"
+                                onClick={() => setOpen(false)}
+                            />
+
+                            <MenuItem
+                                href="/dashboard/users"
+                                icon={<FaUsers />}
+                                label="User Management"
                                 onClick={() => setOpen(false)}
                             />
                         </div>
@@ -109,11 +117,17 @@ export default function DashboardMenuItems() {
 
 
             </div>
+            {/* <button
+                onClick={handleUser}
+                className="flex items-center gap-1 text-md text-gray-700 px-4 py-2 rounded-md hover:bg-gray-100 hover:text-black dark:hover:bg-red-700 dark:hover:text-white cursor-pointer"
+            >
+                <FaUser />
+            </button> */}
             <button
                 onClick={handleLogout}
-                  className="flex items-center gap-1 text-md text-black px-4 py-2 rounded-md hover:bg-gray-100 hover:text-red-500 dark:hover:bg-red-700 dark:hover:text-white cursor-pointer"
-              >
-                <FaSignOutAlt/>
+                className="flex items-center gap-1 text-md text-black px-4 py-2 rounded-md hover:bg-gray-100 hover:text-red-500 dark:hover:bg-red-700 dark:hover:text-white cursor-pointer"
+            >
+                <FaSignOutAlt />
             </button>
         </div>
     );
@@ -143,6 +157,10 @@ function MenuItem({
         bg-gray-50
         py-4 transition
         hover:bg-gray-100
+        sm: inline-flex
+         w-full
+         sm:w-auto
+         text-center
       "
         >
             <span className="text-gray-700">{icon}</span>

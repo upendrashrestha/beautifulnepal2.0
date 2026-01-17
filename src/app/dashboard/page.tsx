@@ -4,6 +4,16 @@ export default function DashboardPage() {
         <div className="mx-auto px-4 py-16 sm:py-20">
             <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
             <p>Welcome to your dashboard! Here you can manage your account, view analytics, and access exclusive content.</p>
+
+            <p className="py-4">Frequent Actions:</p>
+            <ul className="list-disc list-inside space-y-2">
+                <li>
+                    <a href="/dashboard/users/reset-password" className="text-blue-600 hover:underline">Reset Password</a>
+                </li>
+                <li>
+                    <a href="/dashboard/users/update" className="text-blue-600 hover:underline">Update Profile</a>
+                </li>
+            </ul>
         </div>
     );
 }

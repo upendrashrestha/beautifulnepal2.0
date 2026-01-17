@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import LeadService from '@/services/lead.service';
 import { Lead, PaginatedResponse } from '@/types';
+import { FaTrash } from 'react-icons/fa';
+import ConfirmationModal from '@/components/ConfirmationModal';
 
 
 
@@ -18,6 +20,24 @@ export default function LeadsPage() {
     const [status, setStatus] = useState('');
 
     const totalPages = Math.ceil(totalCount / pageSize);
+
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [selectedLeadId, setSelectedLeadId] = useState<string | null>(null);
+
+
+    const handleDelete = async () => {
+        if (!selectedLeadId) return;
+
+        try {
+            await LeadService.deleteLead(selectedLeadId);
+            setLeads(prev => prev.filter(m => m.id !== selectedLeadId));
+        } catch {
+            alert('Failed to delete lead.');
+        } finally {
+            setShowConfirm(false);
+            setSelectedLeadId(null);
+        }
+    };
     useEffect(() => {
         const timeout = setTimeout(() => {
             setPageIndex(1);
@@ -128,6 +148,7 @@ export default function LeadsPage() {
                             <th className="p-3 border-b">Interest</th>
                             <th className="p-3 border-b">Travel Month & Year</th>
                             <th className="p-3 border-b">Status</th>
+                            <th className="p-3 border-b">Source</th>
                             <th className="p-3 border-b">Actions</th>
                         </tr>
                     </thead>
@@ -147,20 +168,30 @@ export default function LeadsPage() {
                                 <td className="p-3 border-b">{lead.interestType}</td>
                                 <td className="p-3 border-b">{lead.travelMonth}</td>
                                 <td className="p-3 border-b capitalize">{lead.status}</td>
+                                <td className="p-3 border-b">{lead.source}</td>
                                 <td className="p-3 border-b">
-                                    <Link
-                                        href={`./leads/${lead.id}`}
-                                        className="text-blue-600 hover:underline"
-                                    >
-                                        Edit
-                                    </Link>
-                                    <span className="mx-1">|</span>
-                                    <Link
-                                        href={`./leadAssignments/${lead.id}`}
-                                        className="text-blue-600 hover:underline"
-                                    >
-                                        Assign Client (Agency)
-                                    </Link>
+                                    <div className="flex items-center gap-2">
+                                        <Link
+                                            href={`./leads/${lead.id}`}
+                                            className="text-blue-600 hover:underline"
+                                        >
+                                            Edit
+                                        </Link>
+                                        <span className="mx-1">|</span>
+                                        <Link
+                                            href={`./leadAssignments/${lead.id}`}
+                                            className="text-blue-600 hover:underline"
+                                        >
+                                            Assign Client
+                                        </Link>
+                                        <span className="mx-1">|</span>
+                                        <FaTrash
+                                            className="cursor-pointer text-red-400 hover:text-red-600"
+                                            onClick={() => {
+                                                setSelectedLeadId(lead.id!);
+                                                setShowConfirm(true);
+                                            }} />
+                                    </div>
                                 </td>
                             </tr>
                         ))}
@@ -192,6 +223,18 @@ export default function LeadsPage() {
                     </button>
                 </div>
             </div>
+
+            <ConfirmationModal
+                isOpen={showConfirm}
+                title="Delete Lead"
+                message="Are you sure you want to delete this lead?"
+                confirmText="Yes, Delete"
+                onCancel={() => {
+                    setShowConfirm(false);
+                    setSelectedLeadId(null);
+                }}
+                onConfirm={handleDelete}
+            />
         </div>
     );
 }

@@ -29,42 +29,43 @@ export default function Search() {
 
   const allResults = results
     ? [
-        ...results.posts,
-        ...results.guides,
-        ...results.destinations,
-        ...results.categories,
-        ...results.events,
-      ]
+      ...results.posts,
+      ...results.guides,
+      ...results.destinations,
+      ...results.categories,
+      ...results.events,
+    ]
     : [];
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
       {/* Search Bar */}
       <div className={`relative transition ${isFocused && "scale-[1.02]"}`}>
-        <div className="flex flex-col sm:flex-row justify-between gap-2 bg-white dark:bg-gray-800 rounded-2xl shadow-lg border sm:w-auto">
-          <div className="pl-4 pr-2 flex items-center">
+        <div className="flex flex-col sm:flex-row justify-between gap-1 bg-white dark:bg-gray-800 rounded-2xl shadow-lg border sm:w-auto">
+          <div className="pl-4 pr-2 flex items-center w-full">
             <FaSearch className="text-gray-400 " />
-         
-          <input
-            value={term}
-            onChange={(e) => setTerm(e.target.value)}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
-            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-            placeholder="Search destinations, guides, events..."
-            className="flex-1 px-4 py-3 text-sm sm:text-base bg-transparent focus:outline-none"
-          />
-           </div>
+
+            <input
+              value={term}
+              onChange={(e) => setTerm(e.target.value)}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
+              onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+              placeholder="Search destinations, guides, events..."
+              className="flex-1 px-6 py-5 text-sm sm:text-base bg-transparent focus:outline-none w-full"
+            />
+          </div>
 
 
-<div className=" pr-4">
-          <Button
-            label="Search"
-            loading={loading}
-            disabled={!term.trim()}
-            onClick={handleSearch}
-            className="m-2 w-full sm:w-auto"
-          />
+          <div className=" pr-4">
+            <Button
+              label="Search"
+              loading={loading}
+              disabled={!term.trim()}
+              onClick={handleSearch}
+              loadingLabel="Searching..."
+              className="m-2 w-full sm:w-auto sm:text-center"
+            />
           </div>
         </div>
       </div>

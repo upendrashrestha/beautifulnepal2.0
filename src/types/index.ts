@@ -313,11 +313,13 @@ export interface Message {
 export interface NotificationPreference {
   leadAssigned: boolean;
   messageReceived: boolean;
+  leadCreated: boolean;
 }
 
 export enum NotificationType {
   LeadAssigned = "LeadAssigned",
   MessageReceived = "MessageReceived",
+  LeadCreated = "LeadCreated",
 }
 
 interface BaseNotification {

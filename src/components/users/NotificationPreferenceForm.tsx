@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState } from "react";
 import Checkbox from "../ui/Checkbox";
@@ -14,45 +14,47 @@ interface NotificationPreferenceFormProps {
 export default function NotificationPreferencesForm({
     initialData,
     onSubmit,
-    loading = false
+    loading = false,
 }: NotificationPreferenceFormProps) {
     const [form, setForm] = useState<NotificationPreference>({
         leadAssigned: initialData?.leadAssigned ?? false,
-        messageReceived: initialData?.messageReceived ?? false
+        messageReceived: initialData?.messageReceived ?? false,
+        leadCreated: initialData?.leadCreated ?? false,
     });
 
     const handleCheckboxChange = (name: string, checked: boolean) => {
         setForm((prev) => ({
             ...prev,
-            [name]: checked
+            [name]: checked,
         }));
     };
-
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-
         await onSubmit(form);
-
-
     };
 
-
     return (
-        <form onSubmit={handleSubmit} className="space-y-4 p-4 border rounded shadow bg-white dark:bg-gray-800">
-
+        <form
+            onSubmit={handleSubmit}
+            className="space-y-4 p-4 border rounded shadow bg-white dark:bg-gray-800"
+        >
+            <Checkbox
+                label="Lead Created"
+                checked={form.leadCreated}
+                onChange={(v) => handleCheckboxChange("leadCreated", v)}
+            />
             <Checkbox
                 label="Lead Assigned"
                 checked={form.leadAssigned}
-                onChange={v => handleCheckboxChange("leadAssigned", v)}
+                onChange={(v) => handleCheckboxChange("leadAssigned", v)}
             />
-
 
             <Checkbox
                 label="Message Received"
                 checked={form.messageReceived}
-                onChange={v => handleCheckboxChange("messageReceived", v)}
+                onChange={(v) => handleCheckboxChange("messageReceived", v)}
             />
 
             <Button

@@ -15,7 +15,7 @@ export default function NotificationsPanel() {
     };
 
     return (
-        <div className="fixed top-7 right-4 md:right-40 z-50">
+        <div className="">
             <div className="relative">
                 {/* Trigger */}
                 <button

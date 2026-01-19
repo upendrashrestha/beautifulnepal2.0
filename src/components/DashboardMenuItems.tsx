@@ -4,154 +4,168 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
-    FaSignOutAlt,
-    FaTachometerAlt,
-    FaUsers,
-    FaEnvelope,
-    FaBusinessTime,
-    FaBars,
-    FaMemory,
-    FaAddressCard,
+  FaSignOutAlt,
+  FaTachometerAlt,
+  FaUsers,
+  FaEnvelope,
+  FaBusinessTime,
+  FaBars,
+  FaMemory,
+  FaAddressCard,
 } from "react-icons/fa";
 import { useAuth } from "@/contexts/AuthContext";
+import NotificationsPanel from "./NotificationPanel";
 
 export default function DashboardMenuItems() {
-    const [open, setOpen] = useState(false);
-    const dropdownRef = useRef<HTMLDivElement>(null);
-    const router = useRouter();
-    const { user, logout } = useAuth();
+  const [open, setOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
+  const { user, logout, isAuthenticated } = useAuth();
 
-    const handleLogout = async () => {
-        await logout();
-        router.replace("/login");
+  const handleLogout = async () => {
+    await logout();
+    router.replace("/login");
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setOpen(false);
+      }
     };
 
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (
-                dropdownRef.current &&
-                !dropdownRef.current.contains(event.target as Node)
-            ) {
-                setOpen(false);
-            }
-        };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, []);
+  if (!user) return null;
 
-    if (!user) return null;
-
-    return (
-        <div
-            className={"w-full flex items-center justify-end gap-4 "}
-        >
-            <div className="relative" ref={dropdownRef}>
+  return (
+    <header
+      className={`fixed left-0 top-0 z-50 w-full transition duration-200 p-7`}
+    >
+      <div className="relative mx-auto w-full items-center justify-between px-4 md:px-8 xl:flex 2xl:px-0">
+        {/* Logo and Mobile Toggle */}
+        <div className="flex w-full items-center justify-between">
+          <Link href="/dashboard" className="flex items-center gap-3">
+            <h1 className="text-xl font-bold">Dashboard</h1>
+          </Link>
+        </div>
+        <div className={"w-full flex items-center justify-end gap-4 "}>
+          {(isAuthenticated && (
+            <>
+              <div className="relative" ref={dropdownRef}>
                 {/* Trigger button */}
                 <button
-                    onClick={() => setOpen((prev) => !prev)}
-                    aria-haspopup="true"
-                    aria-expanded={open}
-                    className="flex items-center gap-1 text-sm text-black px-4 py-2 rounded-md hover:bg-gray-100 transition-colors hover:text-black dark:text-white dark:hover:bg-gray-700 dark:hover:text-white cursor-pointer"
+                  onClick={() => setOpen((prev) => !prev)}
+                  aria-haspopup="true"
+                  aria-expanded={open}
+                  className="flex items-center gap-1 text-sm text-black px-4 py-2 rounded-md hover:bg-gray-100 transition-colors hover:text-black dark:text-white dark:hover:bg-gray-700 dark:hover:text-white cursor-pointer"
                 >
-                    <FaBars />
+                  <FaBars />
                 </button>
 
                 {/* Dropdown */}
                 {open && (
-                    <div
-                        className="
+                  <div
+                    className="
             absolute right-0 mt-3 z-50 w-40 sm:w-140
             rounded-2xl bg-white
             shadow-2xl border border-gray-100
             p-3
           "
-                        role="menu"
-                    >
-                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-                            <MenuItem
-                                href="/dashboard"
-                                icon={<FaTachometerAlt />}
-                                label="Dashboard"
-                                onClick={() => setOpen(false)}
-                            />
+                    role="menu"
+                  >
+                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                      <MenuItem
+                        href="/dashboard"
+                        icon={<FaTachometerAlt />}
+                        label="Dashboard"
+                        onClick={() => setOpen(false)}
+                      />
 
-                            <MenuItem
-                                href="/dashboard/leads"
-                                icon={<FaAddressCard />}
-                                label="Leads"
-                                onClick={() => setOpen(false)}
-                            />
+                      <MenuItem
+                        href="/dashboard/leads"
+                        icon={<FaAddressCard />}
+                        label="Leads"
+                        onClick={() => setOpen(false)}
+                      />
 
-                            <MenuItem
-                                href="/dashboard/clients"
-                                icon={<FaBusinessTime />}
-                                label="Clients"
-                                onClick={() => setOpen(false)}
-                            />
+                      <MenuItem
+                        href="/dashboard/clients"
+                        icon={<FaBusinessTime />}
+                        label="Clients"
+                        onClick={() => setOpen(false)}
+                      />
 
-                            <MenuItem
-                                href="/dashboard/messages"
-                                icon={<FaEnvelope />}
-                                label="Messages"
-                                onClick={() => setOpen(false)}
-                            />
+                      <MenuItem
+                        href="/dashboard/messages"
+                        icon={<FaEnvelope />}
+                        label="Messages"
+                        onClick={() => setOpen(false)}
+                      />
 
-                            <MenuItem
-                                href="/dashboard/cache"
-                                icon={<FaMemory />}
-                                label="Cache Settings"
-                                onClick={() => setOpen(false)}
-                            />
+                      <MenuItem
+                        href="/dashboard/cache"
+                        icon={<FaMemory />}
+                        label="Cache Settings"
+                        onClick={() => setOpen(false)}
+                      />
 
-                            <MenuItem
-                                href="/dashboard/users"
-                                icon={<FaUsers />}
-                                label="User Management"
-                                onClick={() => setOpen(false)}
-                            />
-                        </div>
+                      <MenuItem
+                        href="/dashboard/users"
+                        icon={<FaUsers />}
+                        label="User Management"
+                        onClick={() => setOpen(false)}
+                      />
                     </div>
+                  </div>
                 )}
-
-
-
-            </div>
-            {/* <button
+              </div>
+              {/* <button
                 onClick={handleUser}
                 className="flex items-center gap-1 text-md text-gray-700 px-4 py-2 rounded-md hover:bg-gray-100 hover:text-black dark:hover:bg-red-700 dark:hover:text-white cursor-pointer"
             >
                 <FaUser />
             </button> */}
-            <button
+
+              <NotificationsPanel />
+              <button
                 onClick={handleLogout}
                 className="flex items-center gap-1 text-md text-black px-4 py-2 rounded-md hover:bg-gray-100 hover:text-red-500 dark:hover:bg-red-700 dark:hover:text-white cursor-pointer"
-            >
+              >
                 <FaSignOutAlt />
-            </button>
+              </button>
+            </>
+          )) || <Link href="/login">Login</Link>}
         </div>
-    );
+      </div>
+    </header>
+  );
 }
 
 /* ------------------ */
 /* Menu item card */
 /* ------------------ */
 function MenuItem({
-    href,
-    icon,
-    label,
-    onClick,
+  href,
+  icon,
+  label,
+  onClick,
 }: {
-    href: string;
-    icon: React.ReactNode;
-    label: string;
-    onClick: () => void;
+  href: string;
+  icon: React.ReactNode;
+  label: string;
+  onClick: () => void;
 }) {
-    return (
-        <Link
-            href={href}
-            onClick={onClick}
-            className="
+  return (
+    <Link
+      href={href}
+      onClick={onClick}
+      className="
         flex flex-col items-center justify-center gap-2
         rounded-xl border border-gray-100
         bg-gray-50
@@ -162,9 +176,9 @@ function MenuItem({
          sm:w-auto
          text-center
       "
-        >
-            <span className="text-gray-700">{icon}</span>
-            <span className="text-sm font-medium text-gray-800">{label}</span>
-        </Link>
-    );
+    >
+      <span className="text-gray-700">{icon}</span>
+      <span className="text-sm font-medium text-gray-800">{label}</span>
+    </Link>
+  );
 }

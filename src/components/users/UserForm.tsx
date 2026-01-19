@@ -21,13 +21,13 @@ export default function UserForm({
     const isEditMode = !!initialData;
 
     const [form, setForm] = useState<User>({
+        id: initialData?.id ?? '',
         displayName: initialData?.displayName ?? '',
         email: initialData?.email ?? '',
         userName: initialData?.userName ?? '',
         phoneNumber: initialData?.phoneNumber ?? '',
         role: initialData?.role ?? '',
         clientId: initialData?.clientId ?? '-1',
-        password: '',
         isActive: initialData?.isActive ?? true
     });
 
@@ -92,17 +92,18 @@ export default function UserForm({
             />
 
             {/* Password: required only on create */}
-            <Input
-                label="Password"
-                name="password"
-                value={form.password}
-                onChange={handleChange}
-                type="password"
-                required={!isEditMode}
-                placeholder={isEditMode ? 'Leave blank to keep current password' : ''}
-                className="input-base"
-            />
-
+            {isEditMode ||
+                <Input
+                    label="Password"
+                    name="password"
+                    value={form.password}
+                    onChange={handleChange}
+                    type="password"
+                    required={!isEditMode}
+                    placeholder={isEditMode ? 'Leave blank to keep current password' : ''}
+                    className="input-base"
+                />
+            }
             <Input
                 label="Phone Number"
                 name="phoneNumber"

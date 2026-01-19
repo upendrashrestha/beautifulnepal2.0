@@ -219,13 +219,14 @@ export interface User {
 
 export interface RegisterUser {
   email: string;
-  password: string;
+  password?: string;
   displayName?: string;
   userName?: string;
   phoneNumber?: string;
   role?: string;
   clientId?: string;
   isActive: boolean;
+  id?: string;
 }
 
 export interface ResetUserPassword {
@@ -308,3 +309,56 @@ export interface Message {
   createdBy: string;
   createdOn?: string;
 }
+
+export interface NotificationPreference {
+  leadAssigned: boolean;
+  messageReceived: boolean;
+}
+
+export enum NotificationType {
+  LeadAssigned = "LeadAssigned",
+  MessageReceived = "MessageReceived",
+}
+
+interface BaseNotification {
+  id: string;
+  type: NotificationType;
+  title: string;
+  body: string;
+  clientId: string;
+  userId?: string;
+  createdOn: string;
+}
+
+/* =============================
+   Event-specific payloads
+   ============================= */
+
+export interface LeadAssignedNotification extends BaseNotification {
+  type: NotificationType.LeadAssigned;
+  data: {
+    leadId: string;
+  };
+}
+
+export interface MessageReceivedNotification extends BaseNotification {
+  type: NotificationType.MessageReceived;
+  data: {
+    messageId: string;
+    fromUserId: string;
+  };
+}
+
+export type NotificationEvent =
+  | LeadAssignedNotification
+  | MessageReceivedNotification;
+
+export type MessageCreatedEvent = {
+  Body: string;
+  ClientId: string;
+  CreatedOn: string;
+  Data: string;
+  Title: string;
+  Type: string;
+  UserId: string;
+};

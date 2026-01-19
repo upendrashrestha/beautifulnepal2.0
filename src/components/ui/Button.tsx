@@ -29,11 +29,10 @@ export default function Button({
       onClick={onClick}
       disabled={isDisabled}
       className={`
-        inline-flex items-center rounded-full px-6 py-3 font-medium transition
-        ${
-          isDisabled
-            ? "cursor-not-allowed bg-gray-700 text-white"
-            : "bg-black text-white hover:bg-gray-800"
+        inline-flex items-center rounded-full px-6 py-3 font-medium transition cursor-pointer
+        ${isDisabled
+          ? "cursor-not-allowed bg-gray-700 text-white"
+          : "bg-black text-white hover:bg-gray-800"
         }
         ${className}
       `}

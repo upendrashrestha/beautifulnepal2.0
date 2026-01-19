@@ -13,6 +13,9 @@ export default function DashboardPage() {
                 <li>
                     <a href="/dashboard/users/update" className="text-blue-600 hover:underline">Update Profile</a>
                 </li>
+                <li>
+                    <a href="/dashboard/users/preferences/notification" className="text-blue-600 hover:underline">Notification Preferences</a>
+                </li>
             </ul>
         </div>
     );

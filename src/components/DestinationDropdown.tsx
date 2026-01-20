@@ -7,7 +7,11 @@ import { Destination } from "@/types";
 import { FaChevronDown, FaMapPin } from "react-icons/fa";
 import { usePathname } from "next/navigation";
 
-export default function DestinationDropdown() {
+type Props = {
+  onNavigate?: () => void;
+};
+
+export default function DestinationDropdown({ onNavigate }: Props) {
   const [open, setOpen] = useState(false);
   const [destinations, setDestinations] = useState<Destination[]>([]);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -17,9 +21,11 @@ export default function DestinationDropdown() {
     fetchFeaturedDestinations().then(setDestinations);
   }, []);
 
-  // Close when clicking outside (desktop)
+  // Desktop outside-click ONLY
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
+      if (window.innerWidth < 1280) return;
+
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
@@ -32,24 +38,30 @@ export default function DestinationDropdown() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Prevent body scroll on mobile menu
+  // Prevent scroll only for mobile dropdown
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "auto";
+    if (window.innerWidth < 768) {
+      document.body.style.overflow = open ? "hidden" : "auto";
+    }
   }, [open]);
+
+  const handleNavigate = () => {
+    setOpen(false);
+    onNavigate?.();
+  };
 
   return (
     <>
       {/* Trigger */}
-      <div className="relative inline-block text-left" ref={dropdownRef}>
+      <div className="relative inline-block" ref={dropdownRef}>
         <button
-          onClick={() => setOpen((prev) => !prev)}
+          onClick={() => setOpen((p) => !p)}
           className={`
             flex items-center gap-1 px-4 py-2 text-sm rounded-md transition
             ${pathUrl.startsWith("/destination")
               ? "text-primary"
               : "text-gray-800 hover:text-primary hover:bg-gray-100"}
           `}
-          aria-expanded={open}
         >
           <FaMapPin />
           Explore Destinations
@@ -58,16 +70,16 @@ export default function DestinationDropdown() {
           />
         </button>
 
-        {/* Desktop Dropdown */}
+        {/* Desktop dropdown */}
         {open && (
-          <div className="hidden md:block absolute left-0 z-50 mt-3 w-64 rounded-2xl bg-white shadow-xl">
-            <ul className="py-2 divide-y divide-gray-100 max-h-[60vh] overflow-y-auto">
+          <div className="hidden xl:block absolute left-0 z-50 mt-3 w-64 rounded-2xl bg-white shadow-xl">
+            <ul className="divide-y max-h-[60vh] overflow-y-auto">
               {destinations.map((dest) => (
                 <li key={dest._id}>
                   <Link
                     href={`/destinations/${dest.slug.current}`}
-                    onClick={() => setOpen(false)}
-                    className="block px-5 py-2 text-sm font-medium text-gray-800 hover:text-blue-600"
+                    onClick={handleNavigate}
+                    className="block px-5 py-2 text-sm hover:text-blue-600"
                   >
                     {dest.name}
                   </Link>
@@ -76,8 +88,8 @@ export default function DestinationDropdown() {
               <li>
                 <Link
                   href="/destinations"
-                  onClick={() => setOpen(false)}
-                  className="block px-5 py-3 text-sm font-semibold text-gray-400 hover:text-blue-700"
+                  onClick={handleNavigate}
+                  className="block px-5 py-3 font-semibold text-gray-500 hover:text-blue-600"
                 >
                   View All Destinations →
                 </Link>
@@ -87,22 +99,17 @@ export default function DestinationDropdown() {
         )}
       </div>
 
-      {/* Mobile Bottom Sheet */}
+      {/* Mobile bottom sheet */}
       {open && (
-        <div className="md:hidden fixed inset-0 z-50">
-          {/* Backdrop */}
+        <div className="xl:hidden fixed inset-0 z-50">
           <div
             className="absolute inset-0 bg-black/40"
-            onClick={() => setOpen(false)}
+            onClick={handleNavigate}
           />
 
-          {/* Bottom Menu */}
-          <div className="absolute bottom-0 left-0 right-0 max-h-[75vh] rounded-t-2xl bg-white shadow-xl animate-slideUp">
-            <div className="p-4 border-b">
-              <div className="mx-auto h-1.5 w-12 rounded-full bg-gray-300" />
-              <h3 className="mt-3 text-center text-base font-semibold">
-                Explore Destinations
-              </h3>
+          <div className="absolute bottom-0 left-0 right-0 max-h-[75vh] rounded-t-2xl bg-white shadow-xl">
+            <div className="p-4 border-b text-center font-semibold">
+              Explore Destinations
             </div>
 
             <ul className="divide-y overflow-y-auto">
@@ -110,18 +117,17 @@ export default function DestinationDropdown() {
                 <li key={dest._id}>
                   <Link
                     href={`/destinations/${dest.slug.current}`}
-                    onClick={() => setOpen(false)}
-                    className="block px-6 py-4 text-base font-medium text-gray-800"
+                    onClick={handleNavigate}
+                    className="block px-6 py-4 text-base"
                   >
                     {dest.name}
                   </Link>
                 </li>
               ))}
-
               <li>
                 <Link
                   href="/destinations"
-                  onClick={() => setOpen(false)}
+                  onClick={handleNavigate}
                   className="block px-6 py-4 font-semibold text-blue-600"
                 >
                   View All Destinations →

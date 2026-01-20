@@ -50,10 +50,11 @@ export default function RootLayout({
       />
       <body className={`font-inter`}>
         <>
+
           <Suspense fallback={<p className="text-gray-500">Loading...</p>}>
             <PageProgressBar />
           </Suspense>
-
+          
           {children}
         </>
       </body>

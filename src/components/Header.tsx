@@ -12,36 +12,42 @@ import CTAButton from "./CTAButton";
 export default function Header() {
   const [stickyMenu, setStickyMenu] = useState(false);
   const [navigationOpen, setNavigationOpen] = useState(false);
-  const pathUrl = usePathname();
+  const pathname = usePathname();
 
   // Sticky header
   useEffect(() => {
-    const handleStickyMenu = () => {
+    const handleScroll = () => {
       setStickyMenu(window.scrollY > 30);
     };
 
-    window.addEventListener("scroll", handleStickyMenu);
-    return () => window.removeEventListener("scroll", handleStickyMenu);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   // Close mobile menu on route change
   useEffect(() => {
     setNavigationOpen(false);
-  }, [pathUrl]);
+  }, [pathname]);
 
-  // Prevent background scroll when menu open
+  // Prevent background scroll when mobile menu open
   useEffect(() => {
     document.body.style.overflow = navigationOpen ? "hidden" : "auto";
   }, [navigationOpen]);
 
+  const closeMobileMenu = () => {
+    setNavigationOpen(false);
+  };
+
   return (
     <header
-      className={`fixed top-0 left-0 z-50 w-full transition-all duration-300 ${
-        stickyMenu
-          ? "bg-gray-50 shadow-md dark:bg-black"
-          : "bg-transparent"
-      }`}
+      className={`
+        fixed top-0 left-0 z-50 w-full transition-all duration-300
+        ${stickyMenu
+          ? "bg-white shadow-md dark:bg-black"
+          : "bg-transparent"}
+      `}
     >
+      {/* Top bar */}
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 md:px-8">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
@@ -54,11 +60,11 @@ export default function Header() {
           />
         </Link>
 
-        {/* Mobile Toggle */}
+        {/* Mobile toggle */}
         <button
           aria-label="Toggle Navigation"
           className="xl:hidden"
-          onClick={() => setNavigationOpen(!navigationOpen)}
+          onClick={() => setNavigationOpen((p) => !p)}
         >
           <svg
             className="h-7 w-7 text-black dark:text-white"
@@ -84,46 +90,59 @@ export default function Header() {
           </svg>
         </button>
 
-        {/* Desktop Navigation */}
+        {/* Desktop nav */}
         <nav className="hidden xl:flex items-center gap-4">
           <DestinationDropdown />
+
           <Link
             href="/whats-happening"
-            className={`flex items-center gap-2 rounded-md px-4 py-2 text-sm transition ${
-              pathUrl === "/whats-happening"
+            className={`
+              flex items-center gap-2 rounded-md px-4 py-2 text-sm transition
+              ${pathname === "/whats-happening"
                 ? "text-primary"
-                : "text-gray-800 hover:bg-gray-100 hover:text-primary"
-            }`}
+                : "text-gray-800 hover:bg-gray-100 hover:text-primary"}
+            `}
           >
             <FaCalendarAlt />
             What&apos;s happening?
           </Link>
+
           <CTAButton label="Plan Your Trip" source="header" />
         </nav>
       </div>
 
-      {/* Mobile Navigation */}
+      {/* Mobile navigation */}
       <div
-        className={`xl:hidden fixed inset-0 top-[72px] bg-white dark:bg-black transition-transform duration-300 ${
-          navigationOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className={`
+          xl:hidden fixed inset-0 top-[72px] z-40
+          bg-white dark:bg-black
+          transition-transform duration-300
+          ${navigationOpen ? "translate-x-0" : "-translate-x-full"}
+        `}
       >
-        <nav className="flex flex-col gap-3 p-6">
-          <DestinationDropdown />
+        <nav className="flex flex-col gap-4 p-6">
+          {/* Destination dropdown (closes menu on navigate) */}
+          <DestinationDropdown onNavigate={closeMobileMenu} />
 
           <Link
             href="/whats-happening"
-            className={`flex items-center gap-2 rounded-md px-4 py-3 text-base ${
-              pathUrl === "/whats-happening"
+            onClick={closeMobileMenu}
+            className={`
+              flex items-center gap-2 rounded-md px-4 py-3 text-base
+              ${pathname === "/whats-happening"
                 ? "text-primary"
-                : "text-gray-800 hover:bg-gray-100"
-            }`}
+                : "text-gray-800 hover:bg-gray-100"}
+            `}
           >
             <FaCalendarAlt />
             What&apos;s happening?
           </Link>
 
-          <CTAButton label="Plan Your Trip" source="header" />
+          <CTAButton
+            label="Plan Your Trip"
+            source="header"
+            onClick={closeMobileMenu}
+          />
         </nav>
       </div>
     </header>

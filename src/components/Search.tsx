@@ -41,7 +41,17 @@ export default function Search() {
     <div className="mx-auto max-w-3xl px-4 py-6 sm:py-10">
       {/* Search Bar */}
 <div className="sticky top-4 z-30">
-  <div className="rounded-2xl border bg-white shadow-lg dark:bg-gray-900">
+<div
+  className={`
+    rounded-2xl bg-white transition
+    shadow-lg
+    dark:bg-gray-900
+    ${isFocused
+      ? "shadow-[0_0_0_3px_rgba(59,130,246,0.35)]"
+      : "shadow-lg"}
+  `}
+>
+
     <div className="flex flex-col sm:flex-row w-full">
       {/* Input */}
       <div className="flex items-center gap-3 w-full px-4 py-4">

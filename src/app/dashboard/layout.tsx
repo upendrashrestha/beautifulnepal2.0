@@ -8,10 +8,11 @@ import { ReactNode } from "react";
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
     <AuthProvider>
+         <AuthGuard>
       <NotificationProvider>
         <DashboardSidebar />
         <DashboardMenuItems />
-        <AuthGuard>
+     
           {/* Main content */}
           <div className="md:ml-64">
             {/* Top header */}
@@ -19,8 +20,8 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 
             <main className="pt-24 px-4 md:px-8">{children}</main>
           </div>
-        </AuthGuard>
       </NotificationProvider>
+        </AuthGuard>
     </AuthProvider>
   );
 }

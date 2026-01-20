@@ -1,32 +1,30 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import AccountService from '@/services/account.service';
-import { User } from '@/types';
-import { FaTrash } from 'react-icons/fa';
-import ConfirmationModal from '@/components/ConfirmationModal';
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import AccountService from "@/services/account.service";
+import { User } from "@/types";
+import { FaTrash } from "react-icons/fa";
+import ConfirmationModal from "@/components/ConfirmationModal";
 
 export default function UsersPage() {
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState(true);
 
-
-    const [searchInput, setSearchInput] = useState('');
-    const [search, setSearch] = useState('');
+    const [searchInput, setSearchInput] = useState("");
+    const [search, setSearch] = useState("");
 
     const [showConfirm, setShowConfirm] = useState(false);
     const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
-
 
     const handleDelete = async () => {
         if (!selectedUserId) return;
 
         try {
             await AccountService.deleteUser(selectedUserId);
-            setUsers(prev => prev.filter(m => m.userName !== selectedUserId));
+            setUsers((prev) => prev.filter((m) => m.userName !== selectedUserId));
         } catch {
-            alert('Failed to delete user.');
+            alert("Failed to delete user.");
         } finally {
             setShowConfirm(false);
             setSelectedUserId(null);
@@ -58,59 +56,43 @@ export default function UsersPage() {
     return (
         <div className="p-6 space-y-4">
             {/* Header */}
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <h1 className="text-2xl font-bold">Users</h1>
+
+                <Link
+                    href="./users/create"
+                    className="btn-primary text-black hover:text-green-700 w-full sm:w-auto text-center"
+                >
+                    + New User
+                </Link>
             </div>
 
             {/* Filters */}
-            <div className="flex justify-between items-center">
-
-                <div className="relative">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                <div className="relative w-full sm:w-80">
                     <input
                         type="text"
                         placeholder="Search name, email, username..."
                         value={searchInput}
                         onChange={(e) => setSearchInput(e.target.value)}
-                        onKeyDown={(e) => {
-                            if (e.key === 'Enter') {
-                                setSearch(searchInput.trim());
-                            }
-                            if (e.key === 'Escape') {
-                                setSearchInput('');
-                                setSearch('');
-                            }
-                        }}
-                        className="
-              rounded border border-gray-300 bg-white px-3 py-2 pr-8
-              text-gray-900 caret-gray-900
-              focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500
-            "
+                        className="w-full rounded border px-3 py-2 pr-8"
                     />
 
                     {searchInput && (
                         <button
-                            type="button"
                             onClick={() => {
-                                setSearchInput('');
-                                setSearch('');
+                                setSearchInput("");
+                                setSearch("");
                             }}
-                            className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-black"
-                            aria-label="Clear search"
+                            className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400"
                         >
                             ✕
                         </button>
                     )}
                 </div>
-
-
-
-                <Link href="./users/create" className="btn-primary text-black hover:text-green-700">
-                    + New User
-                </Link>
             </div>
 
-            {/* Table */}
-            <div className="overflow-x-auto border rounded">
+            <div className="hidden md:block overflow-x-auto border rounded">
                 <table className="w-full">
                     <thead className="bg-gray-100 text-left">
                         <tr>
@@ -143,20 +125,21 @@ export default function UsersPage() {
                                 <td className="p-3 border-b">
                                     <span
                                         className={`px-2 py-1 rounded text-xs font-medium ${user.isActive
-                                            ? 'bg-green-100 text-green-700'
-                                            : 'bg-red-100 text-red-700'
+                                                ? "bg-green-100 text-green-700"
+                                                : "bg-red-100 text-red-700"
                                             }`}
                                     >
-                                        {user.isActive ? 'Active' : 'Inactive'}
+                                        {user.isActive ? "Active" : "Inactive"}
                                     </span>
                                 </td>
-                                <td className="p-3 border-b"><FaTrash
-                                    className="cursor-pointer text-gray-600 hover:text-red-600"
-                                    onClick={() => {
-                                        setSelectedUserId(user.userName!);
-                                        setShowConfirm(true);
-                                    }}
-                                />
+                                <td className="p-3 border-b">
+                                    <FaTrash
+                                        className="cursor-pointer text-gray-600 hover:text-red-600"
+                                        onClick={() => {
+                                            setSelectedUserId(user.userName!);
+                                            setShowConfirm(true);
+                                        }}
+                                    />
                                 </td>
                             </tr>
                         ))}
@@ -164,30 +147,56 @@ export default function UsersPage() {
                 </table>
             </div>
 
-            {/* Pagination */}
-            {/* <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">
-                    Page {pageIndex} of {totalPages}
-                </span>
+            <div className="space-y-3 md:hidden">
+                {users.length === 0 && (
+                    <p className="text-center text-gray-500 py-6">No users found</p>
+                )}
 
-                <div className="flex gap-2">
-                    <button
-                        disabled={pageIndex === 1}
-                        onClick={() => setPageIndex((p) => p - 1)}
-                        className="px-3 py-1 border rounded disabled:opacity-50"
+                {users.map((user) => (
+                    <div
+                        key={user.id}
+                        className="rounded-lg border bg-white p-4 shadow-sm"
                     >
-                        Previous
-                    </button>
+                        <div className="space-y-2">
+                            <div>
+                                <p className="font-semibold">{user.displayName}</p>
+                                <p className="text-sm text-gray-500">{user.email}</p>
+                            </div>
 
-                    <button
-                        disabled={pageIndex === totalPages}
-                        onClick={() => setPageIndex((p) => p + 1)}
-                        className="px-3 py-1 border rounded disabled:opacity-50"
-                    >
-                        Next
-                    </button>
-                </div>
-            </div> */}
+                            <div className="text-sm text-gray-700">
+                                <p>
+                                    <strong>Username:</strong> {user.userName}
+                                </p>
+                                <p>
+                                    <strong>Role:</strong> {user.role}
+                                </p>
+                                <p>
+                                    <strong>Client:</strong> {user.clientName}
+                                </p>
+                            </div>
+
+                            <span
+                                className={`inline-block px-2 py-1 rounded text-xs font-medium ${user.isActive
+                                        ? "bg-green-100 text-green-700"
+                                        : "bg-red-100 text-red-700"
+                                    }`}
+                            >
+                                {user.isActive ? "Active" : "Inactive"}
+                            </span>
+
+                            <div className="flex items-center gap-4 pt-2">
+                                <FaTrash
+                                    className="cursor-pointer text-red-500 hover:text-red-700"
+                                    onClick={() => {
+                                        setSelectedUserId(user.userName!);
+                                        setShowConfirm(true);
+                                    }}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
 
             <ConfirmationModal
                 isOpen={showConfirm}

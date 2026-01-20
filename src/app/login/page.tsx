@@ -22,15 +22,8 @@ export default function Login() {
         e.preventDefault();
         setError(null);
 
-        if (!identifier) {
-            setError("Please enter email or username");
-            return;
-        }
-
-        if (!password) {
-            setError("Please enter your password");
-            return;
-        }
+        if (!identifier) return setError("Please enter email or username");
+        if (!password) return setError("Please enter your password");
 
         const loginData: Login = { password };
 
@@ -45,11 +38,7 @@ export default function Login() {
             await login(loginData);
             router.replace("/dashboard");
         } catch (err) {
-            if (err instanceof Error) {
-                setError(err.message);
-            } else {
-                setError("Invalid credentials");
-            }
+            setError(err instanceof Error ? err.message : "Invalid credentials");
         } finally {
             setIsLoading(false);
         }
@@ -58,21 +47,24 @@ export default function Login() {
     const loading = isLoading || authLoading;
 
     return (
-        <div className="min-h-screen flex flex-col items-center mt-30 text-black text-center">
-            <div className="w-full max-w-lg">
-                <div className="flex justify-end">
-                    <button
-                        type="button"
-                        onClick={() => router.push("../")}
-                        className="flex items-center font-medium text-black hover:text-red-600 transition-colors dark:text-white dark:hover:text-red-500 cursor-pointer p-2"
-                    >
-                        <FaTimes className="mr-1" />
-                    </button>
-                </div>
-                <div className="flex items-center justify-between py-4">
-                    <h1 className="text-3xl mb-4">Sign In</h1>
-                </div>
-                <form onSubmit={handleLogin} className="space-y-5">
+        <div className="min-h-screen flex items-center justify-center px-4 bg-gray-50">
+            <div className="relative w-full max-w-md rounded-2xl bg-white p-6 sm:p-8 shadow-xl">
+                {/* Close button */}
+                <button
+                    type="button"
+                    onClick={() => router.push("../")}
+                    className="absolute right-4 top-4 text-gray-400 hover:text-red-600 transition"
+                >
+                    <FaTimes size={18} />
+                </button>
+
+                {/* Title */}
+                <h1 className="text-2xl sm:text-3xl font-bold text-center mb-6">
+                    Sign In
+                </h1>
+
+                {/* Form */}
+                <form onSubmit={handleLogin} className="space-y-4">
                     {error && (
                         <div className="rounded-lg bg-red-50 p-3 text-sm text-red-700">
                             {error}
@@ -85,7 +77,7 @@ export default function Login() {
                         value={identifier}
                         onChange={(e) => setIdentifier(e.target.value)}
                         autoComplete="username"
-                        className="p-2"
+                        className="w-full"
                     />
 
                     <Input
@@ -94,7 +86,7 @@ export default function Login() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         autoComplete="current-password"
-                        className="p-2"
+                        className="w-full"
                     />
 
                     <Button

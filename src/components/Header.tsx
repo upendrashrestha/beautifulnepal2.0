@@ -7,102 +7,125 @@ import DestinationDropdown from "./DestinationDropdown";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { FaCalendarAlt } from "react-icons/fa";
-
 import CTAButton from "./CTAButton";
-//import { useAuth } from "@/contexts/AuthContext";
 
 export default function Header() {
-    const [stickyMenu, setStickyMenu] = useState(false);
-    const [navigationOpen, setNavigationOpen] = useState(false);
-    const pathUrl = usePathname();
-    //const { isAuthenticated } = useAuth();
-    // Sticky menu
-    useEffect(() => {
-        const handleStickyMenu = () => {
-            setStickyMenu(window.scrollY >= 30);
-        };
+  const [stickyMenu, setStickyMenu] = useState(false);
+  const [navigationOpen, setNavigationOpen] = useState(false);
+  const pathUrl = usePathname();
 
-        window.addEventListener("scroll", handleStickyMenu);
-        return () => window.removeEventListener("scroll", handleStickyMenu);
-    }, []);
+  // Sticky header
+  useEffect(() => {
+    const handleStickyMenu = () => {
+      setStickyMenu(window.scrollY > 30);
+    };
 
-    return (
-        <header
-            className={`fixed left-0 top-0 z-50 w-full transition duration-200 ${stickyMenu ? "p-7 bg-gray-50 p-4 shadow-sm dark:bg-black" : "p-7"
-                }`}
+    window.addEventListener("scroll", handleStickyMenu);
+    return () => window.removeEventListener("scroll", handleStickyMenu);
+  }, []);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setNavigationOpen(false);
+  }, [pathUrl]);
+
+  // Prevent background scroll when menu open
+  useEffect(() => {
+    document.body.style.overflow = navigationOpen ? "hidden" : "auto";
+  }, [navigationOpen]);
+
+  return (
+    <header
+      className={`fixed top-0 left-0 z-50 w-full transition-all duration-300 ${
+        stickyMenu
+          ? "bg-gray-50 shadow-md dark:bg-black"
+          : "bg-transparent"
+      }`}
+    >
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 md:px-8">
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-2">
+          <Image
+            src={logo}
+            alt="Beautiful Nepal Logo"
+            width={80}
+            height={50}
+            priority
+          />
+        </Link>
+
+        {/* Mobile Toggle */}
+        <button
+          aria-label="Toggle Navigation"
+          className="xl:hidden"
+          onClick={() => setNavigationOpen(!navigationOpen)}
         >
-            <div className="relative mx-auto w-full items-center justify-between px-4 md:px-8 xl:flex 2xl:px-0">
-                {/* Logo and Mobile Toggle */}
-                <div className="flex w-full items-center justify-between">
-                    <Link href="/" className="flex items-center gap-3">
-                        <Image
-                            src={logo}
-                            alt="Beautiful Nepal Logo"
-                            width={90}
-                            height={60}
-                            priority
-                        />
-                    </Link>
-                    <button
-                        aria-label="Toggle Navigation"
-                        className="xl:hidden"
-                        onClick={() => setNavigationOpen(!navigationOpen)}
-                    >
-                        <svg
-                            className="h-6 w-6 text-black dark:text-white"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            {navigationOpen ? (
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M6 18L18 6M6 6l12 12"
-                                />
-                            ) : (
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M4 6h16M4 12h16M4 18h16"
-                                />
-                            )}
-                        </svg>
-                    </button>
-                </div>
+          <svg
+            className="h-7 w-7 text-black dark:text-white"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            {navigationOpen ? (
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            ) : (
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            )}
+          </svg>
+        </button>
 
-                <div
-                    className={`w-full xl:flex xl:items-center xl:justify-end xl:gap-6 ${navigationOpen
-                            ? "block mt-4 bg-white dark:bg-black p-4 rounded-md shadow-md xl:mt-0 xl:bg-transparent xl:p-0 xl:shadow-none"
-                            : "hidden"
-                        }`}
-                >
-                    <nav className="flex flex-col xl:flex-row xl:items-center gap-2 xl:gap-4">
-                        <DestinationDropdown />
-                        <Link
-                            href="/whats-happening"
-                            className={`flex items-center gap-2 text-sm px-4 py-2 rounded-md transition-colors ${pathUrl === "/whats-happening"
-                                    ? "text-primary"
-                                    : "text-gray-800 hover:text-primary hover:bg-gray-100"
-                                }`}
-                        >
-                            <FaCalendarAlt /> What&apos;s happening?
-                        </Link>
-                        {/* <Link
-                            href="/contact"
-                            className={`flex items-center gap-2 text-sm px-4 py-2 rounded-md transition-colors ${pathUrl === "/contact"
-                                ? "text-primary"
-                                : "text-gray-800 hover:text-primary hover:bg-gray-100"
-                                }`}
-                        ><FaEnvelope />  Contact
-                        </Link> */}
-                        <CTAButton label="Plan Your Trip" source="header" />
-                    </nav>
-                </div>
-            </div>
-        </header>
-    );
+        {/* Desktop Navigation */}
+        <nav className="hidden xl:flex items-center gap-4">
+          <DestinationDropdown />
+          <Link
+            href="/whats-happening"
+            className={`flex items-center gap-2 rounded-md px-4 py-2 text-sm transition ${
+              pathUrl === "/whats-happening"
+                ? "text-primary"
+                : "text-gray-800 hover:bg-gray-100 hover:text-primary"
+            }`}
+          >
+            <FaCalendarAlt />
+            What&apos;s happening?
+          </Link>
+          <CTAButton label="Plan Your Trip" source="header" />
+        </nav>
+      </div>
+
+      {/* Mobile Navigation */}
+      <div
+        className={`xl:hidden fixed inset-0 top-[72px] bg-white dark:bg-black transition-transform duration-300 ${
+          navigationOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        <nav className="flex flex-col gap-3 p-6">
+          <DestinationDropdown />
+
+          <Link
+            href="/whats-happening"
+            className={`flex items-center gap-2 rounded-md px-4 py-3 text-base ${
+              pathUrl === "/whats-happening"
+                ? "text-primary"
+                : "text-gray-800 hover:bg-gray-100"
+            }`}
+          >
+            <FaCalendarAlt />
+            What&apos;s happening?
+          </Link>
+
+          <CTAButton label="Plan Your Trip" source="header" />
+        </nav>
+      </div>
+    </header>
+  );
 }

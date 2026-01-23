@@ -42,12 +42,14 @@ export default function UserForm({
         }));
     };
 
-    const handleDropdownChange = (value: string) => {
-        setForm((prev) => ({
-            ...prev,
-            role: value
-        }));
-    };
+  
+
+    const handleDropdownChange = (
+  e: React.ChangeEvent<HTMLSelectElement>
+) => {
+  setForm({ ...form, [e.target.name]: e.target.value });
+};
+
 
     const handleCheckboxChange = (name: string, checked: boolean) => {
         setForm((prev) => ({
@@ -118,17 +120,21 @@ export default function UserForm({
                 onChange={v => handleCheckboxChange('isActive', v)}
             />
 
-            <Dropdown
-                label="Role"
-                value={form.role}
-                onChange={handleDropdownChange}
-                required
-                options={[
-                    { value: 'Admin', label: 'Admin' },
-                    { value: 'SuperAdmin', label: 'Super Admin' },
-                    { value: 'SuperDuperAdmin', label: 'Super Duper Admin' }
-                ]}
-            />
+           <Dropdown
+  label="Role"
+  name="role"
+  value={form.role}
+  required
+  options={[
+    { value: 'Admin', label: 'Admin' },
+    { value: 'SuperAdmin', label: 'Super Admin' },
+    { value: 'SuperDuperAdmin', label: 'Super Duper Admin' },
+  ]}
+  onChange={(e) =>
+    handleDropdownChange(e)
+  }
+/>
+
 
             <Button
                 type="submit"

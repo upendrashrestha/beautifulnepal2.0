@@ -7,6 +7,7 @@ interface CTAButtonProps {
   source: string;
   href?: string;
   onClick?: () => void;
+  className?: string;
 }
 
 export default function CTAButton({
@@ -14,6 +15,7 @@ export default function CTAButton({
   source,
   href = "/plan-your-trip",
   onClick,
+  className = "",
 }: CTAButtonProps) {
   return (
     <Link
@@ -22,13 +24,14 @@ export default function CTAButton({
         query: { source },
       }}
       onClick={onClick}
-      className="
+      className={`
         inline-flex items-center justify-center
         rounded-full bg-black px-6 py-3
-        text-sm font-semibold text-gray-400
+        text-sm font-semibold text-gray-100
         transition
         hover:bg-gray-800 hover:text-white
-      "
+        ${className}
+      `}
     >
       {label}
     </Link>

@@ -1,3 +1,4 @@
+// app/layout.tsx
 import type { Metadata } from "next";
 import { Inter, Montserrat } from "next/font/google";
 import "./globals.css";
@@ -31,32 +32,40 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html className={`${inter.variable} ${montserrat.variable}`} lang="en">
-      <Script src="https://www.googletagmanager.com/gtag/js?id=G-Z6J9XCLJKJ"></Script>
-      <Script id="google-analytics">
-        {`window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
+      <head>
+        <meta
+          name="google-site-verification"
+          content="iN2yAIxp64iNnrFzQLw4I5lw0iEMXyVsbjzEDTAqx1k"
+        />
+      </head>
 
-        gtag('config', 'G-Z6J9XCLJKJ');`}
-      </Script>
-      <meta
-        name="google-site-verification"
-        content="iN2yAIxp64iNnrFzQLw4I5lw0iEMXyVsbjzEDTAqx1k"
-      />
-      <body className={`font-inter`}>
-        <>
+      <body className="font-inter bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100">
+        {/* Google Analytics */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-Z6J9XCLJKJ"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-Z6J9XCLJKJ');
+          `}
+        </Script>
 
-          <Suspense fallback={<p className="text-gray-500">Loading...</p>}>
-            <PageProgressBar />
-          </Suspense>
-          
-          {children}
-        </>
+        {/* Page progress bar */}
+        <Suspense fallback={<p className="text-gray-500">Loading...</p>}>
+          <PageProgressBar />
+        </Suspense>
+
+        {/* Main content */}
+        {children}
       </body>
     </html>
   );

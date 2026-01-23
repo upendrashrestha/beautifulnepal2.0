@@ -1,128 +1,64 @@
+"use client";
 
-'use client';
-
-import AnimatedSection from '@/components/AnimatedSection';
-import PageLayout from '@/components/layouts/PageLayout';
-import Link from '@/components/Link';
-import { Card, CardContent } from '@/components/ui/card';
-import { urlFor } from '@/sanity/lib/image';
-import { CommunityEvent } from '@/types';
-import { FaRegCalendarAlt, FaRegClock, FaMapMarkerAlt } from 'react-icons/fa';
-
-import { parseISO, isAfter, isWithinInterval, isBefore } from "date-fns";
+import { CommunityEvent } from "@/types";
+import AnimatedSection from "@/components/AnimatedSection";
+import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
+import { urlFor } from "@/sanity/lib/image";
 
-type WhatsHappeningClientProps = {
-    events: CommunityEvent[];
-};
-
-function categorizeEvents(events: CommunityEvent[]) {
-    const now = new Date();
-
-    const currentEvents = events.filter((event) => {
-        const startDate = parseISO(event.eventDate);
-        const endDate = parseISO(event.eventEndDate || event.eventDate);
-        return isWithinInterval(now, { start: startDate, end: endDate });
-    });
-
-    const futureEvents = events.filter((event) => {
-        const startDate = parseISO(event.eventDate);
-        return isAfter(startDate, now);
-    });
-
-    const pastEvents = events.filter((event) => {
-        const endDate = parseISO(event.eventEndDate || event.eventDate);
-        return isBefore(endDate, now);
-    });
-
-    return { currentEvents, futureEvents, pastEvents };
+interface WhatsHappeningClientProps {
+  events: CommunityEvent[];
 }
 
 export default function WhatsHappeningClient({ events }: WhatsHappeningClientProps) {
-    const { currentEvents, futureEvents, pastEvents } = categorizeEvents(events);
+  if (!events || events.length === 0)
+    return <p className="text-center py-10 text-gray-500">No upcoming events.</p>;
 
-    const renderEvents = (title: string, eventsList: CommunityEvent[]) => (
-        <section className="my-16">
-            <h3 className="text-2xl font-bold text-gray-800 mb-6">{title}</h3>
-            {eventsList.length === 0 ? (
-                <p className="text-gray-500">No events found.</p>
-            ) : (
-                <div className="grid gap-8 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
-                    {eventsList.map((event: CommunityEvent) => (
-                        <Link
-                            key={event._id}
-                            href={event.slug ? `/whats-happening/${event.slug.current}` : "#"}
-                            className="group transition-transform hover:scale-[1.02]"
-                        >
-                            <Card className="h-full rounded-xl overflow-hidden border border-gray-100 shadow-md bg-white hover:shadow-lg transition-all duration-300">
-                                {event.image &&
-                                    <div className="relative h-48 w-full">
-                                        <Image
-                                            src={event.image.asset?._ref ? urlFor(event.image.asset._ref).url() : ""}
-                                            alt={event.image.asset?.alt || event.title}
-                                            layout="fill"
-                                            objectFit="cover"
-                                        />
-                                    </div>
-                                }
-                                <CardContent className="p-6 space-y-4">
-                                    <h2 className="text-xl font-bold text-gray-800 group-hover:text-primary">
-                                        {event.title}
-                                    </h2>
+  return (
+    <section className="my-10">
+      <AnimatedSection>
+        <h1 className="text-3xl font-bold mb-8">What&apos;s Happening in Nepal</h1>
+        <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          {events.map((event, index) => {
+            const imageUrl = event.image?.asset?._ref
+              ? urlFor(event.image.asset._ref).width(600).height(400).url()
+              : "/placeholder.jpg";
 
-                                    <div className="flex items-center gap-2 text-sm text-gray-600">
-                                        <FaRegCalendarAlt className="text-orange-500" />
-                                        <span>{event.eventDate}</span>
-                                    </div>
+            const imageAlt = event.image?.asset?.alt || event.title;
 
-                                    <div className="flex items-center gap-2 text-sm text-gray-600">
-                                        <FaRegClock className="text-blue-500" />
-                                        <span>{event.eventTime}</span>
-                                    </div>
-
-                                    {event.location && (
-                                        <div className="flex items-center gap-2 text-sm text-gray-600">
-                                            <FaMapMarkerAlt className="text-red-500" />
-                                            <span>{event.location}</span>
-                                        </div>
-                                    )}
-                                </CardContent>
-                            </Card>
-                        </Link>
-                    ))}
+            return (
+              <Card
+                key={event._id}
+                className="group overflow-hidden border border-gray-200 shadow-sm hover:shadow-lg transition-shadow duration-300 rounded-2xl"
+              >
+                <div className="relative h-48 w-full">
+                  <Image
+                    src={imageUrl}
+                    alt={imageAlt}
+                    fill
+                    className="rounded-t-2xl object-cover"
+                    priority={index < 3} // LCP: first 3 images
+                  />
                 </div>
-            )}
-        </section>
-    );
-
-    return (
-        <PageLayout title="What's Happening in Nepal">
-            <AnimatedSection>
-                <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-10 p-4 rounded-xl shadow-sm">
-                    <h6 className="text-lg font-semibold text-gray-700 text-center">
-                        Hosting an event? Share it with the world!
-                    </h6>
-                    
-                    <Link
-                        href="/whats-happening/submit-your-event"
-                        className="text-sm px-5 py-2.5 rounded-full font-bold bg-black text-gray-400 hover:text-white transition-all duration-300 shadow-md hover:shadow-lg"
-                    >
-                        Submit your event
-                    </Link>
-                </div>
-            </AnimatedSection>
-
-            <AnimatedSection>
-                {currentEvents.length === 0 && futureEvents.length === 0 && pastEvents.length === 0 ? (
-                    <p className="text-center text-gray-500 mt-10">No current or upcoming events right now. Check back soon!</p>
-                ) : (
-                    <>
-                        {renderEvents("Current Events", currentEvents)}
-                        {renderEvents("Upcoming Events", futureEvents)}
-                        {renderEvents("Past Events", pastEvents)}
-                    </>
-                )}
-            </AnimatedSection>
-        </PageLayout>
-    );
+                <CardContent className="p-5 flex flex-col justify-between">
+                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 transition-colors line-clamp-2">
+                    {event.title}
+                  </h2>
+                  {event.location && (
+                    <p className="text-gray-600 text-sm mt-1">{event.location}</p>
+                  )}
+                  <p className="text-gray-500 text-sm mt-2">
+                    {event.eventDate} {event.eventTime}
+                    {event.eventEndDate
+                      ? ` - ${event.eventEndDate} ${event.eventEndTime ?? ""}`
+                      : ""}
+                  </p>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+      </AnimatedSection>
+    </section>
+  );
 }

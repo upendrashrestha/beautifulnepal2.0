@@ -30,21 +30,22 @@ export default function ClearCacheForm() {
     return (
         <form action={handleClearCache} className="space-y-4">
         
- <Dropdown
-                label="Select Cache Key"
-                value={key}
-                onChange={value => {
-                    setKey( value);
-                }}
-                options={[
-                    { label: 'All Keys', value: '' },
-                    { label: 'Company', value: 'company' },
-                    { label: 'Destinations', value: 'destinations' },
-                    { label: 'Posts', value: 'posts' },
-                    { label: 'Authors', value: 'authors' },
-                    { label: 'Guides', value: 'guides' },
-                ]}
-            />
+<Dropdown
+  label="Select Cache Key"
+  name="cache"
+  value={key}
+  onChange={(e) => {
+    setKey(e.target.value);
+  }}
+  options={[
+    { label: 'All Keys', value: '' },
+    { label: 'Company', value: 'company' },
+    { label: 'Destinations', value: 'destinations' },
+    { label: 'Posts', value: 'posts' },
+    { label: 'Authors', value: 'authors' },
+    { label: 'Guides', value: 'guides' },
+  ]}
+/>
 
             <button
                 type="submit"

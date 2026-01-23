@@ -1,14 +1,15 @@
 import { Redis } from "@upstash/redis";
-import {
-  withCache as inMemoryCache,
-  clearCache as inMemoryClearCache,
-} from "./cache";
+
+// Redis client
 const redis = new Redis({
   url: process.env.NEXT_PUBLIC_UPSTASH_REDIS_REST_URL!,
   token: process.env.NEXT_PUBLIC_UPSTASH_REDIS_REST_TOKEN!,
 });
-const cacheUrl = process.env.NEXT_PUBLIC_UPSTASH_REDIS_REST_URL;
+
 const SIX_HOURS = 6 * 60 * 60;
+
+// Generic in-memory cache for server-side speed
+const memoryCache = new Map<string, unknown>();
 
 export async function withCache<T>(
   key: string,
@@ -16,29 +17,49 @@ export async function withCache<T>(
   forceRefresh = false,
   ttlSeconds = SIX_HOURS
 ): Promise<T> {
-  if (cacheUrl) {
-    if (!forceRefresh) {
-      const cached = await redis.get<T>(key);
-      if (cached) {
-        return cached;
-      }
-    }
-    const data = await fetcher();
-    await redis.set(key, data, { ex: ttlSeconds });
-    return data;
-  } else {
-    return inMemoryCache(key, fetcher, forceRefresh);
+  // 1️⃣ Check memory cache first
+  if (!forceRefresh && memoryCache.has(key)) {
+    return memoryCache.get(key) as T;
   }
+
+  // 2️⃣ Check Redis if configured
+  if (!forceRefresh && process.env.NEXT_PUBLIC_UPSTASH_REDIS_REST_URL) {
+    const cached = await redis.get<T>(key);
+    if (cached !== null) {
+      memoryCache.set(key, cached); // populate memory cache
+      return cached;
+    }
+  }
+
+  // 3️⃣ Fetch fresh data
+  const data = await fetcher();
+
+  // 4️⃣ Save to memory cache
+  memoryCache.set(key, data);
+
+  // 5️⃣ Save to Redis if available
+  if (process.env.NEXT_PUBLIC_UPSTASH_REDIS_REST_URL) {
+    try {
+      await redis.set(key, data, { ex: ttlSeconds });
+    } catch (err) {
+      console.warn("Redis set failed", err);
+    }
+  }
+
+  return data;
 }
 
+// Clear cache helper
 export async function clearCache(key?: string) {
-  if (!cacheUrl) {
-    await inMemoryClearCache(key);
-    return;
-  }
   if (key) {
-    await redis.del(key);
+    memoryCache.delete(key);
+    if (process.env.NEXT_PUBLIC_UPSTASH_REDIS_REST_URL) {
+      await redis.del(key);
+    }
   } else {
-    await redis.flushall(); // Be cautious: this clears all cache
+    memoryCache.clear();
+    if (process.env.NEXT_PUBLIC_UPSTASH_REDIS_REST_URL) {
+      await redis.flushall(); // ⚠️ clears all Redis
+    }
   }
 }

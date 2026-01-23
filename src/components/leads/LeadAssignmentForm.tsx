@@ -32,15 +32,20 @@ export default function AssignLeadForm({ leadId }: { leadId: string }) {
     return (
         <div className="space-y-4 border rounded p-4">
 
-            <Dropdown
-                label="Clients"
-                value={clientId}
-                onChange={value => setClientId(value)}
-                options={[
-                    { label: 'Select Client', value: '' },
-                    ...clients.map(c => ({ label: c.name, value: c.id }))
-                ]}
-            />
+        <Dropdown
+  label="Clients"
+  name="clientId"
+  value={clientId}
+  onChange={(e) => setClientId(e.target.value)}
+  options={[
+    { label: 'Select Client', value: '' },
+    ...clients.map((c) => ({
+      label: c.name,
+      value: c.id,
+    })),
+  ]}
+/>
+
 
             <TextArea
                 label='Remarks'

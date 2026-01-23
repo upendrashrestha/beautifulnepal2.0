@@ -107,7 +107,12 @@ export default function Header() {
             What&apos;s happening?
           </Link>
 
-          <CTAButton label="Plan Your Trip" source="header" />
+          <CTAButton
+  label="Plan Your Trip"
+  source="header"
+  className={pathname === "/plan-your-trip" ? "text-white" : "text-gray-400"}
+/>
+
         </nav>
       </div>
 
@@ -142,6 +147,11 @@ export default function Header() {
             label="Plan Your Trip"
             source="header"
             onClick={closeMobileMenu}
+           className={`
+              ${pathname === "/plan-your-trip?source=header"
+                ? "text-white"
+                : "text-gray"}
+            `}
           />
         </nav>
       </div>

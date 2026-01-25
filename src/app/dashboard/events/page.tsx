@@ -2,16 +2,16 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import AccountService from "@/services/account.service";
-import { PaginatedResponse, User } from "@/types";
+import eventService from "@/services/event.service";
+import { Event, PaginatedResponse } from "@/types";
 import Table from "@/components/ui/Table";
 import { ColumnDef } from "@/types/table";
 import Pagination from "@/components/ui/Pagination";
 import { FaTrash } from "react-icons/fa";
 import ConfirmationModal from "@/components/ConfirmationModal";
 
-export default function UsersPage() {
-    const [users, setUsers] = useState<User[]>([]);
+export default function EventsPage() {
+    const [events, setEvents] = useState<Event[]>([]);
     const [loading, setLoading] = useState(false);
 
     const [pageSize, setPageSize] = useState(10);
@@ -21,11 +21,10 @@ export default function UsersPage() {
     const [searchInput, setSearchInput] = useState("");
     const [search, setSearch] = useState("");
 
-    const [showConfirm, setShowConfirm] = useState(false);
-    const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
-
     const totalPages = Math.ceil(totalCount / pageSize);
 
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
     /* 🔹 Debounced search */
     useEffect(() => {
         const timeout = setTimeout(() => {
@@ -36,17 +35,18 @@ export default function UsersPage() {
         return () => clearTimeout(timeout);
     }, [searchInput]);
 
-    /* 🔹 Fetch users */
+    /* 🔹 Fetch events */
     useEffect(() => {
         setLoading(true);
 
-        AccountService.getUsers({
-            pageIndex,
-            pageSize,
-            search: search || undefined,
-        })
-            .then((res: PaginatedResponse<User>) => {
-                setUsers(res.data);
+        eventService
+            .getEvents({
+                pageIndex,
+                pageSize,
+                search: search || undefined,
+            })
+            .then((res: PaginatedResponse<Event>) => {
+                setEvents(res.data);
                 setTotalCount(res.count);
             })
             .finally(() => setLoading(false));
@@ -54,63 +54,63 @@ export default function UsersPage() {
 
     /* 🔹 Delete */
     const handleDelete = async () => {
-        if (!selectedUserId) return;
+        if (!selectedEventId) return;
 
         try {
-            await AccountService.deleteUser(selectedUserId);
-            setUsers((prev) => prev.filter((u) => u.userName !== selectedUserId));
+            await eventService.deleteEvent(selectedEventId);
+            setEvents((prev) => prev.filter((e) => e.id !== selectedEventId));
         } finally {
             setShowConfirm(false);
-            setSelectedUserId(null);
+            setSelectedEventId(null);
         }
     };
 
     /* ✅ Table columns */
-    const columns: ColumnDef<User>[] = useMemo(
+    const columns: ColumnDef<Event>[] = useMemo(
         () => [
             {
-                header: "Name",
-                accessor: (u) => u.displayName,
+                header: "Title",
+                accessor: (e) => e.title,
             },
             {
-                header: "Email",
-                accessor: (u) => u.email,
+                header: "Location",
+                accessor: (e) => e.location,
             },
             {
-                header: "Username",
-                accessor: (u) => u.userName,
+                header: "Date",
+                accessor: (e) => (
+                    <span>{new Date(e.eventOn).toLocaleDateString()}</span>
+                ),
             },
             {
-                header: "Role",
-                accessor: (u) => <span className="capitalize">{u.role}</span>,
-            },
-            {
-                header: "Client",
-                accessor: (u) => u.clientName,
-            },
-            {
-                header: "Status",
-                accessor: (u) => (
-                    <span
-                        className={`px-2 py-1 rounded text-xs font-medium ${u.isActive
-                                ? "bg-green-100 text-green-700"
-                                : "bg-red-100 text-red-700"
-                            }`}
-                    >
-                        {u.isActive ? "Active" : "Inactive"}
+                header: "Time",
+                accessor: (e) => (
+                    <span className="text-sm text-gray-600">
+                        {e.eventOnTime || "—"}
+                        {e.eventOffTime && ` – ${e.eventOffTime}`}
                     </span>
                 ),
             },
             {
+                header: "Organized By",
+                accessor: (e) => e.organizedBy,
+            },
+            {
                 header: "Actions",
-                render: (u) => (
-                    <FaTrash
-                        className="cursor-pointer text-gray-600 hover:text-red-600"
-                        onClick={() => {
-                            setSelectedUserId(u.userName!);
-                            setShowConfirm(true);
-                        }}
-                    />
+                render: (e) => (
+                    <div className="flex flex-row gap-2">
+                        <Link
+                            href={`./events/${e.id}`}
+                            className="text-blue-600 hover:underline text-sm font-medium"
+                        >
+                            Edit
+                        </Link>
+                        <FaTrash
+                            className="cursor-pointer text-red-500 hover:text-red-700"
+                            onClick={() => {
+                                setSelectedEventId(e.id!);
+                                setShowConfirm(true);
+                            }} /></div>
                 ),
             },
         ],
@@ -121,21 +121,21 @@ export default function UsersPage() {
         <div className="p-6 space-y-4">
             {/* Header */}
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <h1 className="text-2xl font-bold">Users</h1>
+                <h1 className="text-2xl font-bold">Events</h1>
 
                 <Link
-                    href="./users/create"
+                    href="./events/create"
                     className="btn-primary text-center sm:w-auto"
                 >
-                    + New User
+                    + New Event
                 </Link>
             </div>
 
             {/* Table */}
-            <Table<User>
-                data={users}
+            <Table<Event>
+                data={events}
                 columns={columns}
-                getRowId={(u) => u.id!}
+                getRowId={(e) => e.id}
                 searchValue={searchInput}
                 onSearchChange={setSearchInput}
                 pageSize={pageSize}
@@ -144,7 +144,7 @@ export default function UsersPage() {
                     setPageSize(size);
                 }}
                 loading={loading}
-                emptyText="No users found"
+                emptyText="No events found"
             />
 
             {/* Pagination */}
@@ -155,16 +155,12 @@ export default function UsersPage() {
                 onNext={() => setPageIndex((p) => p + 1)}
             />
 
-            {/* Confirm delete */}
             <ConfirmationModal
                 isOpen={showConfirm}
-                title="Delete User"
-                message="Are you sure you want to delete this user? This action cannot be undone."
+                title="Delete Event"
+                message="Are you sure you want to delete this event?"
                 confirmText="Yes, Delete"
-                onCancel={() => {
-                    setShowConfirm(false);
-                    setSelectedUserId(null);
-                }}
+                onCancel={() => setShowConfirm(false)}
                 onConfirm={handleDelete}
             />
         </div>

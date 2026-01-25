@@ -8,6 +8,7 @@ import ConfirmationModal from "@/components/ConfirmationModal";
 import Table from "@/components/ui/Table";
 import { ColumnDef } from "@/types/table";
 import Pagination from "@/components/ui/Pagination";
+import Link from "next/dist/client/link";
 
 export default function LeadsPage() {
   const [leads, setLeads] = useState<Lead[]>([]);
@@ -77,13 +78,18 @@ export default function LeadsPage() {
       {
         header: "Actions",
         render: (l) => (
-          <FaTrash
-            className="cursor-pointer text-red-500 hover:text-red-700"
-            onClick={() => {
-              setSelectedLeadId(l.id!);
-              setShowConfirm(true);
-            }}
-          />
+          <div className="flex flex-row gap-2"><Link
+            href={`./leads/${l.id}`}
+            className="text-blue-600 hover:underline text-sm font-medium"
+          >
+            Edit
+          </Link>
+            <FaTrash
+              className="cursor-pointer text-red-500 hover:text-red-700"
+              onClick={() => {
+                setSelectedLeadId(l.id!);
+                setShowConfirm(true);
+              }} /></div>
         ),
       },
     ],
@@ -110,7 +116,7 @@ export default function LeadsPage() {
       />
 
       {/* Pagination */}
-           <Pagination
+      <Pagination
         pageIndex={pageIndex}
         totalPages={totalPages}
         onPrevious={() => setPageIndex((p) => p - 1)}

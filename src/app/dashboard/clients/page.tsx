@@ -71,7 +71,7 @@ export default function ClientsPage() {
         header: "Actions",
         render: (c) => (
           <Link
-            href={`./clients/update/${c.id}`}
+            href={`./clients/${c.id}`}
             className="text-blue-600 hover:underline text-sm font-medium"
           >
             Edit
@@ -114,12 +114,12 @@ export default function ClientsPage() {
       />
 
       {/* Pagination */}
-     <Pagination
-  pageIndex={pageIndex}
-  totalPages={totalPages}
-  onPrevious={() => setPageIndex((p) => p - 1)}
-  onNext={() => setPageIndex((p) => p + 1)}
-/>
+      <Pagination
+        pageIndex={pageIndex}
+        totalPages={totalPages}
+        onPrevious={() => setPageIndex((p) => p - 1)}
+        onNext={() => setPageIndex((p) => p + 1)}
+      />
     </div>
   );
 }

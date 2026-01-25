@@ -1,18 +1,19 @@
-"use client";
+'use client';
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   FaSignOutAlt,
+  FaBars,
+  FaTimes,
   FaTachometerAlt,
   FaUsers,
   FaEnvelope,
   FaBusinessTime,
-  FaBars,
   FaMemory,
   FaAddressCard,
-  FaTimes,
+  FaCalendarAlt,
 } from "react-icons/fa";
 import { useAuth } from "@/contexts/AuthContext";
 import NotificationsPanel from "./NotificationPanel";
@@ -37,7 +38,6 @@ export default function DashboardMenuItems() {
         setOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
@@ -64,19 +64,15 @@ export default function DashboardMenuItems() {
             <FaBars />
           </button>
 
-          {/* Desktop menu */}
-          {/* <div className="hidden md:flex items-center gap-3" ref={dropdownRef}>
-            <MenuGrid onNavigate={() => setOpen(false)} />
-
-            
-          </div> */}
-
-          <button
-            onClick={handleLogout}
-            className="p-2 rounded-md hover:bg-gray-100 text-black hover:text-red-500 hidden md:block "
-          >
-            <FaSignOutAlt />
-          </button>
+          {/* Desktop actions */}
+          <div className="hidden md:flex items-center gap-3" ref={dropdownRef}>
+            <button
+              onClick={handleLogout}
+              className="p-2 rounded-md hover:bg-gray-100 text-black hover:text-red-500"
+            >
+              <FaSignOutAlt />
+            </button>
+          </div>
         </div>
       </div>
 
@@ -90,7 +86,7 @@ export default function DashboardMenuItems() {
           />
 
           {/* Drawer */}
-          <div className="fixed bottom-0 left-0 right-0 z-50 bg-white rounded-t-2xl shadow-xl p-5">
+          <div className="fixed bottom-0 left-0 right-0 z-50 bg-white rounded-t-2xl shadow-xl p-5 md:hidden">
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-semibold text-lg">Menu</h3>
               <FaTimes
@@ -116,52 +112,21 @@ export default function DashboardMenuItems() {
 }
 
 /* ---------------- MENU GRID ---------------- */
-
 function MenuGrid({ onNavigate }: { onNavigate: () => void }) {
   return (
     <div className="grid grid-cols-3 gap-4">
-      <MenuItem
-        href="/dashboard"
-        icon={<FaTachometerAlt />}
-        label="Dashboard"
-        onClick={onNavigate}
-      />
-      <MenuItem
-        href="/dashboard/leads"
-        icon={<FaAddressCard />}
-        label="Leads"
-        onClick={onNavigate}
-      />
-      <MenuItem
-        href="/dashboard/clients"
-        icon={<FaBusinessTime />}
-        label="Clients"
-        onClick={onNavigate}
-      />
-      <MenuItem
-        href="/dashboard/messages"
-        icon={<FaEnvelope />}
-        label="Messages"
-        onClick={onNavigate}
-      />
-      <MenuItem
-        href="/dashboard/cache"
-        icon={<FaMemory />}
-        label="Cache"
-        onClick={onNavigate}
-      />
-      <MenuItem
-        href="/dashboard/users"
-        icon={<FaUsers />}
-        label="Users"
-        onClick={onNavigate}
-      />
+      <MenuItem href="/dashboard" icon={<FaTachometerAlt />} label="Dashboard" onClick={onNavigate} />
+      <MenuItem href="/dashboard/leads" icon={<FaAddressCard />} label="Leads" onClick={onNavigate} />
+      <MenuItem href="/dashboard/clients" icon={<FaBusinessTime />} label="Clients" onClick={onNavigate} />
+      <MenuItem href="/dashboard/messages" icon={<FaEnvelope />} label="Messages" onClick={onNavigate} />
+      <MenuItem href="/dashboard/cache" icon={<FaMemory />} label="Cache" onClick={onNavigate} />
+      <MenuItem href="/dashboard/users" icon={<FaUsers />} label="Users" onClick={onNavigate} />
+      <MenuItem href="/dashboard/events" icon={<FaCalendarAlt />} label="Events" onClick={onNavigate} />
     </div>
   );
 }
 
 /* ---------------- MENU ITEM ---------------- */
-
 function MenuItem({
   href,
   icon,

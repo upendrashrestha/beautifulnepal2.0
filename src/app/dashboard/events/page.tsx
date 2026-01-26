@@ -3,7 +3,8 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import eventService from "@/services/event.service";
-import { Event, PaginatedResponse } from "@/types";
+import { PaginatedResponse } from "@/types";
+import { Event } from "@/types/event.types";
 import Table from "@/components/ui/Table";
 import { ColumnDef } from "@/types/table";
 import Pagination from "@/components/ui/Pagination";

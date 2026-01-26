@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Event, EventCreate } from "@/types";
+import { Event, EventCreate } from "@/types/event.types";
 import Input from "@/components/ui/Input";
 import TextArea from "@/components/ui/TextArea";
 

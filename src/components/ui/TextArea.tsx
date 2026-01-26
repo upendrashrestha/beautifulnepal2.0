@@ -19,8 +19,7 @@ export default function TextArea({ label, helperText, error, className, ...props
             )}
             <textarea
                 {...props}
-                className={`input-base min-h-[96px] resize-none w-full bg-transparent pb-3.5
-                border-b focus-visible:outline-none
+                className={`w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all resize-none
                 ${error ? 'border-red-500 focus:border-red-500' : ''} 
                 ${className ?? ''}`}
             />

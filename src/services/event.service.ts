@@ -1,7 +1,8 @@
 "use client";
 
 import api from "./api";
-import { BaseSpecParams, Event, PaginatedResponse } from "@/types";
+import { BaseSpecParams,  PaginatedResponse } from "@/types";
+import { Event } from "@/types/event.types";
 
 class EventService {
   async getEvents(params: BaseSpecParams): Promise<PaginatedResponse<Event>> {

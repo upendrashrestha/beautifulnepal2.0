@@ -1,4 +1,5 @@
-import EventFormPage from "./EventForm";
+import EventSubmissionForm from "@/components/events/EventSubmissionForm";
+
 import { generateMetadataHelper } from "@/utils/generateMetadataHelper";
 import { Metadata } from "next";
 
@@ -11,5 +12,5 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function SubmitEventPage() {
-    return <EventFormPage />;
+    return <EventSubmissionForm />;
 }

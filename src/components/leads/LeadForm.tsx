@@ -164,7 +164,6 @@ export default function LeadForm({
         value={form.interestType || ''}
         options={INTEREST_OPTIONS}
         onChange={handleChange}
-        required
       />
 
       {/* Travel Month / Year */}

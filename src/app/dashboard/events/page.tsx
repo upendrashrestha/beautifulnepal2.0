@@ -75,7 +75,7 @@ export default function EventsPage() {
             },
             {
                 header: "Location",
-                accessor: (e) => e.location,
+                accessor: (e) => `${e.street} ${e.city}`,
             },
             {
                 header: "Date",
@@ -95,6 +95,10 @@ export default function EventsPage() {
             {
                 header: "Organized By",
                 accessor: (e) => e.organizedBy,
+            },
+            {
+                header: "Status",
+                accessor: (e) => e.status,
             },
             {
                 header: "Actions",

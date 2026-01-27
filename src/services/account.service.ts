@@ -5,7 +5,7 @@ import {
   BaseSpecParams,
   PaginatedResponse,
   RegisterUser,
-  ResetUserPassword,
+  ChangeUserPassword,
   User,
 } from "../types";
 
@@ -51,8 +51,8 @@ class AccountService {
     return response.data;
   }
 
-  async resetPassword(data: ResetUserPassword): Promise<boolean> {
-    const response = await api.post<boolean>("/account/reset-password", data);
+  async changePassword(data: ChangeUserPassword): Promise<boolean> {
+    const response = await api.post<boolean>("/account/change-password", data);
     return response.data;
   }
 }

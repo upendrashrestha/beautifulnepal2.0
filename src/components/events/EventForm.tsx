@@ -4,12 +4,25 @@ import { useState } from "react";
 import { Event, EventCreate } from "@/types/event.types";
 import Input from "@/components/ui/Input";
 import TextArea from "@/components/ui/TextArea";
+import Dropdown from "../ui/Dropdown";
+import PicturePicker from "../pictures/PicturePicker";
+import pictureService from "@/services/picture.service";
 
 interface Props {
     initialData?: Partial<Event>;
     onSubmit: (data: Partial<EventCreate>) => Promise<void>;
     submitLabel: string;
 }
+
+
+const STATUS_OPTIONS = [
+    { label: 'Pending', value: 'Pending' },
+    { label: 'Review', value: 'Review' },
+    { label: 'Complete', value: 'Complete' },
+    { label: 'More Info Needed', value: 'MoreInfoNeeded' },
+    { label: 'Disqualified', value: 'Disqualified' },
+    { label: 'Cancelled', value: 'cancelled' },
+];
 
 export default function EventForm({
     initialData = {},
@@ -19,6 +32,9 @@ export default function EventForm({
     const [form, setForm] = useState<Partial<Event>>(initialData);
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+    const [pictureFile, setPictureFile] = useState<File | null>(null);
+    const [pictureUrl, setPictureUrl] = useState<string | undefined>(initialData.pictureUrl ?? undefined);
 
     const update = <K extends keyof Event>(key: K, value: Event[K]) => {
         setForm((prev) => ({ ...prev, [key]: value }));
@@ -49,8 +65,21 @@ export default function EventForm({
         e.preventDefault();
         if (!validate()) return;
 
+        let uploadedImageUrl = pictureUrl;
+
+        if (initialData.pictureUrl != form.pictureUrl && pictureFile) {
+            const res = await pictureService.uploadPicture({
+                name: pictureFile.name,
+                file: pictureFile,
+            });
+
+            uploadedImageUrl = res.url;
+            setForm({ ...e, pictureUrl: uploadedImageUrl })
+        }
+
         setLoading(true);
         try {
+
             await onSubmit(form);
         } finally {
             setLoading(false);
@@ -66,13 +95,36 @@ export default function EventForm({
                 className="input-base"
                 error={errors.title}
             />
-
+            <PicturePicker
+                label="Event Image"
+                value={pictureUrl}
+                showGallery={false}
+                onChange={({ file, url }) => {
+                    setPictureFile(file ?? null);
+                    setPictureUrl(url);
+                }}
+            />
             <Input
-                label="Location"
-                value={form.location ?? ""}
-                onChange={(e) => update("location", e.target.value)}
+                label="Slug"
+                value={form.slug ?? ""}
+                onChange={(e) => update("slug", e.target.value)}
                 className="input-base"
             />
+
+            <Input
+                label="Street"
+                value={form.street ?? ""}
+                onChange={(e) => update("street", e.target.value)}
+                className="input-base"
+            />
+
+            <Input
+                label="City"
+                value={form.city ?? ""}
+                onChange={(e) => update("city", e.target.value)}
+                className="input-base"
+            />
+
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Input
@@ -127,19 +179,14 @@ export default function EventForm({
             />
 
             <Input
-                label="Keywords"
-                placeholder="Comma separated keywords"
-                value={form.keywords ?? ""}
-                onChange={(e) => update("keywords", e.target.value)}
+                label="Type"
+                placeholder="Event Type"
+                value={form.type ?? ""}
+                onChange={(e) => update("type", e.target.value)}
                 className="input-base"
             />
 
-            {/* <Input
-                label="Picture URL"
-                value={form.pictureUrl ?? ""}
-                onChange={(e) => update("pictureUrl", e.target.value)}
-                className="input-base"
-            /> */}
+
 
             <Input
                 label="Organized By"
@@ -148,6 +195,20 @@ export default function EventForm({
                 className="input-base"
             />
 
+            <Input
+                label="Organizer Email"
+                value={form.organizerEmail ?? ""}
+                onChange={(e) => update("organizerEmail", e.target.value)}
+                className="input-base"
+            />
+
+            <Dropdown
+                label="Status"
+                name="status"
+                value={form.status}
+                options={STATUS_OPTIONS}
+                onChange={(e) => update("status", e.target.value)}
+            />
 
             {/* Submit */}
             <div className="flex items-center justify-end pt-4">

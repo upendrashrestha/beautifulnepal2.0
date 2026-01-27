@@ -5,15 +5,18 @@ import TextArea from "../ui/TextArea";
 import { EventFormData } from "@/types/event.types";
 import { NEPAL_CITIES } from "@/utils/constant";
 import eventService from "@/services/event.service";
+import BotCheck, { BotCheckRef } from "@/components/BotCheck";
+import PicturePicker from "../pictures/PicturePicker";
+import pictureService from "@/services/picture.service";
 
 
 export default function EventSubmissionForm() {
   const [form, setForm] = useState<EventFormData>({
     title: "",
-    streetAddress: "",
+    street: "",
     city: "",
     content: "",
-    keywords: "",
+    type: "",
     pictureUrl: "",
     description: "",
     eventOn: "",
@@ -21,7 +24,7 @@ export default function EventSubmissionForm() {
     eventOnTime: "",
     eventOffTime: "",
     organizedBy: "",
-    metaData:""
+    organizerEmail: ""
   });
 
   const [citySearch, setCitySearch] = useState("");
@@ -33,14 +36,10 @@ export default function EventSubmissionForm() {
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState("");
   const [botCheckPassed, setBotCheckPassed] = useState(false);
-  const [botAnswer, setBotAnswer] = useState("");
+  const [pictureFile, setPictureFile] = useState<File | null>(null);
+  const [pictureUrl, setPictureUrl] = useState<string | undefined>();
+  const botCheckRef = useRef<BotCheckRef>(null);
 
-  // Simple math-based bot check
-  const [botQuestion] = useState(() => {
-    const num1 = Math.floor(Math.random() * 10) + 1;
-    const num2 = Math.floor(Math.random() * 10) + 1;
-    return { num1, num2, answer: num1 + num2 };
-  });
 
   // Handle city search
   useEffect(() => {
@@ -81,7 +80,7 @@ export default function EventSubmissionForm() {
       newErrors.title = "Title is required.";
     }
 
-    if (!form.streetAddress || !form.streetAddress.trim()) {
+    if (!form.street || !form.street.trim()) {
       newErrors.streetAddress = "Street address is required.";
     }
 
@@ -97,7 +96,7 @@ export default function EventSubmissionForm() {
       newErrors.content = "Event Content is required.";
     }
 
-    if (!botCheckPassed && botAnswer !== String(botQuestion.answer)) {
+    if (!botCheckPassed) {
       newErrors.botCheck = "Please answer the security question correctly.";
     }
 
@@ -109,7 +108,10 @@ export default function EventSubmissionForm() {
     e.preventDefault();
     setStatus("");
 
-    if (!validate()) return;
+    if (!validate()) {
+      botCheckRef.current?.clear();
+      return;
+    }
 
     if (!botCheckPassed) {
       setBotCheckPassed(true);
@@ -119,23 +121,31 @@ export default function EventSubmissionForm() {
 
     setLoading(true);
     try {
-      // Combine street address and city for location
-      const location = `${form.streetAddress}, ${form.city}`;
+      let uploadedImageUrl = pictureUrl;
 
+      if (pictureFile) {
+        const res = await pictureService.uploadPicture({
+          name: pictureFile.name,
+          file: pictureFile,
+        });
+
+        uploadedImageUrl = res.url;
+      }
       // Prepare event data for API (excluding streetAddress and city)
       const eventData = {
         title: form.title,
-        location,
+        city: form.city,
+        street: form.street,
         content: form.content,
-        keywords: form.keywords,
-        metaData: form.metaData,
-        pictureUrl: form.pictureUrl,
+        type: form.type,
+        pictureUrl: uploadedImageUrl,
         description: form.description,
         eventOn: form.eventOn,
         eventOff: form.eventOff,
         eventOnTime: form.eventOnTime,
         eventOffTime: form.eventOffTime,
         organizedBy: form.organizedBy,
+        organizerEmail: form.organizerEmail
       };
 
       await eventService.createEvent(eventData);
@@ -143,38 +153,41 @@ export default function EventSubmissionForm() {
     } catch (err) {
       console.error(err);
       setStatus("error");
+
+      botCheckRef.current?.clear();
     } finally {
       setLoading(false);
+
+      botCheckRef.current?.clear();
     }
 
 
-      
-   
+
+
   };
 
-  const resetForm=()=>{
+  const resetForm = () => {
     // Reset form
-      setForm({
-        title: "",
-        streetAddress: "",
-        city: "",
-        content: "",
-        keywords: "",
-        pictureUrl: "",
-        description: "",
-        eventOn: "",
-        eventOff: "",
-        eventOnTime: "",
-        eventOffTime: "",
-        organizedBy: "",
-        metaData:""
-      });
-      setCitySearch("");
-      setBotCheckPassed(false);
-      setBotAnswer("");
-      setStatus("success");
-      
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    setForm({
+      title: "",
+      street: "",
+      city: "",
+      content: "",
+      type: "",
+      pictureUrl: "",
+      description: "",
+      eventOn: "",
+      eventOff: "",
+      eventOnTime: "",
+      eventOffTime: "",
+      organizedBy: "",
+      organizerEmail: ""
+    });
+    setCitySearch("");
+    botCheckRef.current?.clear();
+    setStatus("success");
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   return (
@@ -229,18 +242,22 @@ export default function EventSubmissionForm() {
               className="input-base"
             />
 
-            {/* Picture Picker */}
-            {/* <PicturePicker
-              onImageSelect={(url) => update("pictureUrl", url)}
-              currentImage={form.pictureUrl}
-            /> */}
+            <PicturePicker
+              label="Event Image"
+              value={pictureUrl}
+              showGallery={false}
+              onChange={({ file, url }) => {
+                setPictureFile(file ?? null);
+                setPictureUrl(url);
+              }}
+            />
 
             {/* Location Section */}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <Input
                 label="Street Address *"
-                value={form.streetAddress}
-                onChange={(e) => update("streetAddress", e.target.value)}
+                value={form.street}
+                onChange={(e) => update("street", e.target.value)}
                 error={errors.streetAddress}
                 placeholder="Enter street address"
                 className="input-base"
@@ -248,12 +265,11 @@ export default function EventSubmissionForm() {
 
               {/* City Dropdown */}
               <div ref={cityDropdownRef}>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
-                  City *
-                </label>
+
                 <div className="relative">
-                  <input
-                    type="text"
+
+                  <Input
+                    label="City"
                     value={citySearch}
                     onChange={(e) => {
                       setCitySearch(e.target.value);
@@ -343,10 +359,10 @@ export default function EventSubmissionForm() {
 
             {/* Keywords */}
             <Input
-              label="Event Type / Keywords"
+              label="Event Type"
               placeholder="e.g., Festival, Workshop, Concert, Conference"
-              value={form.keywords}
-              onChange={(e) => update("keywords", e.target.value)}
+              value={form.type}
+              onChange={(e) => update("type", e.target.value)}
               className="input-base"
             />
 
@@ -359,31 +375,21 @@ export default function EventSubmissionForm() {
               className="input-base"
             />
 
-            {/* Bot Check Section */}
-            <div className="space-y-4 bg-yellow-50 dark:bg-yellow-900/20 p-6 rounded-lg border border-yellow-200 dark:border-yellow-800">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
-                <svg className="w-6 h-6 mr-2 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                </svg>
-                Security Check
-              </h2>
+            <Input
+              label="Organizer Email"
+              value={form.organizerEmail}
+              onChange={(e) => update("organizerEmail", e.target.value)}
+              placeholder="Your Email"
+              className="input-base"
+              type="email"
+            />
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
-                  What is {botQuestion.num1} + {botQuestion.num2}? *
-                </label>
-                <input
-                  type="number"
-                  value={botAnswer}
-                  onChange={(e) => setBotAnswer(e.target.value)}
-                  placeholder="Enter your answer"
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
-                />
-                {errors.botCheck && (
-                  <p className="mt-1 text-sm text-red-500">{errors.botCheck}</p>
-                )}
-              </div>
-            </div>
+            {/* Bot Check Section */}
+            <BotCheck
+              ref={botCheckRef}
+              error={errors.botCheck}
+              onVerified={(passed) => setBotCheckPassed(passed)}
+            />
 
             {/* Submit Button */}
             <div className="flex items-center justify-end pt-4">

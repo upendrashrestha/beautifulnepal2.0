@@ -182,7 +182,6 @@ export interface CommunityEvent {
   };
 }
 
-
 export interface Login {
   userName?: string;
   email?: string;

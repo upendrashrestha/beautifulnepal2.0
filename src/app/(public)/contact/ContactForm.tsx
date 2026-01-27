@@ -1,9 +1,10 @@
 // components/forms/ContactForm.tsx
 "use client";
 
+import BotCheck, { BotCheckRef } from "@/components/BotCheck";
 import messageService from "@/services/message.service";
 import { Message } from "@/types";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 type ContactFormProps = {
     className?: string;
@@ -17,10 +18,12 @@ export default function ContactForm({ className }: ContactFormProps) {
         website: "",
     });
 
+    
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
     const [status, setStatus] = useState("");
     const [loading, setLoading] = useState(false);
-
+    const botCheckRef = useRef<BotCheckRef>(null);
+const [botCheckPassed, setBotCheckPassed] = useState(false);
     const validate = () => {
         const newErrors: { [key: string]: string } = {};
 
@@ -41,7 +44,9 @@ export default function ContactForm({ className }: ContactFormProps) {
         } else if (formData.message.length < 10) {
             newErrors.message = "Message must be at least 10 characters.";
         }
-
+        if (!botCheckPassed) {
+            newErrors.botCheck = "Please answer the security question correctly.";
+        }
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -55,8 +60,15 @@ export default function ContactForm({ className }: ContactFormProps) {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!validate()) return;
-
+        if (!validate()) {
+            botCheckRef.current?.clear();
+            return;
+        }
+        if (!botCheckPassed) {
+            setBotCheckPassed(true);
+            setStatus("Bot check passed! Please submit again to confirm.");
+            return;
+        }
         setLoading(true);
         setStatus("");
 
@@ -70,12 +82,16 @@ export default function ContactForm({ className }: ContactFormProps) {
             await messageService.createMessage(msg);
 
             setFormData({ name: "", email: "", message: "", website: "" });
+
             setStatus("success");
+            botCheckRef.current?.clear();
         } catch (err) {
             console.error(err);
             setStatus("error");
+            botCheckRef.current?.clear();
         } finally {
             setLoading(false);
+            botCheckRef.current?.clear();
         }
     };
 
@@ -133,7 +149,11 @@ export default function ContactForm({ className }: ContactFormProps) {
                     ></textarea>
                     {errors.message && <p className="text-sm text-red-500 mt-1">{errors.message}</p>}
                 </div>
-
+                <BotCheck
+                    ref={botCheckRef}
+                    error={errors.botCheck}
+                    onVerified={(passed) => setBotCheckPassed(passed)}
+                />
                 <div>
                     <button
                         type="submit"

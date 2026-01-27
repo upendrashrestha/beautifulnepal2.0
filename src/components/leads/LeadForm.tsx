@@ -1,10 +1,11 @@
 'use client';
 
 import { Lead, LeadCreate, LeadUpdate } from '@/types';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Input from '../ui/Input';
 import CountrySelect from '../CountrySelect';
 import Dropdown from '../ui/Dropdown';
+import BotCheck, { BotCheckRef } from '../BotCheck';
 
 interface Props {
   initialData: Lead;
@@ -52,7 +53,8 @@ export default function LeadForm({
   const [form, setForm] = useState({ ...initialData } as LeadCreate | LeadUpdate);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
-
+  const botCheckRef = useRef<BotCheckRef>(null);
+  const [botCheckPassed, setBotCheckPassed] = useState(false);
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -62,7 +64,14 @@ export default function LeadForm({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validate()) return;
+    if (!validate()) {
+      botCheckRef.current?.clear();
+      return;
+    }
+    if (!botCheckPassed) {
+      setBotCheckPassed(true);
+      return;
+    }
 
     setLoading(true);
     try {
@@ -75,8 +84,12 @@ export default function LeadForm({
       if (resetOnSuccess) {
         setForm(initialData);
       }
+    } catch (err) {
+      console.error(err);
+      botCheckRef.current?.clear();
     } finally {
       setLoading(false);
+      botCheckRef.current?.clear();
     }
   };
 
@@ -92,7 +105,9 @@ export default function LeadForm({
     } else if (!/^\S+@\S+\.\S+$/.test(form.email)) {
       newErrors.email = 'Invalid email address';
     }
-
+    if (!botCheckPassed) {
+      newErrors.botCheck = "Please answer the security question correctly.";
+    }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -180,7 +195,11 @@ export default function LeadForm({
           }
         />
       </div>
-
+      <BotCheck
+        ref={botCheckRef}
+        error={errors.botCheck}
+        onVerified={(passed) => setBotCheckPassed(passed)}
+      />
       {/* Submit */}
       <div className="flex items-center justify-end pt-4">
         <button

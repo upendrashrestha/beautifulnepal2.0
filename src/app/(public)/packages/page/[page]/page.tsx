@@ -8,17 +8,19 @@ import { PaginatedResponse } from "@/types";
 import { Listing } from "@/types/listing.types";
 import { getListingsServer } from "@/services/listing.server";
 
-interface PageProps {
-    params: { page?: string };
+interface Props {
+    params: Promise<{ page: string }>;
 }
 
-export default async function PackagesPage({ params }: PageProps) {
-    const pageIndex = Number(params.page ?? 1);
+
+export default async function PackagesPage({ params }: Props) {
+    const { page } = await params;
+    const currentPage = parseInt(page || "1", 10);
     const pageSize = 6;
 
     const res: PaginatedResponse<Listing> =
         await getListingsServer({
-            pageIndex,
+            pageIndex: currentPage,
             pageSize,
         });
 
@@ -69,7 +71,7 @@ export default async function PackagesPage({ params }: PageProps) {
                     <div className="mt-12">
                         <Pagination
                             pageName="packages"
-                            currentPage={pageIndex}
+                            currentPage={currentPage}
                             totalPages={totalPages}
                         />
                     </div>

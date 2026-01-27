@@ -39,6 +39,22 @@ const pictureService = {
     form.append("file", data.file, data.file.name);
 
     // Use postFormData helper instead of post
+    const res = await api.postFormData<Picture>("/pictures/upload", form);
+    return res.data;
+  },
+
+  uploadClientPicture: async (data: Picture): Promise<Picture> => {
+    if (!data.file || !(data.file instanceof File)) {
+      throw new Error("No valid file provided");
+    }
+
+    const form = new FormData();
+    form.append("name", data.name);
+    form.append("description", data.description ?? "");
+    if (data.clientId) form.append("clientId", data.clientId.toString());
+    form.append("file", data.file, data.file.name);
+
+    // Use postFormData helper instead of post
     const res = await api.postFormData<Picture>("/pictures", form);
     return res.data;
   },

@@ -1,11 +1,11 @@
 "use client";
 
 import api from "./api";
-import { BaseSpecParams,  PaginatedResponse } from "@/types";
-import { Event } from "@/types/event.types";
+import { PaginatedResponse } from "@/types";
+import { Event, EventSpecParams } from "@/types/event.types";
 
 class EventService {
-  async getEvents(params: BaseSpecParams): Promise<PaginatedResponse<Event>> {
+  async getEvents(params: EventSpecParams): Promise<PaginatedResponse<Event>> {
     const query = new URLSearchParams();
 
     if (params?.pageIndex)
@@ -17,7 +17,9 @@ class EventService {
 
     if (params?.status) query.append("Status", params.status);
 
-    if (params?.clientId) query.append("ClientId", params.clientId);
+    if (params?.type) query.append("Type", params.type);
+
+    if (params?.city) query.append("City", params.city);
 
     if (params?.id) query.append("Id", params.id);
 

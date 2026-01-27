@@ -12,7 +12,7 @@ export default function ChangePasswordPage() {
     const router = useRouter();
     const [showToast, setShowToast] = useState(false);
     const handleChangePassword = async (data: ChangeUserPassword) => {
-        await AccountService.resetPassword(data);
+        await AccountService.changePassword(data);
         setShowToast(true);
     };
 

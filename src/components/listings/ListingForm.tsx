@@ -13,6 +13,7 @@ import Dropdown from "../ui/Dropdown";
 import DatePicker from "../ui/DatePicker";
 import Button from "../ui/Button";
 import PicturePicker from "../pictures/PicturePicker";
+import pictureService from "@/services/picture.service";
 
 interface Props {
     initialData?: Listing | null;
@@ -64,6 +65,8 @@ export default function ListingForm({ initialData, onSuccess, onSubmit }: Props)
 
     const [errors, setErrors] = useState<FormErrors>({});
     const [slugTouched, setSlugTouched] = useState(!!initialData?.slug);
+    const [pictureFile, setPictureFile] = useState<File | null>(null);
+    const [pictureUrl, setPictureUrl] = useState<string | undefined>(initialData?.pictureUrl ?? undefined);
 
     /** auto-generate slug from title */
     useEffect(() => {
@@ -104,10 +107,21 @@ export default function ListingForm({ initialData, onSuccess, onSubmit }: Props)
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!validate()) return;
+        let uploadedImageUrl = pictureUrl;
+
+        if (pictureFile) {
+            const res = await pictureService.uploadPicture({
+                name: pictureFile.name,
+                file: pictureFile,
+            });
+
+            uploadedImageUrl = res.url;
+        }
 
         const payload: ListingCreate | ListingUpdate = {
             ...(initialData ? { ...initialData } : {}),
             ...form,
+            pictureUrl: uploadedImageUrl
         };
 
         const result = await onSubmit(payload);
@@ -152,12 +166,15 @@ export default function ListingForm({ initialData, onSuccess, onSubmit }: Props)
                 />
             </div>
 
+
             <PicturePicker
-                label="Image"
-                value={form.pictureUrl}
-                onChange={({ url }) =>
-                    setForm((p) => ({ ...p, pictureUrl: url }))
-                }
+                label="Event Image"
+                value={pictureUrl}
+                showGallery
+                onChange={({ file, url }) => {
+                    setPictureFile(file ?? null);
+                    setPictureUrl(url);
+                }}
             />
 
             <Input

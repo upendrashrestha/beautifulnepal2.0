@@ -1,10 +1,10 @@
-
 export interface Event {
   id: string;
   title: string;
-  location: string;
+  street: string;
+  city: string;
   content: string;
-  keywords: string;
+  type: string;
   metaData: string;
   pictureUrl: string;
   description: string;
@@ -13,22 +13,38 @@ export interface Event {
   eventOnTime?: string;
   eventOffTime?: string;
   organizedBy: string;
+  organizerEmail: string;
+  slug: string;
+  status: string;
 }
 
 export type EventCreate = Omit<Event, "id">;
 
 export interface EventFormData {
   title: string;
-  streetAddress: string;
+  street: string;
   city: string;
   content: string;
-  keywords: string;
-  metaData: string;
-  pictureUrl: string;
+  type: string;
+  pictureUrl?: string;
   description: string;
   eventOn: string;
   eventOff: string;
   eventOnTime: string;
   eventOffTime: string;
   organizedBy: string;
+  organizerEmail: string;
+}
+
+export interface EventSpecParams {
+  pageIndex: number;
+  pageSize: number;
+  sort?: string;
+  search?: string;
+  id?: string; // Guid → string
+  publicId?: string;
+  status?: string;
+  type?: string;
+  eventOn?: string;
+  city?: string;
 }

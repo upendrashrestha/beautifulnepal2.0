@@ -95,7 +95,9 @@ export default function EventSubmissionForm() {
     if (!form.content || !form.content.trim()) {
       newErrors.content = "Event Content is required.";
     }
-
+if (!form.organizerEmail || !form.organizerEmail.trim()) {
+      newErrors.organizerEmail = "Organizer Email is required.";
+    }
     if (!botCheckPassed) {
       newErrors.botCheck = "Please answer the security question correctly.";
     }
@@ -265,9 +267,9 @@ export default function EventSubmissionForm() {
                       setShowCityDropdown(true);
                       setForm({ ...form, city: "" });
                     }}
+                    error={errors.city}
                     onFocus={() => setShowCityDropdown(true)}
                     placeholder="Search for a city"
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
                   />
                   {showCityDropdown && filteredCities.length > 0 && (
                     <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg max-h-60 overflow-y-auto">
@@ -275,7 +277,7 @@ export default function EventSubmissionForm() {
                         <div
                           key={city}
                           onClick={() => handleCitySelect(city)}
-                          className="px-4 py-2 hover:bg-indigo-50 dark:hover:bg-gray-600 cursor-pointer text-gray-900 dark:text-white transition-colors"
+                          className="px-4 py-2 text-left hover:bg-indigo-50 dark:hover:bg-gray-600 cursor-pointer text-gray-900 dark:text-white transition-colors"
                         >
                           {city}
                         </div>
@@ -283,9 +285,7 @@ export default function EventSubmissionForm() {
                     </div>
                   )}
                 </div>
-                {errors.city && (
-                  <p className="mt-1 text-sm text-red-500">{errors.city}</p>
-                )}
+                
               </div>
             </div>
 
@@ -365,11 +365,12 @@ export default function EventSubmissionForm() {
             />
 
             <Input
-              label="Organizer Email"
+              label="Organizer Email *"
               value={form.organizerEmail}
               onChange={(e) => update("organizerEmail", e.target.value)}
               placeholder="Your Email"
               className="input-base"
+              error={errors.organizerEmail}
               type="email"
             />
 

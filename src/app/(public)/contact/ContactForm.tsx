@@ -117,11 +117,12 @@ const [botCheckPassed, setBotCheckPassed] = useState(false);
                     <div className="w-full lg:w-1/2">
                         <Input
                             type="text"
-                            placeholder="Full name"
+                            placeholder="Full Name"
                             name="name"
                             value={formData.name}
                             onChange={handleChange}
                             error={errors.name}
+                            label="Your Name *"
                         />
                       
                     </div>
@@ -134,6 +135,7 @@ const [botCheckPassed, setBotCheckPassed] = useState(false);
                             onChange={handleChange}
                             placeholder="Email address"
                          error={errors.email}
+                         label="Your Email *"
                         />
                     </div>
                 </div>
@@ -145,6 +147,7 @@ const [botCheckPassed, setBotCheckPassed] = useState(false);
                         value={formData.message}
                         onChange={handleChange}
                         rows={4}
+                        label="Message *"
                       error={errors.message}/>
                 </div>
                 <BotCheck

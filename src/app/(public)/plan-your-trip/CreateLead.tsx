@@ -22,9 +22,7 @@ export default function CreateLead() {
             className="text-center"
         >
             <AnimatedSection>
-                <div className="flex flex-col-reverse flex-wrap gap-8 md:flex-row md:flex-nowrap md:justify-center xl:gap-20">
-                    <div className="animate_top w-full rounded-lg bg-white p-7.5 shadow-solid-8 dark:border dark:border-strokedark dark:bg-black md:w-3/5 lg:w-3/4 xl:p-15">
-
+       
                         {hideFormOnSubmit ? (
                             <div className="mt-4 text-center">
                                 <p className="font-medium text-green-600">
@@ -71,8 +69,7 @@ export default function CreateLead() {
                                 onClose={() => setShowToast(false)}
                             />
                         )}
-                    </div>
-                </div>
+                
             </AnimatedSection>
         </PageLayout>
     );

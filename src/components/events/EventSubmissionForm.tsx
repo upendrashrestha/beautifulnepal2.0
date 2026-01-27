@@ -191,18 +191,7 @@ export default function EventSubmissionForm() {
   }
 
   return (
-    <div className="min-h-screen dark:from-gray-900 dark:to-gray-800 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            Submit Your Event
-          </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-300">
-            Share your upcoming event with the community in Nepal
-          </p>
-        </div>
-
+    <>
         {/* Status Messages */}
         {status === "success" && (
           <div className="mb-6 p-4 bg-green-50 dark:bg-green-900/20 border-l-4 border-green-500 rounded-r-lg">
@@ -408,7 +397,6 @@ export default function EventSubmissionForm() {
         <div className="mt-8 text-center text-sm text-gray-600 dark:text-gray-400">
           <p>All submissions are reviewed before publication. You will be notified once your event is approved.</p>
         </div>
-      </div>
-    </div>
+      </>
   );
 }

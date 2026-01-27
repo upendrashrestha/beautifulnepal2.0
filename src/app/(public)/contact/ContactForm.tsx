@@ -2,6 +2,8 @@
 "use client";
 
 import BotCheck, { BotCheckRef } from "@/components/BotCheck";
+import Input from "@/components/ui/Input";
+import TextArea from "@/components/ui/TextArea";
 import messageService from "@/services/message.service";
 import { Message } from "@/types";
 import { useRef, useState } from "react";
@@ -96,11 +98,10 @@ const [botCheckPassed, setBotCheckPassed] = useState(false);
     };
 
     return (
-        <div className={`animate_top w-full rounded-lg bg-white p-7.5 shadow-solid-8 dark:border dark:border-strokedark dark:bg-black md:w-3/5 lg:w-3/4 xl:p-15 ${className}`}>
-            <p className="text-gray-600 text-sm pb-5">
-                We would love to hear from you! Please fill out the form below and we will get back to you as soon as possible.
-            </p>
-
+        <div className={`bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 ${className}`}>
+         
+          <div className="mt-10 space-y-6">
+             
             <form className="mt-10 space-y-6" onSubmit={handleSubmit} noValidate>
                 <input
                     type="text"
@@ -114,40 +115,37 @@ const [botCheckPassed, setBotCheckPassed] = useState(false);
 
                 <div className="mb-7.5 flex flex-col gap-7.5 lg:flex-row lg:justify-between lg:gap-14">
                     <div className="w-full lg:w-1/2">
-                        <input
+                        <Input
                             type="text"
                             placeholder="Full name"
                             name="name"
                             value={formData.name}
                             onChange={handleChange}
-                            className="w-full border-b border-stroke bg-transparent pb-3.5 focus:border-waterloo focus-visible:outline-hidden dark:border-strokedark dark:focus:border-manatee"
+                            error={errors.name}
                         />
-                        {errors.name && <p className="text-sm text-red-500 mt-1">{errors.name}</p>}
+                      
                     </div>
 
                     <div className="w-full lg:w-1/2">
-                        <input
+                        <Input
                             name="email"
                             type="email"
                             value={formData.email}
                             onChange={handleChange}
                             placeholder="Email address"
-                            className="w-full border-b border-stroke bg-transparent pb-3.5 focus:border-waterloo focus-visible:outline-hidden dark:border-strokedark dark:focus:border-manatee"
+                         error={errors.email}
                         />
-                        {errors.email && <p className="text-sm text-red-500 mt-1">{errors.email}</p>}
                     </div>
                 </div>
 
                 <div className="mb-11.5">
-                    <textarea
+                    <TextArea
                         name="message"
                         placeholder="Message"
                         value={formData.message}
                         onChange={handleChange}
                         rows={4}
-                        className="w-full border-b border-stroke bg-transparent focus:border-waterloo focus-visible:outline-hidden dark:border-strokedark dark:focus:border-manatee"
-                    ></textarea>
-                    {errors.message && <p className="text-sm text-red-500 mt-1">{errors.message}</p>}
+                      error={errors.message}/>
                 </div>
                 <BotCheck
                     ref={botCheckRef}
@@ -178,6 +176,7 @@ const [botCheckPassed, setBotCheckPassed] = useState(false);
                     Something went wrong. Please try again.
                 </div>
             )}
+        </div>
         </div>
     );
 }

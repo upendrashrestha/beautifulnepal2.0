@@ -11,10 +11,10 @@ export default function DashboardPage() {
             <ul className="list-disc list-inside space-y-2">
                 <li>
                     <a
-                        href="/dashboard/users/reset-password"
+                        href="/dashboard/users/change-password"
                         className="text-blue-600 hover:underline"
                     >
-                        Reset Password
+                        Change Password
                     </a>
                 </li>
                 <li>

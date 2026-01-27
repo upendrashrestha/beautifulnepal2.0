@@ -1,20 +1,20 @@
 'use client';
 
 import { useState } from 'react';
-import { ResetUserPassword } from '@/types';
+import { ChangeUserPassword } from '@/types';
 import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
 
-interface ResetPasswordFormProps {
-  onSubmit: (data: ResetUserPassword) => Promise<void>;
+interface ChangePasswordFormProps {
+  onSubmit: (data: ChangeUserPassword) => Promise<void>;
   loading?: boolean;
 }
 
-export default function ResetPasswordForm({
+export default function ChangePasswordForm({
   onSubmit,
   loading = false
-}: ResetPasswordFormProps) {
-  const [form, setForm] = useState<ResetUserPassword>({
+}: ChangePasswordFormProps) {
+  const [form, setForm] = useState<ChangeUserPassword>({
     currentPassword: '',
     newPassword: '',
     confirmNewPassword: ''
@@ -103,7 +103,7 @@ export default function ResetPasswordForm({
         type="submit"
         disabled={loading}
         loadingLabel="Resetting..."
-        label="Reset Password"
+        label="Change Password"
       />
     </form>
   );

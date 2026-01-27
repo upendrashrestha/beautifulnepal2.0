@@ -1,11 +1,12 @@
 'use client';
 
-import { useState } from 'react';
-import { RegisterUser as User } from '@/types';
+import { useEffect, useState } from 'react';
+import { Client, PaginatedResponse, RegisterUser as User } from '@/types';
 import Input from '../ui/Input';
 import Dropdown from '../ui/Dropdown';
 import Button from '../ui/Button';
 import Checkbox from '../ui/Checkbox';
+import clientService from '@/services/client.service';
 
 interface UserFormProps {
     initialData?: Partial<User>;
@@ -19,7 +20,7 @@ export default function UserForm({
     loading = false
 }: UserFormProps) {
     const isEditMode = !!initialData;
-
+    const [clients, setClients] = useState<Client[]>([]);
     const [form, setForm] = useState<User>({
         id: initialData?.id ?? '',
         displayName: initialData?.displayName ?? '',
@@ -30,7 +31,12 @@ export default function UserForm({
         clientId: initialData?.clientId ?? '-1',
         isActive: initialData?.isActive ?? true
     });
-
+    useEffect(() => {
+        clientService.getClients({ pageIndex: 1, pageSize: 500 })
+            .then((res: PaginatedResponse<Client>) => {
+                setClients(res.data);
+            });
+    }, []);
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement>
     ) => {
@@ -42,13 +48,13 @@ export default function UserForm({
         }));
     };
 
-  
+
 
     const handleDropdownChange = (
-  e: React.ChangeEvent<HTMLSelectElement>
-) => {
-  setForm({ ...form, [e.target.name]: e.target.value });
-};
+        e: React.ChangeEvent<HTMLSelectElement>
+    ) => {
+        setForm({ ...form, [e.target.name]: e.target.value });
+    };
 
 
     const handleCheckboxChange = (name: string, checked: boolean) => {
@@ -65,6 +71,21 @@ export default function UserForm({
 
     return (
         <form onSubmit={handleSubmit} className="mt-10 space-y-6">
+
+            {isEditMode ||
+                <Dropdown
+                    label="Clients"
+                    name="clientId"
+                    value={form.clientId}
+                    onChange={(e) => setForm({ ...form, clientId: e.target.value })}
+                    options={[
+                        ...clients.map((c) => ({
+                            label: c.name,
+                            value: c.id,
+                        })),
+                    ]}
+                />
+            }
             <Input
                 label="Display Name"
                 name="displayName"
@@ -106,6 +127,7 @@ export default function UserForm({
                     className="input-base"
                 />
             }
+
             <Input
                 label="Phone Number"
                 name="phoneNumber"
@@ -120,20 +142,20 @@ export default function UserForm({
                 onChange={v => handleCheckboxChange('isActive', v)}
             />
 
-           <Dropdown
-  label="Role"
-  name="role"
-  value={form.role}
-  required
-  options={[
-    { value: 'Admin', label: 'Admin' },
-    { value: 'SuperAdmin', label: 'Super Admin' },
-    { value: 'SuperDuperAdmin', label: 'Super Duper Admin' },
-  ]}
-  onChange={(e) =>
-    handleDropdownChange(e)
-  }
-/>
+            <Dropdown
+                label="Role"
+                name="role"
+                value={form.role}
+                required
+                options={[
+                    { value: 'SuperAdmin', label: 'Super Admin' },
+                    { value: 'Admin', label: 'Admin' },
+                    { value: 'Contributor', label: 'Contributor' }
+                ]}
+                onChange={(e) =>
+                    handleDropdownChange(e)
+                }
+            />
 
 
             <Button

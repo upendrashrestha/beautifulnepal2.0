@@ -1,7 +1,5 @@
 import { fetchCompany } from "@/sanity/lib/fetch";
 import Link from "next/link";
-import Image from "next/image";
-import logo from "@/assets/dbn.png";
 
 export default async function Footer() {
     const company = await fetchCompany();
@@ -11,17 +9,9 @@ export default async function Footer() {
             {company && <> <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 text-sm text-gray-700 dark:text-gray-300">
                 {/* Brand Info */}
                 <div>
-                    <div className="flex md:flex-row sm:flex-row lg:flex-row mb-3 flex-col">
-                     <Image
-                                src={logo}
-                                alt="Beautiful Nepal"
-                                width={80}
-                                height={50}
-                                priority
-                                className="mb-2"
-                              />
-                               <h4 className="text-lg font-semibold  m-2 text-gray-900 dark:text-white">Beautiful Nepal</h4>
-                              </div>
+
+                    <h4 className="text-lg font-semibold text-gray-900 dark:text-white">Beautiful Nepal</h4>
+
                     <p className="mb-2">Explore the beauty, culture, and adventure of Nepal.</p>
                     {company.address && <p className="mb-1">{company.address}</p>}
                     {company.email && <p className="mb-1">{company.email}</p>}

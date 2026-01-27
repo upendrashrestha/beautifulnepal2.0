@@ -1,17 +1,17 @@
 'use client';
 
 import Toast from '@/components/ui/Toast';
-import ResetPasswordForm from '@/components/users/ResetPasswordForm';
+import ChangePasswordForm from '@/components/users/ChangePasswordForm';
 import AccountService from '@/services/account.service';
-import { ResetUserPassword } from '@/types';
+import { ChangeUserPassword } from '@/types';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 
-export default function ResetPasswordPage() {
+export default function ChangePasswordPage() {
     const router = useRouter();
     const [showToast, setShowToast] = useState(false);
-    const handleReset = async (data: ResetUserPassword) => {
+    const handleChangePassword = async (data: ChangeUserPassword) => {
         await AccountService.resetPassword(data);
         setShowToast(true);
     };
@@ -28,7 +28,7 @@ export default function ResetPasswordPage() {
                     <FaTimes className="mr-1" />
                 </button>
             </div>
-            <ResetPasswordForm onSubmit={handleReset} />
+            <ChangePasswordForm onSubmit={handleChangePassword} />
             {showToast && (
                 <Toast
                     message="Password updated successfully"

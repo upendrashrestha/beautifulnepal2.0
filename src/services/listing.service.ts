@@ -1,10 +1,5 @@
 // services/listing.service.ts
-import {
-  Listing,
-  ListingCreate,
-  ListingUpdate,
-  ThumbnailData,
-} from "@/types/listing.types";
+import { Listing, ListingCreate, ListingUpdate } from "@/types/listing.types";
 import api from "./api";
 import { BaseSpecParams, PaginatedResponse } from "@/types";
 
@@ -34,6 +29,11 @@ const listingService = {
     return res.data;
   },
 
+  getListingBySlug: async (slug: string): Promise<Listing> => {
+    const res = await api.get<Listing>(`/listings/listing/${slug}`);
+    return res.data;
+  },
+
   createListing: async (data: Partial<ListingCreate>) => {
     const res = await api.post<Listing>("/listings", data);
     return res.data;
@@ -46,21 +46,6 @@ const listingService = {
 
   deleteListing: async (id: string) => {
     const res = await api.delete(`/listings/delete/${id}`);
-    return res.data;
-  },
-
-  getThumbnails: async (
-    params: BaseSpecParams,
-  ): Promise<PaginatedResponse<ThumbnailData>> => {
-    const query = new URLSearchParams();
-    if (params?.pageIndex)
-      query.append("PageIndex", params.pageIndex.toString());
-    if (params?.pageSize) query.append("PageSize", params.pageSize.toString());
-    if (params?.search) query.append("Search", params.search);
-
-    const res = await api.get<PaginatedResponse<ThumbnailData>>(
-      `/listings/thumbnails?${query.toString()}`,
-    );
     return res.data;
   },
 

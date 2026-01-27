@@ -29,7 +29,7 @@ const menuItems = [
         label: "Settings",
         icon: FaSlidersH,
         subMenu: [
-            { href: "/dashboard/users/reset-password", label: "Reset Password" },
+            { href: "/dashboard/users/change-password", label: "Change Password" },
             { href: "/dashboard/users/update", label: "Update Profile" },
             { href: "/dashboard/users/preferences/notification", label: "Notification Preferences" },
         ],

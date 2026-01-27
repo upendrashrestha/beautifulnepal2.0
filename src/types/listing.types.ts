@@ -44,7 +44,7 @@ export interface ThumbnailData {
   pictureUrl?: string;
   price: number;
   location?: string;
-  viewCount?: number;
+  description: string;
 }
 
 export interface ListingSpecParams extends BaseSpecParams {

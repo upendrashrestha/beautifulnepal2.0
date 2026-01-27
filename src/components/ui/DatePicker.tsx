@@ -10,9 +10,10 @@ interface DatePickerProps {
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     required?: boolean;
     className?: string;
+    error?: string;
 }
 
-const DatePicker: React.FC<DatePickerProps> = ({ name, label, value, onChange, required = false, className }) => {
+const DatePicker: React.FC<DatePickerProps> = ({ name, label, value, onChange, required = false, className, error }) => {
     return (
         <div className={`flex flex-col ${className || ""}`}>
             <label htmlFor={name} className="font-medium mb-1">
@@ -25,8 +26,17 @@ const DatePicker: React.FC<DatePickerProps> = ({ name, label, value, onChange, r
                 value={value}
                 onChange={onChange}
                 required={required}
-                className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className={` ${error
+                    ? 'border-red-500 focus:border-red-500'
+                    : 'border-stroke focus:border-waterloo dark:border-strokedark dark:focus:border-manatee'}
+          ${className}
+        `}
             />
+            {error && (
+                <p className="text-xs text-red-600">
+                    {error}
+                </p>
+            )}
         </div>
     );
 };

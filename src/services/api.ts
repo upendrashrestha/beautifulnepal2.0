@@ -46,8 +46,6 @@ class ApiService {
    * ===================== */
   private setupInterceptors() {
     /** Request interceptor */
-
-    
     this.api.interceptors.request.use(
       (config: InternalAxiosRequestConfig) => {
         const token = this.getAccessToken();
@@ -56,9 +54,14 @@ class ApiService {
           config.headers.Authorization = `Bearer ${token}`;
         }
 
+        // Let browser set Content-Type for FormData
+        if (config.data instanceof FormData) {
+          delete config.headers["Content-Type"];
+        }
+
         return config;
       },
-      (error) => Promise.reject(error)
+      (error) => Promise.reject(error),
     );
 
     /** Response interceptor */
@@ -77,7 +80,7 @@ class ApiService {
         }
 
         return Promise.reject(error);
-      }
+      },
     );
   }
 
@@ -94,6 +97,11 @@ class ApiService {
   }
 
   post<T>(url: string, data?: unknown) {
+    return this.api.post<T>(url, data);
+  }
+
+  // Add dedicated method for FormData
+  postFormData<T>(url: string, data: FormData) {
     return this.api.post<T>(url, data);
   }
 

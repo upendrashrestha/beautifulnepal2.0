@@ -216,7 +216,7 @@ export interface Register {
   clientId?: string;
 }
 
-export interface ResetUserPassword {
+export interface ChangeUserPassword {
   currentPassword: string;
   newPassword: string;
   confirmNewPassword: string;
@@ -245,12 +245,6 @@ export interface RegisterUser {
   clientId?: string;
   isActive: boolean;
   id?: string;
-}
-
-export interface ResetUserPassword {
-  currentPassword: string;
-  newPassword: string;
-  confirmNewPassword: string;
 }
 
 export interface AuthResponse {

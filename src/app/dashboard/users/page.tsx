@@ -104,13 +104,23 @@ export default function UsersPage() {
             {
                 header: "Actions",
                 render: (u) => (
-                    <FaTrash
-                        className="cursor-pointer text-gray-600 hover:text-red-600"
-                        onClick={() => {
+                    <div className="flex items-center gap-2">
+
+
+  <button
+    type="button"
+    onClick={() => {
                             setSelectedUserId(u.userName!);
-                            setShowConfirm(true);
-                        }}
-                    />
+                                setShowConfirm(true);
+    }}
+    className="inline-flex items-center gap-1 cursor-pointer rounded-md bg-red-50 px-3 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-100 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+    aria-label="Delete lead"
+  >
+    <FaTrash className="text-sm" />
+    Delete
+  </button>
+</div>
+                  
                 ),
             },
         ],

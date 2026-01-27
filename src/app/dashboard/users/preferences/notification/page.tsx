@@ -23,7 +23,7 @@ export default function NotificationPreferencePage() {
     if (!notificationPreferences) return <p className="p-6">Loading…</p>;
 
     return (
-        <div className="max-w-xl mx-auto p-6">
+        <main className="mx-auto px-5">
             <div className="flex items-center justify-between pt-4">
                 <h1 className="mb-4 text-xl font-bold">User Notification Preference Settings</h1>
                 <button
@@ -41,6 +41,6 @@ export default function NotificationPreferencePage() {
                     onClose={() => setShowToast(false)}
                 />
             )}
-        </div>
+        </main>
     );
 }

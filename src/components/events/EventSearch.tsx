@@ -185,7 +185,7 @@ export default function EventSearch({ cities, onSearch }: EventSearchProps) {
             onClick={() => handleTimeFilterChange(value)}
             className={`px-5 py-2.5 rounded-xl font-medium whitespace-nowrap transition-all ${
               timeFilter === value
-                ? 'bg-indigo-600 text-white shadow-sm'
+                ? 'bg-gray-600 text-white shadow-sm'
                 : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
             }`}
           >

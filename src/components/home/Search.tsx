@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { FaSearch, FaTimes } from "react-icons/fa";
 import Link from "next/link";
-import Button from "./ui/Button";
+import Button from "../ui/Button";
 import { SearchQueryResult } from "@/types";
 
 export default function Search() {
@@ -32,8 +32,7 @@ export default function Search() {
         ...results.posts,
         ...results.guides,
         ...results.destinations,
-        ...results.categories,
-        ...results.events,
+        ...results.categories
       ]
     : [];
 
@@ -63,7 +62,7 @@ export default function Search() {
           onKeyDown={(e) => e.key === "Enter" && handleSearch()}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
-          placeholder="Search destinations, guides, events..."
+          placeholder="Search destinations, guides, blogs..."
           className="w-full flex-1 bg-transparent text-base focus:outline-none"
         />
 

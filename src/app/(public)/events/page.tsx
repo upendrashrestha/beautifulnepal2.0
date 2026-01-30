@@ -2,11 +2,12 @@
 
 import eventService from "@/services/event.service";
 import { PaginatedResponse } from "@/types";
-import { EventSearchParams, EventSpecParams } from "@/types/event.types";
+import { EventSpecParams } from "@/types/event.types";
 import { useEffect, useState } from "react";
 import { Event } from "@/types/event.types";
 import EventSearch from "@/components/events/EventSearch";
 import { NEPAL_CITIES } from "@/utils/constant";
+import Skeleton from "@/components/skeleton/Skeleton";
 
 export default function EventsPage() {
   const [events, setEvents] = useState<Event[]>([]);
@@ -16,23 +17,16 @@ export default function EventsPage() {
     pageSize: 20
   });
 
-  const handleSearch = (searchParams: EventSearchParams) => {
-    // Convert time filter to appropriate API params
+  const handleSearch = (searchParams: EventSpecParams) => {
     const apiParams: EventSpecParams = {
       ...currentParams,
       city: searchParams.city,
-      pageIndex: 1 // Reset to first page on new search
+      search: searchParams.search,
+      pageIndex: 1
     };
 
-    // You can add custom logic for timeFilter if your API supports it
-    // For example, you might calculate date ranges or use a sort parameter
-    if (searchParams.timeFilter === 'today') {
-      // apiParams.startDate = new Date().toISOString();
-      // apiParams.endDate = new Date().toISOString();
-    } else if (searchParams.timeFilter === 'weekend') {
-      // Calculate weekend dates
-    } else if (searchParams.timeFilter === 'popular') {
-      apiParams.sort = 'popularity-desc'; // or however your API handles this
+    if (searchParams.timeFilter === 'popular') {
+      apiParams.sort = 'popularity-desc';
     }
 
     setCurrentParams(apiParams);
@@ -41,32 +35,44 @@ export default function EventsPage() {
   useEffect(() => {
     setLoading(true);
 
-        eventService
-            .getEvents(currentParams)
-            .then((res: PaginatedResponse<Event>) => {
-                setEvents(res.data);
-               // setTotalCount(res.count);
-            })
-            .finally(() => setLoading(false));
+    eventService
+      .getEvents(currentParams)
+      .then((res: PaginatedResponse<Event>) => {
+        setEvents(res.data);
+      })
+      .finally(() => setLoading(false));
   }, [currentParams]);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
-          Find Events
+        <h1 className="text-3xl text-center font-bold text-gray-900 dark:text-white mb-8">
+          Events
         </h1>
 
         <EventSearch cities={NEPAL_CITIES} onSearch={handleSearch} />
 
-        {loading ? (
-          <div className="text-center py-12">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-gray-300 border-t-indigo-600"></div>
-            <p className="mt-4 text-gray-600 dark:text-gray-400">Loading events...</p>
-          </div>
-        ) : (
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {events.map((event) => (
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {loading ? (
+            <>
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden"
+                >
+                  <Skeleton className="w-full h-48" />
+                  <div className="p-4 space-y-3">
+                    <Skeleton className="h-6 w-3/4" />
+                    <Skeleton className="h-4 w-1/2" />
+                    <Skeleton className="h-4 w-full" />
+                    <Skeleton className="h-4 w-full" />
+                    <Skeleton className="h-4 w-1/3" />
+                  </div>
+                </div>
+              ))}
+            </>
+          ) : events.length > 0 ? (
+            events.map((event) => (
               <div
                 key={event.id}
                 className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
@@ -85,23 +91,25 @@ export default function EventsPage() {
                   <p className="text-gray-600 dark:text-gray-400 text-sm mb-2">
                     {event.city}
                   </p>
-                  <p className="text-gray-700 dark:text-gray-300 text-sm">
+                  <p className="text-gray-700 dark:text-gray-300 text-sm line-clamp-2">
                     {event.description}
                   </p>
-                  <p className="text-indigo-600 dark:text-indigo-400 text-sm mt-2">
-                    {new Date(event.eventOn).toLocaleDateString()}
+                  <p className="text-indigo-600 dark:text-indigo-400 text-sm mt-2 font-medium">
+                    {new Date(event.eventOn).toLocaleDateString('en-US', {
+                      month: 'short',
+                      day: 'numeric',
+                      year: 'numeric'
+                    })}
                   </p>
                 </div>
               </div>
-            ))}
-          </div>
-        )}
-
-        {events.length === 0 && !loading && (
-          <div className="text-center py-12">
-            <p className="text-gray-600 dark:text-gray-400">No events found</p>
-          </div>
-        )}
+            ))
+          ) : (
+            <div className="col-span-full text-center py-12">
+              <p className="text-gray-500 dark:text-gray-400">No events found</p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

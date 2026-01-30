@@ -7,6 +7,8 @@ import {
   RegisterUser,
   ChangeUserPassword,
   User,
+  ResetPassword,
+  ForgotPassword,
 } from "../types";
 
 class AccountService {
@@ -53,6 +55,16 @@ class AccountService {
 
   async changePassword(data: ChangeUserPassword): Promise<boolean> {
     const response = await api.post<boolean>("/account/change-password", data);
+    return response.data;
+  }
+
+  async resetPassword(data: ResetPassword): Promise<boolean> {
+    const response = await api.post<boolean>("/account/reset-password", data);
+    return response.data;
+  }
+
+  async forgotPassword(data: ForgotPassword): Promise<boolean> {
+    const response = await api.post<boolean>("/account/forgot-password", data);
     return response.data;
   }
 }

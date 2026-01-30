@@ -229,6 +229,17 @@ export interface RegisterUser {
   id?: string;
 }
 
+export interface ResetPassword {
+  email: string;
+  token: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
+export interface ForgotPassword {
+  email: string;
+}
+
 export interface AuthResponse {
   user: User;
   token: string;
@@ -304,57 +315,3 @@ export interface Message {
   createdOn?: string;
 }
 
-export interface NotificationPreference {
-  leadAssigned: boolean;
-  messageReceived: boolean;
-  leadCreated: boolean;
-}
-
-export enum NotificationType {
-  LeadAssigned = "LeadAssigned",
-  MessageReceived = "MessageReceived",
-  LeadCreated = "LeadCreated",
-}
-
-interface BaseNotification {
-  id: string;
-  type: NotificationType;
-  title: string;
-  body: string;
-  clientId: string;
-  userId?: string;
-  createdOn: string;
-}
-
-/* =============================
-   Event-specific payloads
-   ============================= */
-
-export interface LeadAssignedNotification extends BaseNotification {
-  type: NotificationType.LeadAssigned;
-  data: {
-    leadId: string;
-  };
-}
-
-export interface MessageReceivedNotification extends BaseNotification {
-  type: NotificationType.MessageReceived;
-  data: {
-    messageId: string;
-    fromUserId: string;
-  };
-}
-
-export type NotificationEvent =
-  | LeadAssignedNotification
-  | MessageReceivedNotification;
-
-export type MessageCreatedEvent = {
-  Body: string;
-  ClientId: string;
-  CreatedOn: string;
-  Data: string;
-  Title: string;
-  Type: string;
-  UserId: string;
-};

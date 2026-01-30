@@ -184,6 +184,7 @@ export default function EventSubmissionForm() {
       organizerEmail: ""
     });
     setCitySearch("");
+    setPictureFile(null);
     botCheckRef.current?.clear();
     setStatus("success");
 

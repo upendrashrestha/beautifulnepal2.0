@@ -26,7 +26,7 @@ export default function DashboardMenuItems() {
 
   const handleLogout = async () => {
     await logout();
-    router.replace("/login");
+    router.replace("/auth/login");
   };
 
   useEffect(() => {

@@ -9,7 +9,7 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
   if (isLoading) return <p className="text-center p-20">Loading…</p>;
 
   if (!isAuthenticated) {
-    router.replace("/login");
+    router.replace("/auth/login");
     return null;
   }
 

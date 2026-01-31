@@ -18,7 +18,7 @@ export default function PageLayout({
     return (
         <div className={className}>
             <PageTitle>{title}</PageTitle>
-            <main className="mx-auto ">
+            <main className="mx-auto">
                 {children}
             </main>
         </div>

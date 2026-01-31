@@ -6,7 +6,9 @@ export default function LoginLayout({ children }: { children: ReactNode }) {
     return (
         <AuthProvider>
             <LoginHeader />
-            {children}
+            <div className="mt-50 w-full">
+                {children}
+            </div>
         </AuthProvider>
     );
 }

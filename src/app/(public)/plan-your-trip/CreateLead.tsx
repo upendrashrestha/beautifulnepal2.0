@@ -79,7 +79,8 @@ export default function CreateLead() {
                                 onClose={() => setShowToast(false)}
                             />
                         )}
-                
+                    </div>
+                </div>
             </AnimatedSection>
         </PageLayout>
     );

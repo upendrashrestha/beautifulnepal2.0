@@ -6,10 +6,11 @@ import { urlFor } from "@/sanity/lib/image";
 import { Guide } from "@/types";
 import { Card, CardContent } from "./ui/card";
 import AnimatedSection from "./AnimatedSection";
+import { FaArrowRight } from "react-icons/fa";
 import { useEffect, useState } from "react";
 
 interface GuideProps {
-  guides?: Guide[]; // optional pre-fetched guides
+  guides?: Guide[];
   featured?: boolean;
   destinationSlug?: string;
   title?: string;
@@ -44,13 +45,13 @@ export default function Guides({ guides: initialGuides = [], featured, destinati
     <section className="mb-10">
       <AnimatedSection>
         {title && (
-          <div className="mb-8 flex items-center gap-3">
+          <div className="mb-8 flex items-center justify-between">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">{title}</h2>
           </div>
         )}
 
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
-          {guides.map((guide) => {
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {guides.map((guide, index) => {
             const guideImageUrl = guide.mainImage?.asset?._ref
               ? urlFor(guide.mainImage.asset._ref).width(600).height(400).url()
               : "/placeholder.jpg";
@@ -58,31 +59,50 @@ export default function Guides({ guides: initialGuides = [], featured, destinati
             return (
               <Card
                 key={guide._id}
-                className="group overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg transition-shadow duration-300 rounded-2xl"
+                className="group overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-500 rounded-3xl hover:-translate-y-2"
               >
                 <Link href={`/guides/${guide.slug.current}`}>
-                  <div className="relative h-52 w-full">
+                  <div className="relative h-56 w-full overflow-hidden">
                     <Image
                       src={guideImageUrl}
                       alt={guide.title}
                       fill
                       style={{ objectFit: "cover" }}
-                      className="rounded-t-2xl"
-                      priority
+                      className="transition-transform duration-700 group-hover:scale-110"
+                      priority={index < 3}
                     />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   </div>
-                  <CardContent className="p-5">
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 transition-colors line-clamp-2">
+                  <CardContent className="p-6">
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2 mb-3">
                       {guide.title}
                     </h3>
                     {guide.excerpt && (
-                      <p className="mt-2 text-sm text-gray-600 dark:text-gray-400 line-clamp-3">{guide.excerpt}</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-3 leading-relaxed mb-4">
+                        {guide.excerpt}
+                      </p>
                     )}
+
+                    <div className="flex items-center gap-2 text-gray-900 dark:text-white font-medium text-sm group-hover:gap-3 transition-all">
+                      <span>Read Guide</span>
+                      <FaArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                    </div>
                   </CardContent>
                 </Link>
               </Card>
             );
           })}
+        </div>
+
+        {/* View All Guides Link */}
+        <div className="flex justify-center mt-12">
+          <Link
+            href="/guides"
+            className="group inline-flex items-center gap-3 px-8 py-4 bg-black hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-200 text-white dark:text-black font-semibold rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+          >
+            <span>View All Guides</span>
+            <FaArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+          </Link>
         </div>
       </AnimatedSection>
     </section>

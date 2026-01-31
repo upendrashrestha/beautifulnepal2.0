@@ -8,6 +8,48 @@ import { urlFor } from "@/sanity/lib/image";
 import Pagination from "@/components/Pagination";
 import PageLayout from "@/components/layouts/PageLayout";
 import AnimatedSection from "@/components/AnimatedSection";
+import type { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+    return {
+        title: "Nepal Travel Guides & Tips | BeautifulNepal",
+        description:
+            "Explore expert travel guides for Nepal — trekking routes, city guides, travel tips, itineraries, and everything you need to plan the perfect trip.",
+        keywords: [
+            "Nepal travel guide",
+            "Nepal trekking guide",
+            "Nepal itinerary",
+            "Nepal travel tips",
+            "BeautifulNepal guides",
+        ],
+        openGraph: {
+            title: "Nepal Travel Guides & Tips | BeautifulNepal",
+            description:
+                "Plan your Nepal journey with detailed travel guides, itineraries, trekking tips, and local insights.",
+            url: "https://beautifulnepal.com/guides",
+            siteName: "BeautifulNepal",
+            images: [
+                {
+                    url: "https://beautifulnepal.com/og/guides.jpg",
+                    width: 1200,
+                    height: 630,
+                    alt: "Nepal travel guides and tips",
+                },
+            ],
+            type: "website",
+        },
+        twitter: {
+            card: "summary_large_image",
+            title: "Nepal Travel Guides & Tips | BeautifulNepal",
+            description:
+                "Detailed travel guides and itineraries to help you explore Nepal.",
+            images: ["https://beautifulnepal.com/og/guides.jpg"],
+        },
+        alternates: {
+            canonical: "https://beautifulnepal.com/guides",
+        },
+    };
+}
 
 export default async function GuidePage(props: { params: Promise<{ page: string }> }) {
     const params = await props.params;

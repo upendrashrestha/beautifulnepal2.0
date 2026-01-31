@@ -1,3 +1,4 @@
+'use client';
 import { EventSpecParams } from "@/types/event.types";
 import { useEffect, useRef, useState } from "react";
 import { FaSearch, FaTimes, FaMapMarkerAlt } from "react-icons/fa";
@@ -14,7 +15,7 @@ export default function EventSearch({ cities, onSearch }: EventSearchProps) {
   const [showCityDropdown, setShowCityDropdown] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isFocused, setIsFocused] = useState(false);
-  
+
   const cityDropdownRef = useRef<HTMLDivElement>(null);
 
   const filteredCities = cities.filter(city =>
@@ -30,7 +31,7 @@ export default function EventSearch({ cities, onSearch }: EventSearchProps) {
       pageSize: 100,
       city,
       timeFilter: timeFilter !== 'all' ? timeFilter : undefined,
-      search: searchQuery 
+      search: searchQuery
     });
   };
 
@@ -90,7 +91,7 @@ export default function EventSearch({ cities, onSearch }: EventSearchProps) {
       >
         <div className="flex items-center gap-3 px-4 py-4">
           <FaSearch className="text-gray-400 shrink-0" />
-          
+
           <input
             type="text"
             value={searchQuery}
@@ -141,11 +142,10 @@ export default function EventSearch({ cities, onSearch }: EventSearchProps) {
                     <div
                       key={city}
                       onClick={() => handleCitySelect(city)}
-                      className={`px-4 py-2.5 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-colors ${
-                        selectedCity === city
-                          ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 font-medium'
-                          : 'text-gray-900 dark:text-white'
-                      }`}
+                      className={`px-4 py-2.5 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-colors ${selectedCity === city
+                        ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 font-medium'
+                        : 'text-gray-900 dark:text-white'
+                        }`}
                     >
                       {city}
                     </div>
@@ -183,11 +183,10 @@ export default function EventSearch({ cities, onSearch }: EventSearchProps) {
           <button
             key={value}
             onClick={() => handleTimeFilterChange(value)}
-            className={`px-5 py-2.5 rounded-xl font-medium whitespace-nowrap transition-all ${
-              timeFilter === value
-                ? 'bg-gray-600 text-white shadow-sm'
-                : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
-            }`}
+            className={`px-5 py-2.5 rounded-xl font-medium whitespace-nowrap transition-all ${timeFilter === value
+              ? 'bg-gray-600 text-white shadow-sm'
+              : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+              }`}
           >
             {label}
           </button>

@@ -51,7 +51,7 @@ export default function Header() {
       `}
     >
       {/* Top bar */}
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-8 lg:py-4">
+      <div className="mx-auto flex items-center justify-between px-4 py-3 md:px-8 lg:py-4">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 transition-opacity hover:opacity-80">
           <Image

@@ -62,7 +62,7 @@ export default async function Footer() {
 
                 <div className="border-t border-gray-200 dark:border-gray-700 text-center text-xs text-gray-500 dark:text-gray-400 py-4">
                     &copy; {new Date().getFullYear()} {company.name}. All rights reserved.
-                    <div className="pt-2">Built with passion by BeautifulNepal · v1.1</div>
+                    <div className="pt-2">Built with passion by BeautifulNepal</div>
                 </div>
             </>
             }

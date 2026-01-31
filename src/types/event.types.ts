@@ -1,4 +1,6 @@
 export interface Event {
+  updatedOn: Date;
+  createdOn: Date;
   id: string;
   title: string;
   street: string;
@@ -16,6 +18,7 @@ export interface Event {
   organizerEmail: string;
   slug: string;
   status: string;
+  views: number;
 }
 
 export type EventCreate = Omit<Event, "id">;
@@ -47,4 +50,6 @@ export interface EventSpecParams {
   type?: string;
   eventOn?: string;
   city?: string;
+  timeFilter?: "all" | "today" | "weekend" | "popular";
+  slug?: string;
 }

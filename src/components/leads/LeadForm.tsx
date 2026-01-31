@@ -6,6 +6,7 @@ import Input from '../ui/Input';
 import CountrySelect from '../CountrySelect';
 import Dropdown from '../ui/Dropdown';
 import BotCheck, { BotCheckRef } from '../BotCheck';
+import Checkbox from '../ui/Checkbox';
 
 interface Props {
   initialData: Lead;
@@ -55,6 +56,7 @@ export default function LeadForm({
   const [errors, setErrors] = useState<Record<string, string>>({});
   const botCheckRef = useRef<BotCheckRef>(null);
   const [botCheckPassed, setBotCheckPassed] = useState(false);
+  const [understandDisclaimer, setUnderstandDisclaimer] = useState(false);
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -108,6 +110,10 @@ export default function LeadForm({
     if (!botCheckPassed) {
       newErrors.botCheck = "Please answer the security question correctly.";
     }
+
+    if (!understandDisclaimer)
+      newErrors.disclaimer = "You must agree to the disclaimer before submitting the form."
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -201,6 +207,16 @@ export default function LeadForm({
         error={errors.botCheck}
         onVerified={(passed) => setBotCheckPassed(passed)}
       />
+
+      <Checkbox
+        label='I understand and agree that BeautifulNepal will share my trip request with licensed third-party travel agencies in Nepal.'
+        required={true}
+        name="disclaimer"
+        checked={understandDisclaimer}
+        error={errors.disclaimer}
+        onChange={(v) => setUnderstandDisclaimer(v)}
+      />
+
       {/* Submit */}
       <div className="flex items-center justify-end pt-4">
         <button

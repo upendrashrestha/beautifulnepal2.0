@@ -2,6 +2,7 @@
 
 import { ALL_COUNTRIES } from '@/utils/constant';
 import { useEffect, useRef, useState } from 'react';
+import Input from './ui/Input';
 
 interface Props {
   label?: string;
@@ -43,13 +44,8 @@ export default function CountrySelect({ label, value, onChange }: Props) {
 
   return (
     <div ref={ref} className="relative space-y-1">
-      {label && (
-        <label className="block font-bold text-gray-700 dark:text-gray-200 text-left mb-1">
-          {label}
-        </label>
-      )}
-
-      <input
+      <Input
+        label={label}
         type="text"
         value={query || value}
         placeholder="Search country"

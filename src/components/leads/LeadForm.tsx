@@ -121,6 +121,8 @@ export default function LeadForm({
   const [travelMonth, travelYear] = form.travelMonth?.split(' ') || [];
 
   return (
+     <div className={`bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8`}>
+         
     <form onSubmit={handleSubmit} className="mt-10 space-y-6">
       <Input
         label="Name *"
@@ -170,7 +172,6 @@ export default function LeadForm({
         value={form.interestType || ''}
         options={INTEREST_OPTIONS}
         onChange={handleChange}
-        required
       />
 
       {/* Travel Month / Year */}
@@ -227,5 +228,6 @@ export default function LeadForm({
         </button>
       </div>
     </form>
+    </div>
   );
 }

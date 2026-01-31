@@ -24,7 +24,7 @@ export default function TextArea({ label, helperText, error, className, ...props
                 ${className ?? ''}`}
             />
             {helperText && !error && <p className="helper text-gray-500 text-sm">{helperText}</p>}
-            {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+            {error && <p className="text-red-500 text-left text-sm mt-1">{error}</p>}
         </div>
     );
 }

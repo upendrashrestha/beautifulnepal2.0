@@ -15,7 +15,7 @@ export default function CreateUser() {
     };
 
     return (
-        <div className="max-w-xl mx-auto p-6">
+        <main className="mx-auto px-5">
             <div className="flex items-center justify-between pt-4">
                 <h1 className="text-xl font-bold mb-4">Create User</h1>
                 <button
@@ -27,6 +27,6 @@ export default function CreateUser() {
                 </button>
             </div>
             <UserForm onSubmit={handleCreate} />
-        </div>
+        </main>
     );
 }

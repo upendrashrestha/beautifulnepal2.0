@@ -22,7 +22,7 @@ export default function UpdateEventPage() {
     if (!event) return <p className="p-6">Loading…</p>;
 
     return (
-        <div className="mx-auto max-w-xl p-6">
+        <main className="mx-auto px-5">
             <div className="flex items-center justify-between pt-4">
                 <h1 className="text-xl font-bold mb-4">Update Event</h1>
                 <button
@@ -42,6 +42,6 @@ export default function UpdateEventPage() {
                     router.push('../events');
                 }}
             />
-        </div>
+        </main>
     );
 }

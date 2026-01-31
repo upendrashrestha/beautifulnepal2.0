@@ -9,7 +9,7 @@ export default function CreateEvent() {
     const router = useRouter();
 
     return (
-        <div className="max-w-xl mx-auto p-6">
+        <main className="mx-auto px-5">
             <div className="flex items-center justify-between pt-4">
                 <h1 className="text-xl font-bold mb-4">Create Event</h1>
 
@@ -29,6 +29,6 @@ export default function CreateEvent() {
                     router.push("../events");
                 }}
             />
-        </div>
+        </main>
     );
 }

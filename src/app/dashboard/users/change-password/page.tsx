@@ -17,7 +17,7 @@ export default function ChangePasswordPage() {
     };
 
     return (
-        <div className="max-w-xl mx-auto p-6">
+        <main className="mx-auto px-5">
             <div className="flex items-center justify-between pt-4">
                 <h1 className="mb-4 text-xl font-bold">Reset Password</h1>
                 <button
@@ -35,6 +35,6 @@ export default function ChangePasswordPage() {
                     onClose={() => setShowToast(false)}
                 />
             )}
-        </div>
+        </main>
     );
 }

@@ -93,13 +93,23 @@ export default function MessagesPage() {
       {
         header: "Actions",
         render: (m) => (
-          <FaTrash
-            className="cursor-pointer text-gray-500 hover:text-red-600"
-            onClick={() => {
-              setSelectedMessageId(m.id!);
+            <div className="flex items-center gap-2">
+
+
+  <button
+    type="button"
+    onClick={() => {
+          setSelectedMessageId(m.id!);
               setShowConfirm(true);
-            }}
-          />
+    }}
+    className="inline-flex items-center gap-1 cursor-pointer rounded-md bg-red-50 px-3 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-100 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+    aria-label="Delete lead"
+  >
+    <FaTrash className="text-sm" />
+    Delete
+  </button>
+</div>
+          
         ),
       },
     ],

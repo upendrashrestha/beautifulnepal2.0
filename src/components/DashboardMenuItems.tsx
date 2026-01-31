@@ -42,10 +42,22 @@ export default function DashboardMenuItems() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [open]);
+
   if (!user) return null;
 
   return (
-    <header className="fixed top-0 left-0 z-50 w-full bg-white border-b shadow-sm">
+    <header className="fixed top-0 left-0 z-40 w-full bg-white border-b shadow-sm">
       <div className="flex items-center justify-between px-4 py-4 md:px-8">
         {/* Logo */}
         <Link href="/dashboard" className="text-lg font-bold">
@@ -60,6 +72,7 @@ export default function DashboardMenuItems() {
           <button
             onClick={() => setOpen(true)}
             className="md:hidden p-2 rounded-md hover:bg-gray-100"
+            aria-label="Open menu"
           >
             <FaBars />
           </button>
@@ -69,6 +82,7 @@ export default function DashboardMenuItems() {
             <button
               onClick={handleLogout}
               className="p-2 rounded-md hover:bg-gray-100 text-black hover:text-red-500"
+              aria-label="Logout"
             >
               <FaSignOutAlt />
             </button>
@@ -81,25 +95,38 @@ export default function DashboardMenuItems() {
         <>
           {/* Overlay */}
           <div
-            className="fixed inset-0 bg-black/40 z-40"
+            className="fixed inset-0 bg-black/40 z-[100] md:hidden"
             onClick={() => setOpen(false)}
           />
 
-          {/* Drawer */}
-          <div className="fixed bottom-0 left-0 right-0 z-50 bg-white rounded-t-2xl shadow-xl p-5 md:hidden">
+          {/* Drawer - positioned above overlay */}
+          <div className="fixed bottom-0 left-0 right-0 z-[101] bg-white rounded-t-2xl shadow-xl p-5 md:hidden max-h-[80vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-semibold text-lg">Menu</h3>
-              <FaTimes
-                className="cursor-pointer"
+              <button
                 onClick={() => setOpen(false)}
-              />
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                aria-label="Close menu"
+                type="button"
+              >
+                <FaTimes className="text-gray-600" />
+              </button>
             </div>
 
-            <MenuGrid onNavigate={() => setOpen(false)} />
+            <div className="grid grid-cols-3 gap-3 mb-4">
+              <MenuItem href="/dashboard" icon={<FaTachometerAlt />} label="Dashboard" onClick={() => setOpen(false)} />
+              <MenuItem href="/dashboard/leads" icon={<FaAddressCard />} label="Leads" onClick={() => setOpen(false)} />
+              <MenuItem href="/dashboard/clients" icon={<FaBusinessTime />} label="Clients" onClick={() => setOpen(false)} />
+              <MenuItem href="/dashboard/messages" icon={<FaEnvelope />} label="Messages" onClick={() => setOpen(false)} />
+              <MenuItem href="/dashboard/cache" icon={<FaMemory />} label="Cache" onClick={() => setOpen(false)} />
+              <MenuItem href="/dashboard/users" icon={<FaUsers />} label="Users" onClick={() => setOpen(false)} />
+              <MenuItem href="/dashboard/events" icon={<FaCalendarAlt />} label="Events" onClick={() => setOpen(false)} />
+            </div>
 
             <button
               onClick={handleLogout}
-              className="mt-6 w-full flex items-center justify-center gap-2 py-3 rounded-lg text-red-600 hover:bg-red-50"
+              className="w-full flex items-center justify-center gap-2 py-3 rounded-lg text-red-600 hover:bg-red-50 font-medium transition-colors"
+              type="button"
             >
               <FaSignOutAlt />
               Logout
@@ -108,21 +135,6 @@ export default function DashboardMenuItems() {
         </>
       )}
     </header>
-  );
-}
-
-/* ---------------- MENU GRID ---------------- */
-function MenuGrid({ onNavigate }: { onNavigate: () => void }) {
-  return (
-    <div className="grid grid-cols-3 gap-4">
-      <MenuItem href="/dashboard" icon={<FaTachometerAlt />} label="Dashboard" onClick={onNavigate} />
-      <MenuItem href="/dashboard/leads" icon={<FaAddressCard />} label="Leads" onClick={onNavigate} />
-      <MenuItem href="/dashboard/clients" icon={<FaBusinessTime />} label="Clients" onClick={onNavigate} />
-      <MenuItem href="/dashboard/messages" icon={<FaEnvelope />} label="Messages" onClick={onNavigate} />
-      <MenuItem href="/dashboard/cache" icon={<FaMemory />} label="Cache" onClick={onNavigate} />
-      <MenuItem href="/dashboard/users" icon={<FaUsers />} label="Users" onClick={onNavigate} />
-      <MenuItem href="/dashboard/events" icon={<FaCalendarAlt />} label="Events" onClick={onNavigate} />
-    </div>
   );
 }
 
@@ -138,20 +150,31 @@ function MenuItem({
   label: string;
   onClick: () => void;
 }) {
+  const router = useRouter();
+  
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('MenuItem clicked:', label); // Debug log
+    onClick();
+    router.push(href);
+  };
+
   return (
-    <Link
-      href={href}
-      onClick={onClick}
+    <button
+      type="button"
+      onClick={handleClick}
       className="
         flex flex-col items-center justify-center gap-2
         rounded-xl border border-gray-200
-        bg-gray-50 py-4
-        hover:bg-gray-100 transition
+        bg-gray-50 py-4 w-full
+        active:bg-gray-200
+        transition-colors
         text-center
       "
     >
       <span className="text-lg text-gray-700">{icon}</span>
-      <span className="text-sm font-medium">{label}</span>
-    </Link>
+      <span className="text-sm font-medium text-gray-800">{label}</span>
+    </button>
   );
 }

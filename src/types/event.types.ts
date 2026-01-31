@@ -18,6 +18,7 @@ export interface Event {
   status: string;
 }
 
+
 export type EventCreate = Omit<Event, "id">;
 
 export interface EventFormData {
@@ -47,4 +48,5 @@ export interface EventSpecParams {
   type?: string;
   eventOn?: string;
   city?: string;
+   timeFilter?: 'all' | 'today' | 'weekend' | 'popular';
 }

@@ -36,8 +36,7 @@ export default function UpdateLeadPage() {
     if (!lead) return <p className="p-4 text-red-500">Lead not found</p>;
 
     return (
-        <div className="max-w-xl mx-auto p-6">
-
+        <main className="mx-auto px-5">
             <div className="flex items-center justify-between pt-4">
                 <h1 className="text-xl font-bold mb-4">Update Lead</h1>
                 <button
@@ -68,6 +67,6 @@ export default function UpdateLeadPage() {
                     onClose={() => setShowToast(false)}
                 />
             )}
-        </div>
+        </main>
     );
 }

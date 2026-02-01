@@ -31,6 +31,9 @@ export default function DashboardMenuItems() {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
+      // Only apply on desktop
+      if (window.innerWidth < 768) return;
+
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
@@ -38,9 +41,11 @@ export default function DashboardMenuItems() {
         setOpen(false);
       }
     };
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
@@ -70,12 +75,13 @@ export default function DashboardMenuItems() {
 
           {/* Mobile toggle */}
           <button
-            onClick={() => setOpen(true)}
+            onClick={() => setOpen(prev => !prev)}
             className="md:hidden p-2 rounded-md hover:bg-gray-100"
-            aria-label="Open menu"
+            aria-label="Toggle menu"
           >
             <FaBars />
           </button>
+
 
           {/* Desktop actions */}
           <div className="hidden md:flex items-center gap-3" ref={dropdownRef}>
@@ -95,7 +101,7 @@ export default function DashboardMenuItems() {
         <>
           {/* Overlay */}
           <div
-            className="fixed inset-0 bg-black/40 z-[100] md:hidden"
+            className="fixed inset-0 bg-black/40 z-[101] md:hidden"
             onClick={() => setOpen(false)}
           />
 
@@ -151,7 +157,7 @@ function MenuItem({
   onClick: () => void;
 }) {
   const router = useRouter();
-  
+
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();

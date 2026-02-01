@@ -29,20 +29,29 @@ export default function Search() {
 
   const allResults = results
     ? [
-<<<<<<< HEAD:src/components/Search.tsx
       ...results.posts,
       ...results.guides,
       ...results.destinations,
       ...results.categories
     ]
-=======
-        ...results.posts,
-        ...results.guides,
-        ...results.destinations,
-        ...results.categories
-      ]
->>>>>>> 0fc178e5a1a2cc77766f2f0e7105d5bc54222117:src/components/home/Search.tsx
     : [];
+
+  /* Skeleton */
+  function SearchSkeleton() {
+    return (
+      <div className="space-y-3">
+        {[1, 2, 3, 4].map((i) => (
+          <div
+            key={i}
+            className="animate-pulse rounded-xl border bg-white p-4 dark:bg-gray-900"
+          >
+            <div className="mb-2 h-4 w-3/4 rounded bg-gray-200 dark:bg-gray-700" />
+            <div className="h-3 w-1/4 rounded bg-gray-200 dark:bg-gray-700" />
+          </div>
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-6 sm:py-10">
@@ -57,33 +66,8 @@ export default function Search() {
               ? "shadow-[0_0_0_3px_rgba(59,130,246,0.35)]"
               : "shadow-lg"}
   `}
->
+        >
 
-    <div className="flex flex-col sm:flex-row w-full">
-      {/* Input */}
-      <div className="flex items-center gap-3 w-full px-4 py-4">
-        <FaSearch className="text-gray-400 shrink-0" />
-
-        <input
-          value={term}
-          onChange={(e) => setTerm(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
-          placeholder="Search destinations, guides, blogs..."
-          className="w-full flex-1 bg-transparent text-base focus:outline-none"
-        />
-
-        {term && (
-          <button
-            onClick={() => setTerm("")}
-            className="text-gray-400 hover:text-gray-600"
-            aria-label="Clear search"
-          >
-            <FaTimes />
-          </button>
-        )}
-      </div>
 
           <div className="flex flex-col sm:flex-row w-full">
             {/* Input */}
@@ -167,23 +151,6 @@ export default function Search() {
           </p>
         )}
       </div>
-    </div>
-  );
-}
-
-/* Skeleton */
-function SearchSkeleton() {
-  return (
-    <div className="space-y-3">
-      {[1, 2, 3, 4].map((i) => (
-        <div
-          key={i}
-          className="animate-pulse rounded-xl border bg-white p-4 dark:bg-gray-900"
-        >
-          <div className="mb-2 h-4 w-3/4 rounded bg-gray-200 dark:bg-gray-700" />
-          <div className="h-3 w-1/4 rounded bg-gray-200 dark:bg-gray-700" />
-        </div>
-      ))}
     </div>
   );
 }

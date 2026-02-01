@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 export default function TypingText({ text }: { text: string }) {
   return (
     <motion.p
-      className="mt-4 max-w-2xl mx-auto text-bas sm:text-lg text-white dark:text-gray-300 leading-relaxed"
+      className="mt-4 max-w-2xl mx-auto text-bas sm:text-lg font-semibold text-white dark:text-gray-300 leading-relaxed"
       initial="hidden"
       animate="visible"
       variants={{

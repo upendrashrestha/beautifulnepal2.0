@@ -68,7 +68,6 @@ export default function Search() {
   `}
         >
 
-
           <div className="flex flex-col sm:flex-row w-full">
             {/* Input */}
             <div className="flex items-center gap-3 w-full px-4 py-4">

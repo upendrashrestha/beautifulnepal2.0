@@ -74,7 +74,7 @@ export default function Hero() {
                 className="absolute left-0 right-0 top-0 z-10 pointer-events-none"
                 style={{
                     height: "25%",
-                    background: "linear-gradient(to bottom, #ffffff 0%, rgba(255,255,255,0))",
+                    background: "linear-gradient(to bottom, #ffffff 5%, rgba(255,255,255,0))",
                 }}
             />
             {/* Bottom */}
@@ -82,25 +82,25 @@ export default function Hero() {
                 className="absolute left-0 right-0 bottom-0 z-10 pointer-events-none"
                 style={{
                     height: "35%",
-                    background: "linear-gradient(to top, #ffffff 0%, rgba(255,255,255,0))",
+                    background: "linear-gradient(to top, #333f 5%, rgba(255,255,255,0))",
                 }}
             />
             {/* Left */}
-            <div
+            {/* <div
                 className="absolute top-0 bottom-0 left-0 z-10 pointer-events-none"
                 style={{
-                    width: "12%",
-                    background: "linear-gradient(to right, #ffffff 0%, rgba(255,255,255,0))",
+                    width: "10%",
+                    background: "linear-gradient(to right, #ffffff 5%, rgba(255, 255, 255, 0))",
                 }}
-            />
+            /> */}
             {/* Right */}
-            <div
+            {/* <div
                 className="absolute top-0 bottom-0 right-0 z-10 pointer-events-none"
                 style={{
                     width: "12%",
-                    background: "linear-gradient(to left, #ffffff 0%, rgba(255,255,255,0))",
+                    background: "linear-gradient(to left, #ffffff 5%, rgba(255,255,255,0))",
                 }}
-            />
+            /> */}
 
             {/* ── Dark overlay for text legibility (sits between image and white fades) ── */}
             <div
@@ -114,7 +114,7 @@ export default function Hero() {
             {/* ── Content layer ── */}
             <div
                 className="relative z-20 flex flex-col items-center justify-end w-full h-full text-center px-4 pb-12"
-                style={{ minHeight: "70vh" }}
+                style={{ minHeight: "50vh" }}
             >
                 {/* Heading text */}
                 <motion.div

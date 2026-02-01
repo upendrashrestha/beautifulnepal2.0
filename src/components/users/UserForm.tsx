@@ -147,11 +147,13 @@ export default function UserForm({
                 name="role"
                 value={form.role}
                 required
-                options={[
-                    { value: 'SuperAdmin', label: 'Super Admin' },
-                    { value: 'Admin', label: 'Admin' },
-                    { value: 'Contributor', label: 'Contributor' }
-                ]}
+                options={form.role === 'SuperDuperAdmin'
+                    ? [{ value: 'SuperDuperAdmin', label: 'Super Duper Admin' }] // Only this option
+                    : [
+                        { value: 'SuperAdmin', label: 'Super Admin' },
+                        { value: 'Admin', label: 'Admin' },
+                        { value: 'Contributor', label: 'Contributor' },
+                    ]}
                 onChange={(e) =>
                     handleDropdownChange(e)
                 }

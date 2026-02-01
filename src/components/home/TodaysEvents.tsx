@@ -44,10 +44,10 @@ export default function TodaysEvents() {
       <div className="flex items-center justify-between mb-10">
         <div>
           <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
-            Today&apos;s Events
+            Events
           </h2>
           <p className="text-gray-600 dark:text-gray-400">
-            Don&apos;t miss out on what&apos;s happening today
+            Don&apos;t miss out on what&apos;s happening accross Nepal
           </p>
         </div>
       </div>
@@ -83,7 +83,7 @@ export default function TodaysEvents() {
                     <FaCalendarAlt className="text-2xl text-blue-600 dark:text-blue-400" />
                   </div>
                   <span className="text-xs font-semibold px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-full">
-                    Today
+                    {event.eventOn}
                   </span>
                 </div>
 

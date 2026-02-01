@@ -26,7 +26,7 @@ export default function CreateListingPage() {
     const [listingId, setListingId] = useState<string | null>(null);
 
     return (
-        <div className="max-w-3xl mx-auto p-6 space-y-6">
+       <main className="mx-auto px-5">
             <Stepper step={step} />
 
             {/* STEP 1 – LISTING */}
@@ -59,6 +59,6 @@ export default function CreateListingPage() {
                     }}
                 />
             )}
-        </div>
+        </main>
     );
 }

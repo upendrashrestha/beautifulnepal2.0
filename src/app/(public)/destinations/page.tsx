@@ -10,8 +10,49 @@ import { Card, CardContent } from "@/components/ui/card";
 import AnimatedSection from "@/components/AnimatedSection";
 
 export async function generateMetadata(): Promise<Metadata> {
-  return { title: "Destinations", description: "Destinations list page." };
+  return {
+    title: "Top Destinations in Nepal | BeautifulNepal Travel Guide",
+    description:
+      "Explore the most beautiful destinations in Nepal — from Himalayan trekking routes and cultural heritage sites to hidden gems and scenic towns. Plan your journey with BeautifulNepal.",
+    keywords: [
+      "Nepal destinations",
+      "places to visit in Nepal",
+      "Beautiful Nepal",
+      "Nepal travel guide",
+      "tourist attractions in Nepal",
+      "Nepal tourism",
+      "Nepal travel destinations",
+    ],
+    openGraph: {
+      title: "Top Destinations in Nepal | BeautifulNepal",
+      description:
+        "Discover Nepal’s most stunning destinations, including mountains, temples, lakes, and cultural landmarks. Start planning your Nepal adventure today.",
+      url: "https://beautifulnepal.com/destinations",
+      siteName: "BeautifulNepal",
+      images: [
+        {
+          url: "https://beautifulnepal.com/og/destinations.jpg",
+          width: 1200,
+          height: 630,
+          alt: "Beautiful travel destinations in Nepal",
+        },
+      ],
+      locale: "en_US",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Top Destinations in Nepal | BeautifulNepal",
+      description:
+        "From the Himalayas to heritage cities, explore the best destinations in Nepal with BeautifulNepal.",
+      images: ["https://beautifulnepal.com/og/destinations.jpg"],
+    },
+    alternates: {
+      canonical: "https://beautifulnepal.com/destinations",
+    },
+  };
 }
+
 
 export default async function DestinationListPage() {
   const destinations = await fetchDestinations();

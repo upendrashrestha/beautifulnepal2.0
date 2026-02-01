@@ -1,4 +1,6 @@
+import AnimatedSection from "@/components/AnimatedSection";
 import EventSubmissionForm from "@/components/events/EventSubmissionForm";
+import PageLayout from "@/components/layouts/PageLayout";
 
 import { generateMetadataHelper } from "@/utils/generateMetadataHelper";
 import { Metadata } from "next";
@@ -12,5 +14,16 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function SubmitEventPage() {
-    return <EventSubmissionForm />;
+    return (
+     <PageLayout title="Submit Your Event" className="text-center">
+     
+          <p className="text-md pb-10 text-gray-600 dark:text-gray-300">
+            Share your upcoming event with the community in Nepal
+          </p>
+    
+                <AnimatedSection>
+                 
+    <EventSubmissionForm />;
+    </AnimatedSection>
+    </PageLayout>)
 }

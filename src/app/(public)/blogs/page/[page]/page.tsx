@@ -9,6 +9,48 @@ import { Card, CardContent } from "@/components/ui/card";
 import { urlFor } from "@/sanity/lib/image";
 import { Post } from "@/types";
 import AnimatedSection from "@/components/AnimatedSection";
+import type { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: "Travel Stories from Nepal | BeautifulNepal",
+    description:
+      "Read inspiring travel stories from Nepal — real experiences, local culture, hidden places, and unforgettable journeys shared by travelers and locals.",
+    keywords: [
+      "Nepal travel stories",
+      "Nepal travel blog",
+      "BeautifulNepal stories",
+      "travel experiences in Nepal",
+      "Nepal culture stories",
+    ],
+    openGraph: {
+      title: "Travel Stories from Nepal | BeautifulNepal",
+      description:
+        "Discover authentic travel stories from Nepal, featuring culture, adventure, people, and unforgettable moments.",
+      url: "https://beautifulnepal.com/stories",
+      siteName: "BeautifulNepal",
+      images: [
+        {
+          url: "https://beautifulnepal.com/og/stories.jpg",
+          width: 1200,
+          height: 630,
+          alt: "Travel stories from Nepal",
+        },
+      ],
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Travel Stories from Nepal | BeautifulNepal",
+      description:
+        "Authentic travel stories and experiences from across Nepal.",
+      images: ["https://beautifulnepal.com/og/stories.jpg"],
+    },
+    alternates: {
+      canonical: "https://beautifulnepal.com/stories",
+    },
+  };
+}
 
 
 interface Props {
@@ -17,7 +59,7 @@ interface Props {
 
 // Mark as server component (async)
 export default async function BlogPage({ params }: Props) {
-   const { page } = await params; 
+  const { page } = await params;
   const currentPage = parseInt(page || "1", 10);
   const { posts, total } = await fetchPaginatedPosts(currentPage);
   const totalPages = Math.ceil(total / ITEM_PER_PAGE);
@@ -59,10 +101,10 @@ function PostCard({ post }: { post: Post }) {
 
   const publishedDate = post.publishedAt
     ? new Date(post.publishedAt).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      })
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    })
     : "Unknown date";
 
   return (

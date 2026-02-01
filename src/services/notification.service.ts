@@ -1,5 +1,5 @@
 import apiService from "@/services/api";
-import { NotificationEvent } from "@/types";
+import { NotificationEvent } from "@/types/notification.types";
 
 interface SseTokenResponse {
   token: string;

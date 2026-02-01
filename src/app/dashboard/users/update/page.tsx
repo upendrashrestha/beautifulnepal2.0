@@ -19,7 +19,7 @@ export default function UpdateUserPage() {
     if (!user) return <p className="p-6">Loading…</p>;
 
     return (
-        <div className="mx-auto max-w-xl p-6">
+        <main className="mx-auto px-5">
             <div className="flex items-center justify-between pt-4">
                 <h1 className="mb-4 text-xl font-bold">Update User</h1>
                 <button
@@ -40,6 +40,6 @@ export default function UpdateUserPage() {
                     router.push("../");
                 }}
             />
-        </div>
+        </main>
     );
 }

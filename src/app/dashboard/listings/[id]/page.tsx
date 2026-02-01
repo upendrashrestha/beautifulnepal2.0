@@ -45,7 +45,7 @@ export default function EditListingPage() {
     if (!listing) return <div>Listing not found</div>;
 
     return (
-        <div className="max-w-3xl mx-auto p-6 space-y-6">
+        <main className="mx-auto px-5">
             {/* Header */}
             <div className="flex items-center justify-between">
                 <h1 className="text-xl font-bold">Edit Listing</h1>
@@ -105,6 +105,6 @@ export default function EditListingPage() {
                     }}
                 />
             )}
-        </div>
+        </main>
     );
 }

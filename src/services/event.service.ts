@@ -1,5 +1,3 @@
-"use client";
-
 import api from "./api";
 import { PaginatedResponse } from "@/types";
 import { Event, EventSpecParams } from "@/types/event.types";
@@ -36,6 +34,11 @@ class EventService {
 
   async getEventById(id: string): Promise<Event> {
     const response = await api.get<Event>(`/events/${id}`);
+    return response.data;
+  }
+
+  async getEventBySlug(slug: string): Promise<Event> {
+    const response = await api.get<Event>(`/events/public/${slug}`);
     return response.data;
   }
 

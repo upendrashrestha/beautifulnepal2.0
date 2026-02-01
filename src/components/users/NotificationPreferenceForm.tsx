@@ -3,11 +3,11 @@
 import { useState } from "react";
 import Checkbox from "../ui/Checkbox";
 import Button from "../ui/Button";
-import { NotificationPreference } from "@/types";
+import { NotificationPreferences, NotificationType } from "@/types/notification.types";
 
-interface NotificationPreferenceFormProps {
-    initialData?: Partial<NotificationPreference>;
-    onSubmit: (data: NotificationPreference) => Promise<void>;
+interface NotificationPreferencesFormProps {
+    initialData?: NotificationPreferences;
+    onSubmit: (data: NotificationPreferences) => Promise<void>;
     loading?: boolean;
 }
 
@@ -15,23 +15,24 @@ export default function NotificationPreferencesForm({
     initialData,
     onSubmit,
     loading = false,
-}: NotificationPreferenceFormProps) {
-    const [form, setForm] = useState<NotificationPreference>({
-        leadAssigned: initialData?.leadAssigned ?? false,
-        messageReceived: initialData?.messageReceived ?? false,
-        leadCreated: initialData?.leadCreated ?? false,
+}: NotificationPreferencesFormProps) {
+    const [form, setForm] = useState<NotificationPreferences>({
+        LeadAssigned: initialData?.LeadAssigned ?? false,
+        MessageReceived: initialData?.MessageReceived ?? false,
+        LeadCreated: initialData?.LeadCreated ?? false,
+        EventReceived: initialData?.EventReceived ?? false,
+        EmailNotificationOn: initialData?.EmailNotificationOn ?? false
     });
 
-    const handleCheckboxChange = (name: string, checked: boolean) => {
+    const handleCheckboxChange = (key: NotificationType, checked: boolean) => {
         setForm((prev) => ({
             ...prev,
-            [name]: checked,
+            [key]: checked,
         }));
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
         await onSubmit(form);
     };
 
@@ -40,22 +41,14 @@ export default function NotificationPreferencesForm({
             onSubmit={handleSubmit}
             className="space-y-4 p-4 border rounded shadow bg-white dark:bg-gray-800"
         >
-            <Checkbox
-                label="Lead Created"
-                checked={form.leadCreated}
-                onChange={(v) => handleCheckboxChange("leadCreated", v)}
-            />
-            <Checkbox
-                label="Lead Assigned"
-                checked={form.leadAssigned}
-                onChange={(v) => handleCheckboxChange("leadAssigned", v)}
-            />
-
-            <Checkbox
-                label="Message Received"
-                checked={form.messageReceived}
-                onChange={(v) => handleCheckboxChange("messageReceived", v)}
-            />
+            {Object.values(NotificationType).map((type) => (
+                <Checkbox
+                    key={type}
+                    label={type.replace(/([A-Z])/g, " $1").trim()} // Converts "LeadAssigned" → "Lead Assigned"
+                    checked={form[type]}
+                    onChange={(v) => handleCheckboxChange(type, v)}
+                />
+            ))}
 
             <Button
                 type="submit"

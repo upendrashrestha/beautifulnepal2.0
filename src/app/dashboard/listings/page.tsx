@@ -97,22 +97,28 @@ export default function ListingsPage() {
             { header: "Total Views", accessor: (l) => l.viewCount },
             {
                 header: "Actions",
-                render: (l) => (
-                    <div className="flex flex-row gap-2">
-                        <Link
-                            href={`./listings/${l.id}`}
-                            className="text-blue-600 hover:underline text-sm font-medium"
-                        >
-                            Edit
-                        </Link>
-                        <FaTrash
-                            className="cursor-pointer text-red-500 hover:text-red-700"
-                            onClick={() => {
-                                setSelectedListingId(l.id!);
+                render: (l) => ( <div className="flex items-center gap-2">
+  <Link
+    href={`./listings/${l.id}`}
+    className="inline-flex items-center gap-1 rounded-md bg-blue-50 px-3 py-1.5 text-sm font-medium text-blue-600 transition hover:bg-blue-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+  >
+    Edit
+  </Link>
+
+  <button
+    type="button"
+    onClick={() => {
+         setSelectedListingId(l.id!);
                                 setShowConfirm(true);
-                            }}
-                        />
-                    </div>
+    }}
+    className="inline-flex items-center gap-1 cursor-pointer rounded-md bg-red-50 px-3 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-100 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+    aria-label="Delete lead"
+  >
+    <FaTrash className="text-sm" />
+    Delete
+  </button>
+</div>
+
                 ),
             },
         ],

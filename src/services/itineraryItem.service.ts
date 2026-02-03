@@ -1,16 +1,38 @@
 // services/itineraryItem.service.ts
-import { ItineraryItem } from "@/types/itinerary.types";
 import api from "./api";
+import { clearCache } from "@/utils/cache";
+import { ItineraryItem } from "@/types/itinerary.types";
 
 const itineraryItemService = {
-  updateItineraryItem: async (data: Partial<ItineraryItem>) => {
+  /** =====================
+   * UPDATE (invalidate cache)
+   * ===================== */
+  updateItineraryItem: async (
+    data: Partial<ItineraryItem>,
+  ): Promise<ItineraryItem> => {
+    if (!data.itineraryId) {
+      throw new Error("itineraryId is required to update itinerary item");
+    }
+
     const res = await api.put<ItineraryItem>("/itineraryitems", data);
+
+    // Invalidate parent itinerary cache
+    await clearCache(`itineraries:detail:${data.itineraryId}`);
+
     return res.data;
   },
 
-  deleteItineraryItem: async (id: string) => {
-    const res = await api.delete(`/itineraryitems/delete/${id}`);
-    return res.data;
+  /** =====================
+   * DELETE (invalidate cache)
+   * ===================== */
+  deleteItineraryItem: async (
+    id: string,
+    itineraryId: string,
+  ): Promise<void> => {
+    await api.delete(`/itineraryitems/delete/${id}`);
+
+    // Invalidate parent itinerary cache
+    await clearCache(`itineraries:detail:${itineraryId}`);
   },
 };
 

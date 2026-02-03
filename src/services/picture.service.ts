@@ -1,8 +1,12 @@
 import { BaseSpecParams, PaginatedResponse } from "@/types";
 import { Picture } from "@/types/picture.types";
 import api from "./api";
+import { withCache, clearCache } from "@/utils/cache";
 
 const pictureService = {
+  /** =====================
+   * GET LIST (cached)
+   * ===================== */
   getPictures: async (
     params: BaseSpecParams,
   ): Promise<PaginatedResponse<Picture>> => {
@@ -15,18 +19,31 @@ const pictureService = {
     if (params?.clientId) query.append("ClientId", params.clientId);
     if (params?.publicId) query.append("PublicId", params.publicId);
 
-    const res = await api.get<PaginatedResponse<Picture>>(
-      `/pictures?${query.toString()}`,
-    );
+    const cacheKey = `pictures:list:${query.toString()}`;
 
-    return res.data;
+    return withCache(cacheKey, async () => {
+      const res = await api.get<PaginatedResponse<Picture>>(
+        `/pictures?${query.toString()}`,
+      );
+      return res.data;
+    });
   },
 
+  /** =====================
+   * GET DETAIL (cached)
+   * ===================== */
   getPictureById: async (id: string): Promise<Picture> => {
-    const res = await api.get<Picture>(`/pictures/${id}`);
-    return res.data;
+    const cacheKey = `pictures:detail:${id}`;
+
+    return withCache(cacheKey, async () => {
+      const res = await api.get<Picture>(`/pictures/${id}`);
+      return res.data;
+    });
   },
 
+  /** =====================
+   * UPLOAD / CREATE (invalidate cache)
+   * ===================== */
   uploadPicture: async (data: Picture): Promise<Picture> => {
     if (!data.file || !(data.file instanceof File)) {
       throw new Error("No valid file provided");
@@ -38,8 +55,11 @@ const pictureService = {
     if (data.clientId) form.append("clientId", data.clientId.toString());
     form.append("file", data.file, data.file.name);
 
-    // Use postFormData helper instead of post
     const res = await api.postFormData<Picture>("/pictures/upload", form);
+
+    // invalidate list cache
+    await clearCache("pictures:list:");
+
     return res.data;
   },
 
@@ -54,15 +74,24 @@ const pictureService = {
     if (data.clientId) form.append("clientId", data.clientId.toString());
     form.append("file", data.file, data.file.name);
 
-    // Use postFormData helper instead of post
     const res = await api.postFormData<Picture>("/pictures", form);
+
+    await clearCache("pictures:list:");
+
     return res.data;
   },
 
+  /** =====================
+   * DELETE (invalidate cache)
+   * ===================== */
   deletePicture: async (publicId: string): Promise<boolean> => {
     const res = await api.delete<boolean>(
       `/pictures?publicId=${encodeURIComponent(publicId)}`,
     );
+
+    await clearCache(`pictures:detail:${publicId}`);
+    await clearCache("pictures:list:");
+
     return res.data;
   },
 };

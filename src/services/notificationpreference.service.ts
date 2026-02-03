@@ -4,54 +4,68 @@ import {
   NotificationPreferences,
   NotificationType,
 } from "../types/notification.types";
+import { withCache, clearCache } from "@/utils/cache";
 
 const notificationPreferencesService = {
-  /**
-   * Get all notification preferences for the current user.
-   */
-  getNotificationPreferences: async (): Promise<NotificationPreferences> => {
-    // Backend returns list of { key, value } or similar
-    const res = await api.get<{ key: NotificationType; value: boolean }[]>(
-      `/notificationpreferences`,
+  /** =====================
+   * GET preferences (cached)
+   * ===================== */
+  getNotificationPreferences: async (
+    forceRefresh = false,
+  ): Promise<NotificationPreferences> => {
+    const cacheKey = "notification:preferences";
+
+    return withCache(
+      cacheKey,
+      async () => {
+        const res = await api.get<{ key: NotificationType; value: boolean }[]>(
+          `/notificationpreferences`,
+        );
+
+        // Convert list to key-value record
+        const prefs: NotificationPreferences = {
+          [NotificationType.LeadAssigned]: false,
+          [NotificationType.MessageReceived]: false,
+          [NotificationType.LeadCreated]: false,
+          [NotificationType.EventReceived]: false,
+          [NotificationType.EmailNotificationOn]: false,
+        };
+
+        res.data.forEach((p) => {
+          prefs[p.key] = p.value;
+        });
+
+        return prefs;
+      },
+      forceRefresh,
     );
-
-    // Convert list to a key-value record
-    const prefs: NotificationPreferences = {
-      [NotificationType.LeadAssigned]: false,
-      [NotificationType.MessageReceived]: false,
-      [NotificationType.LeadCreated]: false,
-      [NotificationType.EventReceived]: false,
-      [NotificationType.EmailNotificationOn]: false,
-    };
-
-    res.data.forEach((p) => {
-      prefs[p.key] = p.value;
-    });
-
-    return prefs;
   },
 
-  /**
-   * Add or update notification preferences.
-   * Accepts a partial preferences object.
-   */
+  /** =====================
+   * Add or update (invalidate cache)
+   * ===================== */
   addOrUpdateNotificationPreference: async (
     data: Partial<NotificationPreferences>,
   ): Promise<void> => {
-    // Convert object to list of { key, value } for backend
     const payload = Object.entries(data).map(([key, value]) => ({
       key,
       value,
     }));
 
     await api.post("/notificationpreferences", payload);
+
+    // Invalidate cache so next GET fetches fresh data
+    await clearCache("notification:preferences");
   },
 
-  /**
-   * Clear all notification preferences for the current user.
-   */
+  /** =====================
+   * Clear preferences (invalidate cache)
+   * ===================== */
   clearNotificationPreferences: async (): Promise<void> => {
     await api.delete("/notificationpreferences/clear");
+
+    // Invalidate cache
+    await clearCache("notification:preferences");
   },
 };
 

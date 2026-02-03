@@ -22,7 +22,7 @@ export default async function EventsPage({ searchParams }: PageProps) {
     search: paramsFromUrl?.search ?? "",
     city: paramsFromUrl?.city ?? "",
     type: paramsFromUrl?.type,
-    status: paramsFromUrl?.status,
+    status: "Complete",
     timeFilter: paramsFromUrl?.timeFilter ?? "all",
   };
 

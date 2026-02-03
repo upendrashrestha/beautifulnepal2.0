@@ -1,66 +1,62 @@
-interface CacheItem<T> {
-  data: T;
-  timestamp: number;
-  ttl: number; // milliseconds
-}
+// utils/cache.ts
+import { Redis } from "@upstash/redis";
 
-class CacheManager {
-  private prefix = "goothi_cache_";
+const redis = process.env.NEXT_PUBLIC_UPSTASH_REDIS_REST_URL
+  ? new Redis({
+      url: process.env.NEXT_PUBLIC_UPSTASH_REDIS_REST_URL!,
+      token: process.env.NEXT_PUBLIC_UPSTASH_REDIS_REST_TOKEN!,
+    })
+  : null;
 
-  private isBrowser(): boolean {
-    return typeof window !== "undefined";
+const SIX_HOURS = 6 * 60 * 60;
+
+// Per-instance memory cache (important!)
+const memoryCache = new Map<string, unknown>();
+
+export async function withCache<T>(
+  key: string,
+  fetcher: () => Promise<T>,
+  forceRefresh = false,
+  ttlSeconds = SIX_HOURS,
+): Promise<T> {
+  // 1️⃣ Memory cache
+  if (!forceRefresh && memoryCache.has(key)) {
+    return memoryCache.get(key) as T;
   }
 
-  set<T>(key: string, data: T, ttlMinutes = 60): void {
-    if (!this.isBrowser()) return;
-
-    const cacheItem: CacheItem<T> = {
-      data,
-      timestamp: Date.now(),
-      ttl: ttlMinutes * 60 * 1000,
-    };
-
-    try {
-      localStorage.setItem(`${this.prefix}${key}`, JSON.stringify(cacheItem));
-    } catch (error) {
-      console.error("Cache set error:", error);
+  // 2️⃣ Redis cache
+  if (!forceRefresh && redis) {
+    const cached = await redis.get<T>(key);
+    if (cached !== null) {
+      memoryCache.set(key, cached);
+      return cached;
     }
   }
 
-  get<T>(key: string): T | null {
-    if (!this.isBrowser()) return null;
+  // 3️⃣ Fetch fresh
+  const data = await fetcher();
 
+  // 4️⃣ Store in memory
+  memoryCache.set(key, data);
+
+  // 5️⃣ Store in Redis
+  if (redis) {
     try {
-      const item = localStorage.getItem(`${this.prefix}${key}`);
-      if (!item) return null;
-
-      const cacheItem: CacheItem<T> = JSON.parse(item);
-      const isExpired = Date.now() - cacheItem.timestamp > cacheItem.ttl;
-
-      if (isExpired) {
-        this.remove(key);
-        return null;
-      }
-
-      return cacheItem.data;
-    } catch (error) {
-      console.error("Cache get error:", error);
-      return null;
+      await redis.set(key, data, { ex: ttlSeconds });
+    } catch (err) {
+      console.warn("Redis set failed", err);
     }
   }
 
-  remove(key: string): void {
-    if (!this.isBrowser()) return;
-    localStorage.removeItem(`${this.prefix}${key}`);
-  }
-
-  clear(): void {
-    if (!this.isBrowser()) return;
-
-    Object.keys(localStorage)
-      .filter((key) => key.startsWith(this.prefix))
-      .forEach((key) => localStorage.removeItem(key));
-  }
+  return data;
 }
 
-export const cacheManager = new CacheManager();
+export async function clearCache(key?: string) {
+  if (key) {
+    memoryCache.delete(key);
+    if (redis) await redis.del(key);
+  } else {
+    memoryCache.clear();
+    if (redis) await redis.flushall();
+  }
+}

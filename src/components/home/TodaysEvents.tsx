@@ -24,7 +24,8 @@ export default function TodaysEvents() {
       .getEvents({
         pageIndex: 1,
         pageSize: 3,
-        timeFilter: "today"
+        timeFilter: "today",
+        status:"Complete"
       })
       .then((res: PaginatedResponse<Event>) => {
         setEvents(res.data);

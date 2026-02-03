@@ -67,14 +67,16 @@ export default function EventForm({
 
         let uploadedImageUrl = pictureUrl;
 
-        if (initialData.pictureUrl != form.pictureUrl && pictureFile) {
-            const res = await pictureService.uploadPicture({
-                name: pictureFile.name,
-                file: pictureFile,
-            });
+        if (pictureFile) {
+            if (initialData.pictureUrl == null || initialData.pictureUrl != form.pictureUrl) {
+                const res = await pictureService.uploadPicture({
+                    name: pictureFile.name,
+                    file: pictureFile,
+                });
 
-            uploadedImageUrl = res.url;
-            setForm({ ...e, pictureUrl: uploadedImageUrl })
+                uploadedImageUrl = res.url;
+                setForm({ ...e, pictureUrl: uploadedImageUrl })
+            }
         }
 
         setLoading(true);
@@ -98,7 +100,7 @@ export default function EventForm({
             <PicturePicker
                 label="Event Image"
                 value={pictureUrl}
-                showGallery={false}
+                showGallery={true}
                 onChange={({ file, url }) => {
                     setPictureFile(file ?? null);
                     setPictureUrl(url);

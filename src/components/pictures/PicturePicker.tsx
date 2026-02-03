@@ -76,43 +76,43 @@ export default function PicturePicker({
 
   return (
     <div className="space-y-2">
-     
-       <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Event Image Preview
-            </label>
-            <div className="relative h-96 rounded-2xl overflow-hidden shadow-xl bg-gray-100 dark:bg-gray-700">
-              {preview ? (
-                <img
-                  src={preview}
-                  alt="Event preview"
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center">
-                  
-                </div>
-              )}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-              
-              {/* Preview label */}
-              <div className="absolute bottom-4 left-4 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm px-3 py-1.5 rounded-lg">
-                <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  This is how your image will appear on the event detail page
-                </p>
-              </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Event Image Preview
+        </label>
+        <div className="relative h-96 rounded-2xl overflow-hidden shadow-xl bg-gray-100 dark:bg-gray-700">
+          {preview ? (
+            <img
+              src={preview}
+              alt="Event preview"
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center">
+
             </div>
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+
+          {/* Preview label */}
+          <div className="absolute bottom-4 left-4 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm px-3 py-1.5 rounded-lg">
+            <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              This is how your image will appear on the event detail page
+            </p>
           </div>
+        </div>
+      </div>
 
       <div className="flex gap-2">
-         {label && <label className="m-1 ont-medium">{label}</label>}
+        {label && <label className="m-1 ont-medium">{label}</label>}
 
         <button
           type="button"
           onClick={() => inputRef.current?.click()}
           className="px-3 py-1 border rounded bg-gray-200 hover:bg-gray-400"
         >
-          Upload
+          Select Image
         </button>
 
         {showGallery && (

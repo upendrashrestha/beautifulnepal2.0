@@ -85,9 +85,9 @@ export default async function EventDetailPage({ params }: PageProps) {
             ) : (<>
               <div className="w-full h-full bg-gradient-to-br from-gray-500 to-purple-600 flex items-center justify-center">
                 <FaCalendarAlt className="text-white text-8xl opacity-30" />
-                </div>                
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" /> 
-                </>
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+            </>
             )}
 
             <div
@@ -106,7 +106,7 @@ export default async function EventDetailPage({ params }: PageProps) {
             <div className="flex flex-wrap gap-6 mb-8 pb-8 border-b border-gray-200 dark:border-gray-700">
               {[
                 { icon: FaCalendarAlt, label: "Date", value: dateInfo.full },
-                { icon: FaClock, label: "Time", value: dateInfo.time },
+                { icon: FaClock, label: "Time", value: event.eventOnTime },
                 { icon: FaMapMarkerAlt, label: "Location", value: event.city || "TBA" },
               ].map((item, idx) => (
                 <div key={idx} className="flex items-start gap-3">
@@ -123,9 +123,15 @@ export default async function EventDetailPage({ params }: PageProps) {
 
             {/* Description */}
             <div>
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">About This Event</h2>
-              <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-lg whitespace-pre-wrap">
+              <p className="text-black-700 dark:text-gray-200 mb-10 leading-relaxed text-lg whitespace-pre-wrap">
                 {event.description || "Details coming soon."}
+              </p>
+
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">About This Event</h2>
+
+
+              <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-lg whitespace-pre-wrap">
+                {event.content || "Details coming soon."}
               </p>
             </div>
 

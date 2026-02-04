@@ -83,14 +83,14 @@ export default async function EventsPage({ searchParams }: PageProps) {
                     ) : (<>
                       <div className="w-full h-full flex items-center justify-center">
                         <FaCalendarAlt className="text-gray-500 text-6xl opacity-50" />
-                        </div>
-                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
-                        <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                        </>
+                      </div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
+                      <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    </>
                     )}
 
                     {/* Date Badge */}
-                     <div className="absolute top-4 right-4 bg-white dark:bg-gray-800 rounded-xl shadow-lg px-3 py-2 text-center">
+                    <div className="absolute top-4 right-4 bg-white dark:bg-gray-800 rounded-xl shadow-lg px-3 py-2 text-center">
                       <div className="text-2xl font-bold text-black dark:text-indigo-400 leading-none">
                         {dateInfo.day}
                       </div>
@@ -99,8 +99,8 @@ export default async function EventsPage({ searchParams }: PageProps) {
                       </div>
                     </div>
 
-               
-                  </div> 
+
+                  </div>
 
                   {/* Content */}
                   <div className="p-5">
@@ -116,7 +116,7 @@ export default async function EventsPage({ searchParams }: PageProps) {
 
                       <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400 text-sm">
                         <FaClock className="text-black shrink-0" />
-                        <span>{dateInfo.time}</span>
+                        <span>{event.eventOnTime}</span>
                       </div>
                     </div>
 

@@ -35,6 +35,7 @@ export default function ConfirmDialog({
 
         <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-end">
           <button
+            type="button"
             onClick={onCancel}
             className="w-full rounded border px-4 py-2 text-sm sm:w-auto"
           >
@@ -42,7 +43,8 @@ export default function ConfirmDialog({
           </button>
 
           <button
-            onClick={onConfirm}
+            type="button"
+            onClick={() => { onConfirm() }}
             className="
               w-full rounded bg-red-600 px-4 py-2 text-sm font-semibold text-white
               hover:bg-red-700 sm:w-auto

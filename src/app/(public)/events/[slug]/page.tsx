@@ -82,12 +82,13 @@ export default async function EventDetailPage({ params }: PageProps) {
                 alt={event.title || "Event Image"}
                 className="w-full h-full object-cover"
               />
-            ) : (
+            ) : (<>
               <div className="w-full h-full bg-gradient-to-br from-gray-500 to-purple-600 flex items-center justify-center">
                 <FaCalendarAlt className="text-white text-8xl opacity-30" />
-              </div>
+                </div>                
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" /> 
+                </>
             )}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
             <div
               className="absolute top-6 right-6 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm p-3 rounded-full hover:bg-white dark:hover:bg-gray-800 transition-colors shadow-lg"

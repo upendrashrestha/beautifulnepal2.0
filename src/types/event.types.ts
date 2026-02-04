@@ -8,7 +8,7 @@ export interface Event {
   content: string;
   type: string;
   metaData: string;
-  pictureUrl: string;
+  pictureUrl?: string;
   description: string;
   eventOn: string;
   eventOff?: string;

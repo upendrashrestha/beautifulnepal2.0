@@ -90,7 +90,7 @@ const pictureService = {
     );
 
     await clearCache(`pictures:detail:${publicId}`);
-    await clearCache("pictures:list:");
+    await clearCache("pictures:list:PageIndex=1&PageSize=50");
 
     return res.data;
   },

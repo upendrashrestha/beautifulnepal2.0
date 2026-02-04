@@ -65,24 +65,24 @@ export default function EventForm({
         e.preventDefault();
         if (!validate()) return;
 
-        let uploadedImageUrl = pictureUrl;
+        setLoading(true);
+        try {
+            const updatedForm: Partial<EventCreate> = { ...form };
 
-        if (pictureFile) {
-            if (initialData.pictureUrl == null || initialData.pictureUrl != form.pictureUrl) {
+            if (pictureFile) {
                 const res = await pictureService.uploadPicture({
                     name: pictureFile.name,
                     file: pictureFile,
+
                 });
 
-                uploadedImageUrl = res.url;
-                setForm({ ...e, pictureUrl: uploadedImageUrl })
+                if (res.url) {
+                    updatedForm.pictureUrl = res.url;
+                    setPictureUrl(res.url); // keep UI in sync
+                }
             }
-        }
 
-        setLoading(true);
-        try {
-
-            await onSubmit(form);
+            await onSubmit(updatedForm);
         } finally {
             setLoading(false);
         }
@@ -98,12 +98,22 @@ export default function EventForm({
                 error={errors.title}
             />
             <PicturePicker
-                label="Event Image"
+                label="Select Image"
                 value={pictureUrl}
                 showGallery={true}
+                canDelete={true}
                 onChange={({ file, url }) => {
                     setPictureFile(file ?? null);
+                    // ✅ HANDLE DELETE
+                    if (url === undefined) {
+                        // ✅ DELETE CASE (fully type-safe)
+                        setPictureUrl(undefined);
+                        update("pictureUrl", undefined);
+                        return;
+                    }
+
                     setPictureUrl(url);
+                    update("pictureUrl", url);
                 }}
             />
             <Input

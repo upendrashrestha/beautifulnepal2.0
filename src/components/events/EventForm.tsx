@@ -21,8 +21,8 @@ const STATUS_OPTIONS = [
     { label: 'Complete', value: 'Complete' },
     { label: 'More Info Needed', value: 'MoreInfoNeeded' },
     { label: 'Disqualified', value: 'Disqualified' },
-    { label: 'Cancelled', value: 'cancelled' },
-    { label: 'Featured', value: 'featured' },
+    { label: 'Cancelled', value: 'Cancelled' },
+    { label: 'Featured', value: 'Featured' },
 ];
 
 export default function EventForm({
@@ -185,10 +185,12 @@ export default function EventForm({
 
             <TextArea
                 label="Event Content *"
+                rows={20}
                 placeholder="Full event details"
                 value={form.content ?? ""}
                 onChange={(e) => update("content", e.target.value)}
                 error={errors.content}
+                sanitizeHtml={false}
             />
 
             <Input

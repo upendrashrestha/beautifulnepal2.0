@@ -130,9 +130,10 @@ export default async function EventDetailPage({ params }: PageProps) {
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">About This Event</h2>
 
 
-              <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-lg whitespace-pre-wrap">
-                {event.content || "Details coming soon."}
-              </p>
+              <p
+                className="text-gray-700 dark:text-gray-300 leading-relaxed text-lg whitespace-pre-wrap"
+                dangerouslySetInnerHTML={{ __html: event.content || "Details coming soon." }}
+              />
             </div>
 
             {/* CTA Buttons */}

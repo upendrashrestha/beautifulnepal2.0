@@ -95,11 +95,11 @@ export default function EventSubmissionForm() {
     if (!form.content || !form.content.trim()) {
       newErrors.content = "Event Content is required.";
     }
-    
+
     if (!form.organizerEmail || !form.organizerEmail.trim()) {
       newErrors.organizerEmail = "Organizer Email is required.";
     }
-    
+
     if (!botCheckPassed) {
       newErrors.botCheck = "Please answer the security question correctly.";
     }
@@ -135,7 +135,7 @@ export default function EventSubmissionForm() {
 
         uploadedImageUrl = res.url;
       }
-      
+
       const eventData = {
         title: form.title,
         city: form.city,
@@ -220,7 +220,7 @@ export default function EventSubmissionForm() {
       {/* Form Card */}
       <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
         <div className="mt-10 space-y-6">
-        
+
 
 
           {/* Picture Picker */}
@@ -234,7 +234,7 @@ export default function EventSubmissionForm() {
             }}
           />
 
-            {/* Title */}
+          {/* Title */}
           <Input
             label="Title *"
             value={form.title}

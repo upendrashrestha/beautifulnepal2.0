@@ -30,6 +30,7 @@ export default function EventSearchClient({ initialParams }: Props) {
         if (mergedParams.type) query.set("type", mergedParams.type);
         if (mergedParams.id) query.set("id", mergedParams.id);
         if (mergedParams.publicId) query.set("publicId", mergedParams.publicId);
+        if (mergedParams.timeFilter) query.set("timeFilter", mergedParams.timeFilter);
 
         router.push(`/events?${query.toString()}`);
     };

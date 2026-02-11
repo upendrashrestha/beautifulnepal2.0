@@ -8,7 +8,7 @@ import { PaginatedResponse } from '@/types';
 import { FaCalendarAlt, FaClock, FaMapMarkerAlt } from 'react-icons/fa';
 import Skeleton from '@/components/skeleton/Skeleton';
 
-export default function TodaysEvents() {
+export default function FeaturedEvents() {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -21,9 +21,8 @@ export default function TodaysEvents() {
     eventService
       .getEvents({
         pageIndex: 1,
-        pageSize: 3,
-        timeFilter: "today",
-        status: "Complete"
+        pageSize: 6,
+        status: "Featured"
       })
       .then((res: PaginatedResponse<Event>) => {
         setEvents(res.data);
@@ -56,7 +55,7 @@ export default function TodaysEvents() {
     <section className="container mx-auto px-4 py-16">
       <div className="flex mb-10">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-          Happening Today
+          Upcoming
         </h2>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -75,8 +74,8 @@ export default function TodaysEvents() {
             </div>
           ))
         ) :
-          events.length > 0 ?
-            (events.map((event) => {
+          events.length > 0 ? (
+            events.map((event) => {
               const dateInfo = formatDate(event.eventOn);
               return (
                 <Link
@@ -146,19 +145,17 @@ export default function TodaysEvents() {
                 </Link>
               );
             })
-
-            )
+          )
             : (
               <div className="col-span-full text-center py-16">
                 <div className="inline-flex items-center justify-center w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-full mb-4">
                   <FaCalendarAlt className="text-4xl text-gray-400 dark:text-gray-600" />
                 </div>
-                <p className="text-gray-500 dark:text-gray-400 text-lg">No events scheduled for today</p>
+                <p className="text-gray-500 dark:text-gray-400 text-lg">No Featured Events</p>
               </div>
             )
         }
       </div>
-
     </section>
   );
 }

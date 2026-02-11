@@ -22,6 +22,7 @@ const STATUS_OPTIONS = [
     { label: 'More Info Needed', value: 'MoreInfoNeeded' },
     { label: 'Disqualified', value: 'Disqualified' },
     { label: 'Cancelled', value: 'cancelled' },
+    { label: 'Featured', value: 'featured' },
 ];
 
 export default function EventForm({

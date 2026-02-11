@@ -27,7 +27,7 @@ class EventService {
 
   async getEvents(
     params: EventSpecParams,
-    forceRefresh = false,
+    forceRefresh = true,
   ): Promise<PaginatedResponse<Event>> {
     const cacheKey = buildEventsKey(params);
 
@@ -47,6 +47,7 @@ class EventService {
         if (params?.id) query.append("Id", params.id);
         if (params?.publicId) query.append("PublicId", params.publicId);
         if (params?.sort) query.append("Sort", params.sort);
+        if (params?.timeFilter) query.append("TimeFilter", params.timeFilter);
 
         const response = await api.get<PaginatedResponse<Event>>(
           `/events?${query.toString()}`,

@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -7,13 +7,15 @@ import {
     FaUsers,
     FaEnvelope,
     FaBusinessTime,
-    FaMemory,
     FaAddressCard,
     FaCalendarAlt,
     FaSlidersH,
     FaAngleLeft,
     FaAngleRight,
     FaCameraRetro,
+    FaTools,
+    FaChevronDown,
+    FaChevronRight,
 } from "react-icons/fa";
 
 const menuItems = [
@@ -21,11 +23,9 @@ const menuItems = [
     { href: "/dashboard/listings", label: "Listings", icon: FaCameraRetro },
     { href: "/dashboard/clients", label: "Clients", icon: FaBusinessTime },
     { href: "/dashboard/messages", label: "Messages", icon: FaEnvelope },
-    { href: "/dashboard/cache", label: "Cache", icon: FaMemory },
     { href: "/dashboard/users", label: "Users", icon: FaUsers },
     { href: "/dashboard/events", label: "Events", icon: FaCalendarAlt },
     {
-        href: "",
         label: "Settings",
         icon: FaSlidersH,
         subMenu: [
@@ -34,60 +34,104 @@ const menuItems = [
             { href: "/dashboard/users/preferences/notification", label: "Notification Preferences" },
         ],
     },
+    {
+        label: "Tools",
+        icon: FaTools,
+        subMenu: [
+            { href: "/dashboard/send-email", label: "Send Email" },
+            { href: "/dashboard/cache", label: "Cache" },
+        ],
+    },
 ];
 
 export default function DashboardSidebar({ onToggle }: { onToggle?: (open: boolean) => void }) {
     const pathname = usePathname();
     const [open, setOpen] = useState(true);
+    const [openMenus, setOpenMenus] = useState<string[]>([]);
 
     const toggleSidebar = () => {
         setOpen((prev) => {
-            onToggle?.(!prev); // optional callback to resize main content
+            onToggle?.(!prev);
             return !prev;
         });
     };
 
+    const toggleSubMenu = (label: string) => {
+        setOpenMenus((prev) =>
+            prev.includes(label)
+                ? prev.filter((item) => item !== label)
+                : [...prev, label]
+        );
+    };
+
     return (
         <aside
-            className={`
-            hidden md:flex
-            fixed inset-y-0 left-0 z-40 flex-col border-r bg-white
-            transition-all duration-300
-            ${open ? "w-64" : "w-20"}
-          `}
+            className={`hidden md:flex fixed inset-y-0 left-0 z-40 flex-col border-r bg-white transition-all duration-300 ${open ? "w-64" : "w-20"
+                }`}
         >
-            {/* Menu */}
             <nav className="flex-1 px-2 mt-20 space-y-1">
-                {menuItems.map(({ href, label, icon: Icon, subMenu }) => {
-                    const isActive = label === "Settings" ? false : pathname === href || pathname.startsWith(`${href}/`);
+                {menuItems.map((item) => {
+                    const Icon = item.icon;
+                    const hasSubMenu = !!item.subMenu;
+
+                    const isActive =
+                        item.href !== "" && item.href &&
+                        (pathname === item.href || pathname.startsWith(`${item.href}/`));
+
+                    const isSubMenuOpen =
+                        openMenus.includes(item.label) ||
+                        item.subMenu?.some((sub) => pathname === sub.href);
+
                     return (
-                        <div key={href}>
-                            <Link
-                                href={href}
-                                className={`
-                                flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium
-                                transition
-                                ${isActive ? "bg-blue-50 text-blue-600" : "text-gray-700 hover:bg-gray-100"}
-                                ${!open ? "justify-center" : ""}
-                            `}
-                            >
-                                <Icon className="text-base" />
-                                {open && <span>{label}</span>}
-                            </Link>
+                        <div key={item.label}>
+                            {/* Parent Item */}
+                            {hasSubMenu ? (
+                                <button
+                                    onClick={() => toggleSubMenu(item.label)}
+                                    className={`w-full flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition ${isSubMenuOpen
+                                        ? "bg-blue-50 text-blue-600"
+                                        : "text-gray-700 hover:bg-gray-100"
+                                        } ${!open ? "justify-center" : ""}`}
+                                >
+                                    <div className="flex items-center gap-3">
+                                        <Icon className="text-base" />
+                                        {open && <span>{item.label}</span>}
+                                    </div>
+
+                                    {open && (
+                                        isSubMenuOpen ? (
+                                            <FaChevronDown size={12} />
+                                        ) : (
+                                            <FaChevronRight size={12} />
+                                        )
+                                    )}
+                                </button>
+                            ) : (
+                                <Link
+                                    href={item.href!}
+                                    className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition ${isActive
+                                        ? "bg-blue-50 text-blue-600"
+                                        : "text-gray-700 hover:bg-gray-100"
+                                        } ${!open ? "justify-center" : ""}`}
+                                >
+                                    <Icon className="text-base" />
+                                    {open && <span>{item.label}</span>}
+                                </Link>
+                            )}
 
                             {/* Submenu */}
-                            {subMenu && open && (
+                            {hasSubMenu && open && isSubMenuOpen && (
                                 <div className="ml-8 mt-1 space-y-1">
-                                    {subMenu.map((item) => (
+                                    {item.subMenu!.map((sub) => (
                                         <Link
-                                            key={item.href}
-                                            href={item.href}
-                                            className={`
-                                                block px-3 py-1 rounded text-sm font-medium
-                                                ${pathname === item.href ? "bg-blue-50 text-blue-600" : "text-gray-600 hover:bg-gray-100"}
-                                            `}
+                                            key={sub.href}
+                                            href={sub.href}
+                                            className={`block px-3 py-1 rounded text-sm font-medium transition ${pathname === sub.href
+                                                ? "bg-blue-50 text-blue-600"
+                                                : "text-gray-600 hover:bg-gray-100"
+                                                }`}
                                         >
-                                            {item.label}
+                                            {sub.label}
                                         </Link>
                                     ))}
                                 </div>
@@ -96,11 +140,14 @@ export default function DashboardSidebar({ onToggle }: { onToggle?: (open: boole
                     );
                 })}
             </nav>
+
+            {/* Collapse Button */}
             <div className="mt-auto flex p-4 w-full">
                 <button
                     onClick={toggleSidebar}
-                    className="p-2 text-black hover:text-gray-500 cursor-pointer right"
+                    className="right-4 -translate-y-1/2 absolute bottom-2"
                     title={open ? "Collapse Sidebar" : "Expand Sidebar"}
+
                 >
                     {open ? <FaAngleLeft size={24} /> : <FaAngleRight size={24} />}
                 </button>

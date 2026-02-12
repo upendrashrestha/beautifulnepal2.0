@@ -14,6 +14,8 @@ import {
   FaMemory,
   FaAddressCard,
   FaCalendarAlt,
+  FaBell,
+  FaBolt,
 } from "react-icons/fa";
 import { useAuth } from "@/contexts/AuthContext";
 import NotificationsPanel from "./NotificationPanel";
@@ -127,6 +129,9 @@ export default function DashboardMenuItems() {
               <MenuItem href="/dashboard/cache" icon={<FaMemory />} label="Cache" onClick={() => setOpen(false)} />
               <MenuItem href="/dashboard/users" icon={<FaUsers />} label="Users" onClick={() => setOpen(false)} />
               <MenuItem href="/dashboard/events" icon={<FaCalendarAlt />} label="Events" onClick={() => setOpen(false)} />
+
+              <MenuItem href="/dashboard/users/preferences/notification" icon={<FaBell />} label="Notifications Setting" onClick={() => setOpen(false)} />
+              <MenuItem href="/dashboard/send-email" icon={<FaBolt />} label="Send Email" onClick={() => setOpen(false)} />
             </div>
 
             <button
@@ -139,8 +144,9 @@ export default function DashboardMenuItems() {
             </button>
           </div>
         </>
-      )}
-    </header>
+      )
+      }
+    </header >
   );
 }
 

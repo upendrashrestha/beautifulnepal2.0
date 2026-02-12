@@ -1,11 +1,9 @@
 "use client";
 
-import Dropdown from "@/components/ui/Dropdown";
 import { useState } from "react";
 
-// All cache keys here
+// All cache keys here (removed "All Keys" since we’ll handle Select All separately)
 const CACHE_KEYS = [
-    { label: "All Keys", value: "" },
     { label: "Company", value: "company" },
     { label: "Destinations", value: "destinations" },
     { label: "Posts", value: "posts" },
@@ -22,24 +20,42 @@ const CACHE_KEYS = [
 ];
 
 export default function ClearCacheForm() {
-    const [key, setKey] = useState<string>("");
+    const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
     const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
 
-    const handleClearCache = async (formData: FormData) => {
+    const allValues = CACHE_KEYS.map(k => k.value);
+    const isAllSelected = selectedKeys.length === allValues.length;
+
+    const toggleSelectAll = () => {
+        if (isAllSelected) {
+            setSelectedKeys([]);
+        } else {
+            setSelectedKeys(allValues);
+        }
+    };
+
+    const toggleKey = (value: string) => {
+        setSelectedKeys(prev =>
+            prev.includes(value)
+                ? prev.filter(k => k !== value)
+                : [...prev, value]
+        );
+    };
+
+    const handleClearCache = async (e: React.FormEvent) => {
+        e.preventDefault();
         setLoading(true);
         setStatus("idle");
 
         try {
-            const keyToClear = formData.get("cache")?.toString() || "";
             const res = await fetch("/api/clear-cache", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ key: keyToClear }),
+                body: JSON.stringify({ keys: selectedKeys }), // send array
             });
 
             const data = await res.json();
-
             setStatus(data.message === "success" ? "success" : "error");
         } catch (err) {
             console.error("Failed to clear cache:", err);
@@ -51,21 +67,39 @@ export default function ClearCacheForm() {
 
     return (
         <form
-            action={handleClearCache}
+            onSubmit={handleClearCache}
             className="space-y-4 max-w-md"
         >
-            <Dropdown
-                label="Select Cache Key"
-                name="cache"
-                value={key}
-                onChange={(e) => setKey(e.target.value)}
-                options={CACHE_KEYS}
-            />
+            <div className="space-y-2">
+                <p className="font-medium">Select Cache Keys</p>
+
+                {/* Select All */}
+                <label className="flex items-center gap-2">
+                    <input
+                        type="checkbox"
+                        checked={isAllSelected}
+                        onChange={toggleSelectAll}
+                    />
+                    <span className="font-semibold">Select All</span>
+                </label>
+
+                {/* Individual Checkboxes */}
+                {CACHE_KEYS.map((key) => (
+                    <label key={key.value} className="flex items-center gap-2">
+                        <input
+                            type="checkbox"
+                            checked={selectedKeys.includes(key.value)}
+                            onChange={() => toggleKey(key.value)}
+                        />
+                        {key.label}
+                    </label>
+                ))}
+            </div>
 
             <button
                 type="submit"
                 className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-md disabled:opacity-50"
-                disabled={loading}
+                disabled={loading || selectedKeys.length === 0}
             >
                 {loading ? "Clearing..." : "Clear Cache"}
             </button>

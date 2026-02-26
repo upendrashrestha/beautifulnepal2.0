@@ -1,15 +1,19 @@
 import { Metadata } from "next";
+import { redirect } from "next/navigation";
+
 import Posts from "@/components/Posts";
 import FeaturedDestination from "@/components/home/FeaturedDestinations";
 import Guides from "@/components/Guides";
+import Hero from "@/components/home/Hero";
+import Events from "@/components/home/Events";
+
 import {
   fetchFeaturedPosts,
   fetchFeaturedDestinations,
-  fetchFeaturedGuides
+  fetchFeaturedGuides,
 } from "@/sanity/lib/fetch";
+
 import { generateMetadataHelper } from "@/utils/generateMetadataHelper";
-import Hero from "@/components/home/Hero";
-import Events from "@/components/home/Events";
 
 export const revalidate = 60;
 
@@ -24,35 +28,36 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function HomePage() {
-  const [featuredPosts, featuredDestinations, featuredGuides] = await Promise.all([
-    fetchFeaturedPosts(),
-    fetchFeaturedDestinations(),
-    fetchFeaturedGuides(),
-  ]);
+  try {
+    const [featuredPosts, featuredDestinations, featuredGuides] =
+      await Promise.all([
+        fetchFeaturedPosts(),
+        fetchFeaturedDestinations(),
+        fetchFeaturedGuides(),
+      ]);
 
-  return (
-    <main className="w-full overflow-hidden">
-      {/* ================= HERO ================= */}
-      <Hero />
+    return (
+      <main className="w-full overflow-hidden">
+        {/* ================= HERO ================= */}
+        <Hero />
 
-      {/* ================= EVENTS ================= */}
-      <section className="bg-gray-50 dark:bg-gray-950 py-20 sm:py-24">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mb-12">
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
-              Events
-            </h2>
-            <p className="text-gray-600 dark:text-gray-400">
-              Don&apos;t miss out on what&apos;s happening accross Nepal
-            </p>
+        {/* ================= EVENTS ================= */}
+        <section className="bg-gray-50 dark:bg-gray-950 py-20 sm:py-24">
+          <div className="container mx-auto px-4">
+            <div className="max-w-3xl mb-12">
+              <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
+                Events
+              </h2>
+              <p className="text-gray-600 dark:text-gray-400">
+                Don&apos;t miss out on what&apos;s happening across Nepal
+              </p>
+            </div>
+            <Events />
           </div>
-          <Events />
-        </div>
-      </section>
+        </section>
 
-      {/* ================= FEATURED BLOGS ================= */}
-      {
-        featuredPosts.length > 0 && (
+        {/* ================= FEATURED BLOGS ================= */}
+        {featuredPosts.length > 0 && (
           <section className="bg-gray-50 dark:bg-gray-950 py-20 sm:py-24">
             <div className="container mx-auto px-4">
               <div className="max-w-3xl mb-12">
@@ -68,12 +73,10 @@ export default async function HomePage() {
               <Posts title="" posts={featuredPosts} />
             </div>
           </section>
-        )
-      }
+        )}
 
-      {/* ================= GUIDES ================= */}
-      {
-        featuredGuides.length > 0 && (
+        {/* ================= GUIDES ================= */}
+        {featuredGuides.length > 0 && (
           <section className="bg-white dark:bg-gray-900 py-20 sm:py-24">
             <div className="container mx-auto px-4">
               <div className="max-w-3xl mb-12">
@@ -81,19 +84,18 @@ export default async function HomePage() {
                   Expert Travel Guides
                 </h2>
                 <p className="text-lg text-gray-600 dark:text-gray-400">
-                  Comprehensive guides to help you plan the perfect journey through Nepal.
+                  Comprehensive guides to help you plan the perfect journey
+                  through Nepal.
                 </p>
               </div>
 
               <Guides guides={featuredGuides} title="" />
             </div>
           </section>
-        )
-      }
+        )}
 
-      {/* ================= DESTINATIONS ================= */}
-      {
-        featuredDestinations.length > 0 && (
+        {/* ================= DESTINATIONS ================= */}
+        {featuredDestinations.length > 0 && (
           <section className="bg-gradient-to-b from-gray-50 to-white dark:from-gray-950 dark:to-gray-900 py-20 sm:py-24">
             <div className="container mx-auto px-4">
               <div className="max-w-3xl mb-12">
@@ -113,8 +115,11 @@ export default async function HomePage() {
               />
             </div>
           </section>
-        )
-      }
-    </main >
-  );
+        )}
+      </main>
+    );
+  } catch (error) {
+    console.error("Homepage Sanity error:", error);
+    redirect("/traffic-limit");
+  }
 }

@@ -15,7 +15,7 @@ export async function withCache<T>(
   key: string,
   fetcher: () => Promise<T>,
   forceRefresh = false,
-  ttlSeconds = SIX_HOURS
+  ttlSeconds = SIX_HOURS,
 ): Promise<T> {
   // 1️⃣ Check memory cache first
   if (!forceRefresh && memoryCache.has(key)) {

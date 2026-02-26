@@ -146,7 +146,7 @@ const [botCheckPassed, setBotCheckPassed] = useState(false);
                         placeholder="Message"
                         value={formData.message}
                         onChange={handleChange}
-                        rows={4}
+                        rows={5}
                         label="Message *"
                       error={errors.message}/>
                 </div>

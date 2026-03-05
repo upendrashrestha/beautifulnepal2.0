@@ -1,6 +1,6 @@
 // services/email.service.ts
 
-import { SendBulkEmail, SendEmail } from "@/types/send-email.types";
+import { SendBulkEmail, SendEmail } from "../../types/send-email.types";
 import api from "./api";
 
 /** =====================

@@ -3,9 +3,9 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import clientService from "@/services/client.service";
-import { Client, PaginatedResponse } from "@/types";
+import { Client, PaginatedResponse } from "../../../../types";
 import Table from "@/components/ui/Table";
-import { ColumnDef } from "@/types/table";
+import { ColumnDef } from "../../../../types/table";
 import Pagination from "@/components/ui/Pagination";
 
 export default function ClientsPage() {

@@ -1,7 +1,7 @@
 import api from "./api";
 import { withCache, clearCache } from "@/utils/cache";
-import { PaginatedResponse } from "@/types";
-import { Event, EventSpecParams } from "@/types/event.types";
+import { PaginatedResponse } from "../../types";
+import { Event, EventSpecParams } from "../../types/event.types";
 
 /** Build deterministic cache key for event lists */
 const buildEventsKey = (params: EventSpecParams) => {

@@ -6,7 +6,7 @@ import {
     ListingCreate,
     ListingUpdate,
     ListingType,
-} from "@/types/listing.types";
+} from "../../../types/listing.types";
 import Input from "../ui/Input";
 import TextArea from "../ui/TextArea";
 import Dropdown from "../ui/Dropdown";

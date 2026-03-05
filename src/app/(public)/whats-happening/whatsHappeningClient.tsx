@@ -1,6 +1,6 @@
 "use client";
 
-import { CommunityEvent } from "@/types";
+import { CommunityEvent } from "../../../../types";
 import AnimatedSection from "@/components/AnimatedSection";
 import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";

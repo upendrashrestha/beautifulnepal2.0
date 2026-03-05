@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import pictureService from "@/services/picture.service";
-import { Picture } from "@/types/picture.types";
-import { BaseSpecParams } from "@/types";
+import { Picture } from "../../../types/picture.types";
+import { BaseSpecParams } from "../../../types";
 import PictureTile from "./PictureTile";
 
 interface Props {

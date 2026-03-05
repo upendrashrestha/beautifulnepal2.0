@@ -1,5 +1,5 @@
 import apiService from "@/services/api";
-import { NotificationEvent } from "@/types/notification.types";
+import { NotificationEvent } from "../../types/notification.types";
 import { withCache, clearCache } from "@/utils/cache";
 
 interface SseTokenResponse {

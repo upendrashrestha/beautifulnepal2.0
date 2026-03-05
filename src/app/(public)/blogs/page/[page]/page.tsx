@@ -7,7 +7,7 @@ import Image from "next/image";
 import PageLayout from "@/components/layouts/PageLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { urlFor } from "@/sanity/lib/image";
-import { Post } from "@/types";
+import { Post } from "../../../../../../types";
 import AnimatedSection from "@/components/AnimatedSection";
 import type { Metadata } from "next";
 

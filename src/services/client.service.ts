@@ -1,7 +1,7 @@
 // services/client.service.ts
 import api from "./api";
 import { withCache, clearCache } from "@/utils/cache";
-import { BaseSpecParams, Client, PaginatedResponse } from "@/types";
+import { BaseSpecParams, Client, PaginatedResponse } from "../../types";
 
 /** Helper to build deterministic cache keys */
 const buildClientsKey = (params: BaseSpecParams) => {

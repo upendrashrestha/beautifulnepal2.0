@@ -9,7 +9,7 @@ import {
   User,
   ResetPassword,
   ForgotPassword,
-} from "../types";
+} from "../../types";
 import { withCache, clearCache } from "@/utils/cache";
 
 class AccountService {

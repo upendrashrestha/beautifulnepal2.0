@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import AccountService from '@/services/account.service';
-import { RegisterUser } from '@/types';
+import { RegisterUser } from '../../../../../types';
 import UserForm from '@/components/users/UserForm';
 import { FaTimes } from 'react-icons/fa';
 

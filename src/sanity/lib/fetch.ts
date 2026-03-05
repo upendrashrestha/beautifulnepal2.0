@@ -7,7 +7,7 @@ import {
   Destination,
   Guide,
   Post,
-} from "@/types";
+} from "../../../types";
 import { client } from "./client";
 import { ITEM_PER_PAGE } from "@/utils/constant";
 import { withCache } from "./redis-cache";

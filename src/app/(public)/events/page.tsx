@@ -1,7 +1,7 @@
 // app/events/page.tsx
 import { Metadata } from "next";
 import eventService from "@/services/event.service";
-import { Event, EventSpecParams } from "@/types/event.types";
+import { Event, EventSpecParams } from "../../../../types/event.types";
 import { FaMapMarkerAlt, FaCalendarAlt, FaClock } from "react-icons/fa";
 import Link from "next/link";
 import EventSearchClient from "./EventSearchClient";

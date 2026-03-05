@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Checkbox from "../ui/Checkbox";
 import Button from "../ui/Button";
-import { NotificationPreferences, NotificationType } from "@/types/notification.types";
+import { NotificationPreferences, NotificationType } from "../../../types/notification.types";
 
 interface NotificationPreferencesFormProps {
     initialData?: NotificationPreferences;

@@ -6,7 +6,7 @@ import SocialShare from "@/components/SocialShare";
 import Image from '@/components/Image';
 import Link from "@/components/Link";
 import PageLayout from "@/components/layouts/PageLayout";
-import { Listing as Package } from "@/types/listing.types";
+import { Listing as Package } from "../../../../../types/listing.types";
 import { getListingBySlugServer } from "@/services/listing.server";
 import { FaCalendar, FaClock, FaMapPin } from "react-icons/fa";
 
@@ -210,7 +210,7 @@ function PackageView(pkg: Package) {
                                     )}
 
                                     <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 space-y-3">
-                                       
+
                                         {getDuration() && (
                                             <div className="flex items-center justify-between text-sm">
                                                 <span className="text-gray-600 dark:text-gray-400">Duration</span>

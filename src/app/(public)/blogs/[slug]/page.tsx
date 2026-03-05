@@ -6,7 +6,7 @@ import SectionContainer from "@/components/SectionContainer";
 import SocialShare from "@/components/SocialShare";
 import { urlFor } from "@/sanity/lib/image";
 import Image from '@/components/Image';
-import { Post } from "@/types";
+import { Post } from "../../../../../types";
 import BlockContent from "@/components/ui/blockContent";
 import Link from "@/components/Link";
 import PageLayout from "@/components/layouts/PageLayout";

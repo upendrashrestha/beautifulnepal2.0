@@ -1,6 +1,6 @@
 'use client';
 
-import { Lead, LeadCreate, LeadUpdate } from '@/types';
+import { Lead, LeadCreate, LeadUpdate } from '../../../types';
 import { useRef, useState } from 'react';
 import Input from '../ui/Input';
 import CountrySelect from '../CountrySelect';

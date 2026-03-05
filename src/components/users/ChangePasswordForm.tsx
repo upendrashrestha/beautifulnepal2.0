@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ChangeUserPassword } from '@/types';
+import { ChangeUserPassword } from '../../../types';
 import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
 

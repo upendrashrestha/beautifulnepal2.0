@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Client, PaginatedResponse, RegisterUser as User } from '@/types';
+import { Client, PaginatedResponse, RegisterUser as User } from '../../../types';
 import Input from '../ui/Input';
 import Dropdown from '../ui/Dropdown';
 import Button from '../ui/Button';

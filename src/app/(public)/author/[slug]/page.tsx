@@ -1,7 +1,7 @@
 import PageLayout from "@/components/layouts/PageLayout";
 import { fetchAuthorBySlug, fetchPostsByAuthor } from "@/sanity/lib/fetch";
 import { urlFor } from "@/sanity/lib/image";
-import { Post } from "@/types";
+import { Post } from "../../../../../types";
 import Image from '@/components/Image';
 import { Metadata } from "next";
 import { generateMetadataHelper } from "@/utils/generateMetadataHelper";

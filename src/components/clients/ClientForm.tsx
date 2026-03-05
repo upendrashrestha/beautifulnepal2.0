@@ -1,6 +1,6 @@
 'use client';
 
-import { Client } from '@/types';
+import { Client } from '../../../types';
 import { useState } from 'react';
 import TextArea from '@/components/ui/TextArea';
 import Checkbox from '@/components/ui/Checkbox';

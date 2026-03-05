@@ -3,7 +3,7 @@
 import Toast from '@/components/ui/Toast';
 import ChangePasswordForm from '@/components/users/ChangePasswordForm';
 import AccountService from '@/services/account.service';
-import { ChangeUserPassword } from '@/types';
+import { ChangeUserPassword } from '../../../../../types';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { FaTimes } from 'react-icons/fa';

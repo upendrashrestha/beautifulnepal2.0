@@ -8,7 +8,7 @@ import React, {
     ReactNode,
     useCallback,
 } from 'react';
-import { User, Login } from '../types';
+import { User, Login } from '../../types';
 import authService from '../services/auth.service';
 import { authEvents } from '@/services/authEvents';
 import api from '@/services/api'; // Axios instance

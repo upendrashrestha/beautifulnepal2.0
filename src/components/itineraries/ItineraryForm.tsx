@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Itinerary, ItineraryItem } from "@/types/itinerary.types";
+import { Itinerary, ItineraryItem } from "../../../types/itinerary.types";
 import Input from "../ui/Input";
 import TextArea from "../ui/TextArea";
 import Dropdown from "../ui/Dropdown";

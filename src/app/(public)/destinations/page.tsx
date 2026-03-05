@@ -1,7 +1,7 @@
 // app/destinations/page.tsx
 import { fetchDestinations } from "@/sanity/lib/fetch";
 import { urlFor } from "@/sanity/lib/image";
-import { Destination } from "@/types";
+import { Destination } from "../../../../types";
 import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";

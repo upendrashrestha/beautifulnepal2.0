@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { fetchFeaturedDestinations } from "@/sanity/lib/fetch";
-import { Destination } from "@/types";
+import { Destination } from "../../types";
 import { FaChevronDown, FaMapPin } from "react-icons/fa";
 import { usePathname } from "next/navigation";
 

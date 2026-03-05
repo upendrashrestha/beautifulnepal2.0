@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import eventService from '@/services/event.service';
-import { Event } from '@/types/event.types';
-import { PaginatedResponse } from '@/types';
+import { Event } from '../../../types/event.types';
+import { PaginatedResponse } from '../../../types';
 import { FaCalendarAlt, FaClock, FaMapMarkerAlt } from 'react-icons/fa';
 import Skeleton from '@/components/skeleton/Skeleton';
 

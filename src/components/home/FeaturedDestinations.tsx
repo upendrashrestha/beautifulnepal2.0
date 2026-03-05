@@ -2,7 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
-import { Destination } from "@/types";
+import { Destination } from "../../../types";
 import { Card, CardContent } from "../ui/card";
 import AnimatedSection from "../AnimatedSection";
 import { FaArrowRight } from "react-icons/fa";

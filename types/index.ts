@@ -315,3 +315,104 @@ export interface Message {
   createdOn?: string;
 }
 
+// ─── Trek Route Types ────────────────────────────────────────────────────────
+
+export type Difficulty = 'Easy' | 'Moderate' | 'Hard' | 'Extreme'
+
+export type Waypoint = {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  altitude: number
+  description?: string
+  facilities?: string[]
+  distanceFromPrev?: number // km
+}
+
+export type TrekRoute = {
+  id: string
+  name: string
+  region: string
+  durationDays: number
+  distanceKm: number
+  maxAltitude: number
+  difficulty: Difficulty
+  description: string
+  startPoint: string
+  endPoint: string
+  waypoints: Waypoint[]
+  mapBounds: [number, number, number, number] // [west, south, east, north]
+  thumbnailUrl?: string
+  version: number
+}
+
+// ─── Language / Phrases ──────────────────────────────────────────────────────
+
+export type PhraseCategory =
+  | 'Greetings'
+  | 'Directions'
+  | 'Food & Water'
+  | 'Medical'
+  | 'Numbers'
+  | 'Accommodation'
+  | 'General'
+
+export type Phrase = {
+  id: string
+  english: string
+  nepali: string
+  pronunciation: string
+  category: PhraseCategory
+}
+
+// ─── Emergency Contacts ──────────────────────────────────────────────────────
+
+export type ContactCategory =
+  | 'Police'
+  | 'Medical'
+  | 'Rescue'
+  | 'Embassy'
+  | 'General'
+
+export type EmergencyContact = {
+  id: string
+  name: string
+  phone: string
+  altPhone?: string
+  description: string
+  category: ContactCategory
+  available24h: boolean
+  location?: string
+}
+
+// ─── Download System ─────────────────────────────────────────────────────────
+
+export type DownloadStatus = 'idle' | 'downloading' | 'complete' | 'error'
+
+export type DownloadPack = {
+  id: string
+  name: string
+  type: 'map' | 'route' | 'language'
+  routeId?: string
+  sizeBytes: number
+  downloadedAt?: number
+  version: number
+  status: DownloadStatus
+  progress?: number
+}
+
+export type StorageInfo = {
+  used: number
+  available: number
+  quota: number
+}
+
+// ─── App Version ─────────────────────────────────────────────────────────────
+
+export type VersionInfo = {
+  routes: number
+  phrases: number
+  emergency: number
+  app: string
+}

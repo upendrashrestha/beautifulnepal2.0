@@ -1,7 +1,7 @@
 // services/itinerary.service.ts
 import api from "./api";
 import { withCache, clearCache } from "@/utils/cache";
-import { Itinerary } from "@/types/itinerary.types";
+import { Itinerary } from "../../types/itinerary.types";
 
 const itineraryService = {
   /** =====================

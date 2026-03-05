@@ -3,9 +3,9 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import AccountService from "@/services/account.service";
-import { PaginatedResponse, User } from "@/types";
+import { PaginatedResponse, User } from "../../../../types";
 import Table from "@/components/ui/Table";
-import { ColumnDef } from "@/types/table";
+import { ColumnDef } from "../../../../types/table";
 import Pagination from "@/components/ui/Pagination";
 import { FaTrash } from "react-icons/fa";
 import ConfirmationModal from "@/components/ConfirmationModal";
@@ -93,8 +93,8 @@ export default function UsersPage() {
                 accessor: (u) => (
                     <span
                         className={`px-2 py-1 rounded text-xs font-medium ${u.isActive
-                                ? "bg-green-100 text-green-700"
-                                : "bg-red-100 text-red-700"
+                            ? "bg-green-100 text-green-700"
+                            : "bg-red-100 text-red-700"
                             }`}
                     >
                         {u.isActive ? "Active" : "Inactive"}
@@ -107,20 +107,20 @@ export default function UsersPage() {
                     <div className="flex items-center gap-2">
 
 
-  <button
-    type="button"
-    onClick={() => {
-                            setSelectedUserId(u.userName!);
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setSelectedUserId(u.userName!);
                                 setShowConfirm(true);
-    }}
-    className="inline-flex items-center gap-1 cursor-pointer rounded-md bg-red-50 px-3 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-100 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
-    aria-label="Delete lead"
-  >
-    <FaTrash className="text-sm" />
-    Delete
-  </button>
-</div>
-                  
+                            }}
+                            className="inline-flex items-center gap-1 cursor-pointer rounded-md bg-red-50 px-3 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-100 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+                            aria-label="Delete lead"
+                        >
+                            <FaTrash className="text-sm" />
+                            Delete
+                        </button>
+                    </div>
+
                 ),
             },
         ],

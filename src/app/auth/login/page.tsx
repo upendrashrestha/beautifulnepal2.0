@@ -4,11 +4,12 @@ import React, { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { validateEmail } from "@/utils/validations";
 import { useRouter } from "next/navigation";
-import type { Login } from "@/types";
+import type { Login } from "../../../../types";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import PageLayout from "@/components/layouts/PageLayout";
 import AnimatedSection from "@/components/AnimatedSection";
+import TrekAppBanner from "@/components/TrekappBanner";
 
 export default function Login() {
     const [identifier, setIdentifier] = useState("");
@@ -52,6 +53,7 @@ export default function Login() {
             title={'Login'}
             className="text-center"
         >
+            <TrekAppBanner />
             <AnimatedSection>
                 <div className="flex flex-col-reverse flex-wrap gap-8 md:flex-row md:flex-nowrap md:justify-center xl:gap-20">
                     <div className="animate_top w-full rounded-lg bg-white p-7.5 shadow-solid-8 dark:border dark:border-strokedark dark:bg-black md:w-3/5 lg:w-2/3 xl:p-15">

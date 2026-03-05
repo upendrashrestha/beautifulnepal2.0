@@ -1,5 +1,5 @@
 'use client';
-import { EventSpecParams } from "@/types/event.types";
+import { EventSpecParams } from "../../../types/event.types";
 import { useEffect, useRef, useState } from "react";
 import { FaSearch, FaTimes, FaMapMarkerAlt } from "react-icons/fa";
 

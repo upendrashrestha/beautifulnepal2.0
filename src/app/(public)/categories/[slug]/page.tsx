@@ -6,7 +6,7 @@ import { fetchPostsByCategory } from "@/sanity/lib/fetch";
 import Link from "next/link";
 import Image from "next/image";
 import PageLayout from "@/components/layouts/PageLayout";
-import { Post } from "@/types";
+import { Post } from "../../../../../types";
 import AnimatedSection from "@/components/AnimatedSection";
 import { generateMetadataHelper } from "@/utils/generateMetadataHelper";
 

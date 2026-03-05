@@ -3,7 +3,7 @@ import { fetchPaginatedGuides } from "@/sanity/lib/fetch";
 import Link from "next/link";
 import Image from "next/image";
 import { ITEM_PER_PAGE } from "@/utils/constant";
-import { Guide } from "@/types";
+import { Guide } from "../../../../../../types";
 import { urlFor } from "@/sanity/lib/image";
 import Pagination from "@/components/Pagination";
 import PageLayout from "@/components/layouts/PageLayout";

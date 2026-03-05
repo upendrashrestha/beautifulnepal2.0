@@ -3,7 +3,7 @@ import api from "./api";
 import {
   NotificationPreferences,
   NotificationType,
-} from "../types/notification.types";
+} from "../../types/notification.types";
 import { withCache, clearCache } from "@/utils/cache";
 
 const notificationPreferencesService = {

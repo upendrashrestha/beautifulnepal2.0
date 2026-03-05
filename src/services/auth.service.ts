@@ -1,14 +1,14 @@
 "use client";
 
 import api from "./api";
-import { AuthResponse, Login, User } from "../types";
+import { AuthResponse, Login, User } from "../../types";
 import storage from "@/utils/storage"; // clear localStorage or AsyncStorage
 
 class AuthService {
   async login(credentials: Login): Promise<AuthResponse> {
     const response = await api.post<AuthResponse>(
       "/account/login",
-      credentials
+      credentials,
     );
     storage.setToken(response.data.token);
     // ✅ Cookies are set by backend

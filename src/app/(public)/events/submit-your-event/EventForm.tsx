@@ -2,7 +2,7 @@
 import { useState } from "react";
 import PageLayout from "@/components/layouts/PageLayout";
 import AnimatedSection from "@/components/AnimatedSection";
-import { CommunityEvent } from "@/types";
+import { CommunityEvent } from "../../../../../types";
 
 export default function EventFormPage() {
     const [formData, setFormData] = useState<CommunityEvent>({

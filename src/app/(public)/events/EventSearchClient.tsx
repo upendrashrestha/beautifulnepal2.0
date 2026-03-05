@@ -1,7 +1,7 @@
 "use client";
 
 import { NEPAL_CITIES } from "@/utils/constant";
-import { EventSpecParams } from "@/types/event.types";
+import { EventSpecParams } from "../../../../types/event.types";
 import { useRouter } from "next/navigation";
 import EventSearch from "@/components/events/EventSearch";
 

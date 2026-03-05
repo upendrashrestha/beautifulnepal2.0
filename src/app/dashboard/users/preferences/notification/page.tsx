@@ -6,7 +6,7 @@ import notificationPreferencesService from '@/services/notificationpreference.se
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
-import { NotificationPreferences } from "@/types/notification.types";
+import { NotificationPreferences } from "../../../../../../types/notification.types";
 
 export default function NotificationPreferencePage() {
     const router = useRouter();

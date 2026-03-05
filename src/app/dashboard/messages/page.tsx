@@ -3,10 +3,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import messageService from "@/services/message.service";
-import { Message, PaginatedResponse } from "@/types";
+import { Message, PaginatedResponse } from "../../../../types";
 import ConfirmationModal from "@/components/ConfirmationModal";
 import Table from "@/components/ui/Table";
-import { ColumnDef } from "@/types/table";
+import { ColumnDef } from "../../../../types/table";
 import Pagination from "@/components/ui/Pagination";
 
 export default function MessagesPage() {
@@ -93,23 +93,23 @@ export default function MessagesPage() {
       {
         header: "Actions",
         render: (m) => (
-            <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2">
 
 
-  <button
-    type="button"
-    onClick={() => {
-          setSelectedMessageId(m.id!);
-              setShowConfirm(true);
-    }}
-    className="inline-flex items-center gap-1 cursor-pointer rounded-md bg-red-50 px-3 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-100 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
-    aria-label="Delete lead"
-  >
-    <FaTrash className="text-sm" />
-    Delete
-  </button>
-</div>
-          
+            <button
+              type="button"
+              onClick={() => {
+                setSelectedMessageId(m.id!);
+                setShowConfirm(true);
+              }}
+              className="inline-flex items-center gap-1 cursor-pointer rounded-md bg-red-50 px-3 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-100 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+              aria-label="Delete lead"
+            >
+              <FaTrash className="text-sm" />
+              Delete
+            </button>
+          </div>
+
         ),
       },
     ],
@@ -138,12 +138,12 @@ export default function MessagesPage() {
       />
 
       {/* Pagination */}
-          <Pagination
-       pageIndex={pageIndex}
-       totalPages={totalPages}
-       onPrevious={() => setPageIndex((p) => p - 1)}
-       onNext={() => setPageIndex((p) => p + 1)}
-     />
+      <Pagination
+        pageIndex={pageIndex}
+        totalPages={totalPages}
+        onPrevious={() => setPageIndex((p) => p - 1)}
+        onNext={() => setPageIndex((p) => p + 1)}
+      />
 
       {/* Confirm delete */}
       <ConfirmationModal

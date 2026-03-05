@@ -11,7 +11,7 @@ import ItineraryForm from "@/components/itineraries/ItineraryForm";
 import listingService from "@/services/listing.service";
 import itineraryService from "@/services/itinerary.service";
 
-import { Listing, ListingUpdate } from "@/types/listing.types";
+import { Listing, ListingUpdate } from "../../../../../types/listing.types";
 import Stepper from "@/components/listings/Stepper";
 
 enum ListingStep {

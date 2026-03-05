@@ -1,6 +1,6 @@
 "use client";
 
-import { Picture } from "@/types/picture.types";
+import { Picture } from "../../../types/picture.types";
 
 interface Props {
     picture: Picture;

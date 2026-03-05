@@ -6,7 +6,7 @@ import {
     NotificationEvent,
     NotificationPreferences,
     NotificationType,
-} from "@/types/notification.types";
+} from "../../types/notification.types";
 import notificationPreferencesService from "@/services/notificationpreference.service";
 import { notificationService } from "@/services/notification.service";
 

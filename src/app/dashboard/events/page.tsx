@@ -3,10 +3,10 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import eventService from "@/services/event.service";
-import { PaginatedResponse } from "@/types";
-import { Event } from "@/types/event.types";
+import { PaginatedResponse } from "../../../../types";
+import { Event } from "../../../../types/event.types";
 import Table from "@/components/ui/Table";
-import { ColumnDef } from "@/types/table";
+import { ColumnDef } from "../../../../types/table";
 import Pagination from "@/components/ui/Pagination";
 import { FaTrash } from "react-icons/fa";
 import ConfirmationModal from "@/components/ConfirmationModal";

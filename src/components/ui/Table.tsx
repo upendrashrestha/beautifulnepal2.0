@@ -1,6 +1,6 @@
 "use client";
 
-import { TableProps } from "@/types/table";
+import { TableProps } from "../../../types/table";
 
 export default function Table<T>({
   data,
@@ -105,8 +105,8 @@ export default function Table<T>({
                       {col.render
                         ? col.render(row)
                         : col.accessor
-                        ? col.accessor(row)
-                        : null}
+                          ? col.accessor(row)
+                          : null}
                     </td>
                   ))}
                 </tr>
@@ -141,8 +141,8 @@ export default function Table<T>({
                       {col.render
                         ? col.render(row)
                         : col.accessor
-                        ? col.accessor(row)
-                        : null}
+                          ? col.accessor(row)
+                          : null}
                     </span>
                   </div>
                 ))}

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { FaSearch, FaTimes } from "react-icons/fa";
 import Link from "next/link";
 import Button from "../ui/Button";
-import { SearchQueryResult } from "@/types";
+import { SearchQueryResult } from "../../../types";
 
 export default function Search() {
   const [term, setTerm] = useState("");

@@ -1,0 +1,73 @@
+import type { Phrase } from '../types'
+
+export const phrases: Phrase[] = [
+  // Greetings
+  { id: 'p001', english: 'Hello / Goodbye', nepali: 'नमस्ते', pronunciation: 'Na-mas-te', category: 'Greetings' },
+  { id: 'p002', english: 'Thank you', nepali: 'धन्यवाद', pronunciation: 'Dhan-ya-baad', category: 'Greetings' },
+  { id: 'p003', english: 'Thank you very much', nepali: 'धेरै धन्यवाद', pronunciation: 'Dhe-rai dhan-ya-baad', category: 'Greetings' },
+  { id: 'p004', english: 'Yes', nepali: 'हो', pronunciation: 'Ho', category: 'Greetings' },
+  { id: 'p005', english: 'No', nepali: 'होइन', pronunciation: 'Ho-ina', category: 'Greetings' },
+  { id: 'p006', english: 'Please', nepali: 'कृपया', pronunciation: 'Kri-pa-ya', category: 'Greetings' },
+  { id: 'p007', english: 'Good morning', nepali: 'शुभ प्रभात', pronunciation: 'Shubha pra-bhat', category: 'Greetings' },
+  { id: 'p008', english: 'Good night', nepali: 'शुभ रात्री', pronunciation: 'Shubha raat-ri', category: 'Greetings' },
+  { id: 'p009', english: 'My name is...', nepali: 'मेरो नाम ... हो', pronunciation: 'Me-ro naam ... ho', category: 'Greetings' },
+  { id: 'p010', english: 'How are you?', nepali: 'तपाईंलाई कस्तो छ?', pronunciation: 'Ta-paai-lai kas-to chha?', category: 'Greetings' },
+
+  // Directions
+  { id: 'p011', english: 'Where is...?', nepali: '... कहाँ छ?', pronunciation: '... Ka-haa chha?', category: 'Directions' },
+  { id: 'p012', english: 'How far?', nepali: 'कति टाढा छ?', pronunciation: 'Ka-ti taa-dhaa chha?', category: 'Directions' },
+  { id: 'p013', english: 'Left', nepali: 'बायाँ', pronunciation: 'Baa-yaa', category: 'Directions' },
+  { id: 'p014', english: 'Right', nepali: 'दायाँ', pronunciation: 'Daa-yaa', category: 'Directions' },
+  { id: 'p015', english: 'Straight ahead', nepali: 'सिधा जानुहोस्', pronunciation: 'Si-dhaa jaa-nu-hos', category: 'Directions' },
+  { id: 'p016', english: 'Up / Uphill', nepali: 'माथि', pronunciation: 'Maa-thi', category: 'Directions' },
+  { id: 'p017', english: 'Down / Downhill', nepali: 'तल', pronunciation: 'Ta-la', category: 'Directions' },
+  { id: 'p018', english: 'The trail / path', nepali: 'बाटो', pronunciation: 'Baa-to', category: 'Directions' },
+  { id: 'p019', english: 'How many hours?', nepali: 'कति घण्टा लाग्छ?', pronunciation: 'Ka-ti ghan-taa laagchha?', category: 'Directions' },
+  { id: 'p020', english: 'I am lost', nepali: 'म हराएँ', pronunciation: 'Ma ha-raaen', category: 'Directions' },
+
+  // Food & Water
+  { id: 'p021', english: 'How much does it cost?', nepali: 'कति हो?', pronunciation: 'Ka-ti ho?', category: 'Food & Water' },
+  { id: 'p022', english: 'Water', nepali: 'पानी', pronunciation: 'Paa-ni', category: 'Food & Water' },
+  { id: 'p023', english: 'Boiled water', nepali: 'उमालेको पानी', pronunciation: 'U-maa-le-ko paa-ni', category: 'Food & Water' },
+  { id: 'p024', english: 'Food', nepali: 'खाना', pronunciation: 'Khaa-na', category: 'Food & Water' },
+  { id: 'p025', english: 'Dal Bhat (rice & lentils)', nepali: 'दाल भात', pronunciation: 'Daal bhaat', category: 'Food & Water' },
+  { id: 'p026', english: 'Noodles', nepali: 'चाउमिन', pronunciation: 'Chau-min', category: 'Food & Water' },
+  { id: 'p027', english: 'Tea', nepali: 'चिया', pronunciation: 'Chi-ya', category: 'Food & Water' },
+  { id: 'p028', english: 'I am vegetarian', nepali: 'म शाकाहारी हुँ', pronunciation: 'Ma shaa-kaa-haa-ri hun', category: 'Food & Water' },
+  { id: 'p029', english: 'I am hungry', nepali: 'मलाई भोक लाग्यो', pronunciation: 'Ma-laai bhok laag-yo', category: 'Food & Water' },
+  { id: 'p030', english: 'I am thirsty', nepali: 'मलाई तिर्खा लाग्यो', pronunciation: 'Ma-laai tirkha laag-yo', category: 'Food & Water' },
+
+  // Medical
+  { id: 'p031', english: 'Help!', nepali: 'सहयोग गर्नुस!', pronunciation: 'Sa-ha-yog gar-nus!', category: 'Medical' },
+  { id: 'p032', english: 'I need a doctor', nepali: 'मलाई डाक्टर चाहियो', pronunciation: 'Ma-laai daak-tar chaa-hi-yo', category: 'Medical' },
+  { id: 'p033', english: 'I am sick', nepali: 'म बिरामी छु', pronunciation: 'Ma bi-raa-mi chhu', category: 'Medical' },
+  { id: 'p034', english: 'I have altitude sickness', nepali: 'मलाई उचाइको बिमारी छ', pronunciation: 'Ma-laai u-chaa-i-ko bi-maa-ri chha', category: 'Medical' },
+  { id: 'p035', english: 'My head hurts', nepali: 'मेरो टाउको दुख्यो', pronunciation: 'Me-ro taa-u-ko duk-hyo', category: 'Medical' },
+  { id: 'p036', english: 'Hospital / Medical post', nepali: 'अस्पताल', pronunciation: 'As-pa-taal', category: 'Medical' },
+  { id: 'p037', english: 'Emergency', nepali: 'आपतकालीन', pronunciation: 'Aa-pat-kaa-lin', category: 'Medical' },
+  { id: 'p038', english: 'I need to descend', nepali: 'मलाई तल झर्नुपर्छ', pronunciation: 'Ma-laai ta-la jhar-nu-par-chha', category: 'Medical' },
+
+  // Numbers
+  { id: 'p039', english: 'One', nepali: 'एक', pronunciation: 'Ek', category: 'Numbers' },
+  { id: 'p040', english: 'Two', nepali: 'दुई', pronunciation: 'Dui', category: 'Numbers' },
+  { id: 'p041', english: 'Three', nepali: 'तीन', pronunciation: 'Tin', category: 'Numbers' },
+  { id: 'p042', english: 'Five', nepali: 'पाँच', pronunciation: 'Paanch', category: 'Numbers' },
+  { id: 'p043', english: 'Ten', nepali: 'दश', pronunciation: 'Dash', category: 'Numbers' },
+  { id: 'p044', english: 'Fifty', nepali: 'पचास', pronunciation: 'Pa-chaas', category: 'Numbers' },
+  { id: 'p045', english: 'One hundred', nepali: 'एक सय', pronunciation: 'Ek sa-ya', category: 'Numbers' },
+
+  // Accommodation
+  { id: 'p046', english: 'Do you have a room?', nepali: 'कोठा छ?', pronunciation: 'Ko-thaa chha?', category: 'Accommodation' },
+  { id: 'p047', english: 'How much per night?', nepali: 'एक रातको कति हो?', pronunciation: 'Ek raat-ko ka-ti ho?', category: 'Accommodation' },
+  { id: 'p048', english: 'Teahouse / Lodge', nepali: 'चिया घर', pronunciation: 'Chi-ya ghar', category: 'Accommodation' },
+  { id: 'p049', english: 'Toilet / Bathroom', nepali: 'शौचालय', pronunciation: 'Shou-chaa-lay', category: 'Accommodation' },
+  { id: 'p050', english: 'Hot shower', nepali: 'तातो पानीले नुहाउने', pronunciation: 'Taa-to paa-ni-le nu-hau-ne', category: 'Accommodation' },
+
+  // General
+  { id: 'p051', english: 'Beautiful', nepali: 'सुन्दर', pronunciation: 'Sun-dar', category: 'General' },
+  { id: 'p052', english: 'Very good / Excellent', nepali: 'धेरै राम्रो', pronunciation: 'Dhe-rai raam-ro', category: 'General' },
+  { id: 'p053', english: 'Slowly / Carefully', nepali: 'बिस्तारै', pronunciation: 'Bis-taa-rai', category: 'General' },
+  { id: 'p054', english: 'I don\'t understand', nepali: 'मलाई थाहा छैन', pronunciation: 'Ma-laai thaa-ha chhaina', category: 'General' },
+  { id: 'p055', english: 'Can you repeat?', nepali: 'फेरि भन्नुस्?', pronunciation: 'Phe-ri bhan-nus?', category: 'General' },
+  { id: 'p056', english: 'Good luck!', nepali: 'शुभकामना!', pronunciation: 'Shubha-kaa-ma-naa!', category: 'General' },
+]

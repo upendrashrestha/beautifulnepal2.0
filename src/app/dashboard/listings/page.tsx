@@ -4,13 +4,13 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import listingService from "@/services/listing.service";
 import Table from "@/components/ui/Table";
-import { ColumnDef } from "@/types/table";
+import { ColumnDef } from "../../../../types/table";
 import Pagination from "@/components/ui/Pagination";
 import { FaTrash } from "react-icons/fa";
 import ConfirmationModal from "@/components/ConfirmationModal";
-import { Listing } from "@/types/listing.types";
-import { ItineraryItem } from "@/types/itinerary.types";
-import { PaginatedResponse } from "@/types";
+import { Listing } from "../../../../types/listing.types";
+import { ItineraryItem } from "../../../../types/itinerary.types";
+import { PaginatedResponse } from "../../../../types";
 
 export default function ListingsPage() {
     const [listings, setListings] = useState<Listing[]>([]);
@@ -97,27 +97,27 @@ export default function ListingsPage() {
             { header: "Total Views", accessor: (l) => l.viewCount },
             {
                 header: "Actions",
-                render: (l) => ( <div className="flex items-center gap-2">
-  <Link
-    href={`./listings/${l.id}`}
-    className="inline-flex items-center gap-1 rounded-md bg-blue-50 px-3 py-1.5 text-sm font-medium text-blue-600 transition hover:bg-blue-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-  >
-    Edit
-  </Link>
+                render: (l) => (<div className="flex items-center gap-2">
+                    <Link
+                        href={`./listings/${l.id}`}
+                        className="inline-flex items-center gap-1 rounded-md bg-blue-50 px-3 py-1.5 text-sm font-medium text-blue-600 transition hover:bg-blue-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                        Edit
+                    </Link>
 
-  <button
-    type="button"
-    onClick={() => {
-         setSelectedListingId(l.id!);
-                                setShowConfirm(true);
-    }}
-    className="inline-flex items-center gap-1 cursor-pointer rounded-md bg-red-50 px-3 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-100 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
-    aria-label="Delete lead"
-  >
-    <FaTrash className="text-sm" />
-    Delete
-  </button>
-</div>
+                    <button
+                        type="button"
+                        onClick={() => {
+                            setSelectedListingId(l.id!);
+                            setShowConfirm(true);
+                        }}
+                        className="inline-flex items-center gap-1 cursor-pointer rounded-md bg-red-50 px-3 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-100 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+                        aria-label="Delete lead"
+                    >
+                        <FaTrash className="text-sm" />
+                        Delete
+                    </button>
+                </div>
 
                 ),
             },

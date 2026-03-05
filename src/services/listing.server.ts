@@ -1,6 +1,6 @@
 // services/listing.server.ts
-import { Listing } from "@/types/listing.types";
-import { PaginatedResponse } from "@/types";
+import { Listing } from "../../types/listing.types";
+import { PaginatedResponse } from "../../types";
 
 interface ListParams {
   pageIndex?: number;

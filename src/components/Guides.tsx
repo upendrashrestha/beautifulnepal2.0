@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "@/components/Image";
 import { urlFor } from "@/sanity/lib/image";
-import { Guide } from "@/types";
+import { Guide } from "../../types";
 import { Card, CardContent } from "./ui/card";
 import AnimatedSection from "./AnimatedSection";
 import { FaArrowRight } from "react-icons/fa";

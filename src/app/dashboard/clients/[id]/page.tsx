@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import clientService from '@/services/client.service';
 import ClientForm from '@/components/clients/ClientForm';
-import { Client } from '@/types';
+import { Client } from '../../../../../types';
 import { FaTimes } from 'react-icons/fa';
 
 export default function UpdateClientPage() {
@@ -22,7 +22,7 @@ export default function UpdateClientPage() {
     if (!client) return <p className="p-6">Loading…</p>;
 
     return (
-       <main className="mx-auto px-5">
+        <main className="mx-auto px-5">
             <div className="flex items-center justify-between pt-4">
                 <h1 className="text-xl font-bold mb-4">Update Client</h1>
                 <button

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import leadService from '@/services/lead.service';
-import { Lead } from '@/types';
+import { Lead } from '../../../../../types';
 import Toast from '@/components/ui/Toast';
 import { useParams, useRouter } from 'next/navigation';
 import { FaTimes } from 'react-icons/fa';
@@ -10,9 +10,9 @@ import LeadAssignmentForm from '@/components/leads/LeadAssignmentForm';
 
 export default function UpdateLeadPage() {
     const router = useRouter();
-    
-      const params = useParams<{ id: string }>();
-      const  id  = params?.id;
+
+    const params = useParams<{ id: string }>();
+    const id = params?.id;
     const [showToast, setShowToast] = useState(false);
     const [lead, setLead] = useState<Lead | null>(null);
     const [loading, setLoading] = useState(true);
@@ -37,7 +37,7 @@ export default function UpdateLeadPage() {
     if (!lead) return <p className="p-4 text-red-500">Lead not found</p>;
 
     return (
-       <main className="mx-auto px-5">
+        <main className="mx-auto px-5">
 
             <div className="flex items-center justify-between pt-4">
                 <h1 className="text-xl font-bold mb-4">     Assign Lead to Agency

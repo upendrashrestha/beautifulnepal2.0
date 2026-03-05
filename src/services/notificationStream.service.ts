@@ -1,4 +1,4 @@
-import { NotificationEvent } from "../types/notification.types";
+import { NotificationEvent } from "../../types/notification.types";
 import { notificationService } from "./notification.service";
 
 export class NotificationStreamService<T extends NotificationEvent> {

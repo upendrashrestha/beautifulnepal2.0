@@ -1,5 +1,5 @@
-import { BaseSpecParams, PaginatedResponse } from "@/types";
-import { Picture } from "@/types/picture.types";
+import { BaseSpecParams, PaginatedResponse } from "../../types";
+import { Picture } from "../../types/picture.types";
 import api from "./api";
 import { withCache, clearCache } from "@/utils/cache";
 

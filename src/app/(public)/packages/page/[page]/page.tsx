@@ -4,8 +4,8 @@ import Pagination from "@/components/Pagination";
 import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
 import Image from "next/image";
-import { PaginatedResponse } from "@/types";
-import { Listing } from "@/types/listing.types";
+import { PaginatedResponse } from "../../../../../../types";
+import { Listing } from "../../../../../../types/listing.types";
 import { getListingsServer } from "@/services/listing.server";
 
 interface Props {

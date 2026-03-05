@@ -1,6 +1,6 @@
 // services/message.service.ts
 import api from "./api";
-import { BaseSpecParams, Message, PaginatedResponse } from "@/types";
+import { BaseSpecParams, Message, PaginatedResponse } from "../../types";
 import { withCache, clearCache } from "@/utils/cache";
 
 const messageService = {

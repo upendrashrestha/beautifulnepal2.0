@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import accountService from "@/services/account.service";
 import authService from "@/services/auth.service";
 import UserForm from "@/components/users/UserForm";
-import { User } from "@/types";
+import { User } from "../../../../../types";
 import { FaTimes } from "react-icons/fa";
 
 export default function UpdateUserPage() {

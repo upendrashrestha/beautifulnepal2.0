@@ -4,7 +4,7 @@
 import { useEffect, useState } from 'react';
 import clientService from '@/services/client.service';
 import api from '@/services/api';
-import { Client, PaginatedResponse } from '@/types';
+import { Client, PaginatedResponse } from '../../../types';
 import Dropdown from '../ui/Dropdown';
 import TextArea from '../ui/TextArea';
 
@@ -32,19 +32,19 @@ export default function AssignLeadForm({ leadId }: { leadId: string }) {
     return (
         <div className="space-y-4 border rounded p-4">
 
-        <Dropdown
-  label="Clients"
-  name="clientId"
-  value={clientId}
-  onChange={(e) => setClientId(e.target.value)}
-  options={[
-    { label: 'Select Client', value: '' },
-    ...clients.map((c) => ({
-      label: c.name,
-      value: c.id,
-    })),
-  ]}
-/>
+            <Dropdown
+                label="Clients"
+                name="clientId"
+                value={clientId}
+                onChange={(e) => setClientId(e.target.value)}
+                options={[
+                    { label: 'Select Client', value: '' },
+                    ...clients.map((c) => ({
+                        label: c.name,
+                        value: c.id,
+                    })),
+                ]}
+            />
 
 
             <TextArea

@@ -1,8 +1,8 @@
-import { BnMetadata } from "@/types";
+import { BnMetadata } from "../../types";
 import { Metadata } from "next";
 import { generateKeywords } from "./generateKeywords";
 export async function generateMetadataHelper(
-  mdata: BnMetadata
+  mdata: BnMetadata,
 ): Promise<Metadata> {
   const keywords = await generateKeywords({
     title: mdata.title,

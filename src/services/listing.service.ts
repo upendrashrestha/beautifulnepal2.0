@@ -1,7 +1,11 @@
 // services/listing.service.ts
-import { Listing, ListingCreate, ListingUpdate } from "@/types/listing.types";
+import {
+  Listing,
+  ListingCreate,
+  ListingUpdate,
+} from "../../types/listing.types";
 import api from "./api";
-import { BaseSpecParams, PaginatedResponse } from "@/types";
+import { BaseSpecParams, PaginatedResponse } from "../../types";
 import { withCache, clearCache } from "@/utils/cache";
 
 const listingService = {

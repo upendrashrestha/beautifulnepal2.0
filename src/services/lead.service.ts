@@ -7,7 +7,7 @@ import {
   LeadCreate,
   LeadUpdate,
   PaginatedResponse,
-} from "@/types";
+} from "../../types";
 import { withCache, clearCache } from "@/utils/cache";
 
 class LeadService {

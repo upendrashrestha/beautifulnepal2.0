@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import Input from "../ui/Input";
 import TextArea from "../ui/TextArea";
-import { EventFormData } from "@/types/event.types";
+import { EventFormData } from "../../../types/event.types";
 import { NEPAL_CITIES } from "@/utils/constant";
 import eventService from "@/services/event.service";
 import BotCheck, { BotCheckRef } from "@/components/BotCheck";

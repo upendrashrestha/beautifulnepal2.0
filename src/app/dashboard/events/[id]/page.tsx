@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import eventService from '@/services/event.service';
 import EventForm from '@/components/events/EventForm';
-import { Event } from '@/types/event.types';
+import { Event } from '../../../../../types/event.types';
 import { FaTimes } from 'react-icons/fa';
 
 export default function UpdateEventPage() {

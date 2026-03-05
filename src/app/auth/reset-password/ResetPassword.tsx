@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 import accountService from '@/services/account.service';
-import { ResetPassword as ResetPasswordType } from '@/types';
+import { ResetPassword as ResetPasswordType } from '../../../../types';
 
 import PageLayout from '@/components/layouts/PageLayout';
 import AnimatedSection from '@/components/AnimatedSection';

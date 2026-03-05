@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { Picture } from "@/types/picture.types";
+import { Picture } from "../../../types/picture.types";
 import pictureService from "@/services/picture.service";
 import { FaTrash } from "react-icons/fa";
 import ConfirmationModal from "../ConfirmationModal";

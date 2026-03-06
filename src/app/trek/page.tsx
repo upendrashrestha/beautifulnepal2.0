@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Navigation from '../../components/Navigation'
+import TrekAppBanner from '../../components/TrekappBanner'
 import { initDatabase, getAllRoutes } from '../../lib/db'
 import type { TrekRoute } from '../../../types'
 import banner from "@/assets/banner.jpg";
@@ -67,6 +68,10 @@ export default function TrekHomePage() {
             Navigate Nepal&apos;s greatest trails — even without signal.
           </p>
         </div>
+      </div>
+
+      <div className="px-5 mb-4">
+        <TrekAppBanner />
       </div>
 
       {/* Quick Actions */}

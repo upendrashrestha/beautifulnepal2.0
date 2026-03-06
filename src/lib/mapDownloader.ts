@@ -88,6 +88,31 @@ export type DownloadProgressCallback = (
   total: number,
 ) => void;
 
+async function fetchTileWithRetry(
+  url: string,
+  signal?: AbortSignal,
+  retries = 2,
+): Promise<Response> {
+  let lastError: unknown;
+
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    if (signal?.aborted) throw new Error("Download cancelled");
+
+    try {
+      const response = await fetch(url, { signal });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      return response;
+    } catch (error) {
+      lastError = error;
+      if (attempt < retries) {
+        await new Promise((resolve) => setTimeout(resolve, 250 * (attempt + 1)));
+      }
+    }
+  }
+
+  throw lastError instanceof Error ? lastError : new Error("Tile download failed");
+}
+
 export async function downloadMapPack(
   routeId: string,
   onProgress?: DownloadProgressCallback,
@@ -112,8 +137,10 @@ export async function downloadMapPack(
   await upsertDownloadPack(downloadPack);
 
   let downloaded = 0;
+  let successfulTiles = 0;
+  let failedTiles = 0;
   let totalBytes = 0;
-  const BATCH_SIZE = 8; // concurrent downloads
+  const BATCH_SIZE = 3;
 
   try {
     for (let i = 0; i < tiles.length; i += BATCH_SIZE) {
@@ -127,17 +154,16 @@ export async function downloadMapPack(
               .replace("{z}", String(z))
               .replace("{x}", String(x))
               .replace("{y}", String(y));
-            const res = await fetch(url, { signal });
-            if (!res.ok) return;
-
+            const res = await fetchTileWithRetry(url, signal);
             const data = await res.arrayBuffer();
             const contentType = res.headers.get("content-type") ?? "image/png";
             totalBytes += data.byteLength;
 
             await saveMapTile({ routeId, z, x, y, data, contentType });
+            successfulTiles++;
           } catch (err) {
             console.error(`Error downloading tile (${z}, ${x}, ${y}):`, err);
-            // Skip failed tiles gracefully
+            failedTiles++;
           } finally {
             downloaded++;
           }
@@ -154,6 +180,15 @@ export async function downloadMapPack(
         sizeBytes: totalBytes,
         status: "downloading",
       });
+    }
+
+    if (successfulTiles === 0) {
+      throw new Error("No map tiles could be downloaded. Check your connection and try again.");
+    }
+
+    const successRate = successfulTiles / total;
+    if (successRate < 0.85) {
+      throw new Error(`Download incomplete (${failedTiles} tile requests failed). Please retry.`);
     }
 
     await upsertDownloadPack({

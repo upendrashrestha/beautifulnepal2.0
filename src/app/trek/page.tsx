@@ -46,7 +46,7 @@ export default function TrekHomePage() {
       <div className="relative overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center opacity-20"
-          style={{ backgroundImage: `url(${banner})` }}
+          style={{ backgroundImage: `url(${banner.src})` }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-stone-950" />
         <div className="relative px-5 pt-14 pb-10">

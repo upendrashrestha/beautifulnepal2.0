@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
-import withPWABase from "next-pwa";
 
-const withPWA = withPWABase({
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const withPWA = require("next-pwa")({
   dest: "public",
   register: true,
   skipWaiting: true,
@@ -35,7 +35,6 @@ const withPWA = withPWABase({
 });
 
 const nextConfig: NextConfig = {
-  /* config options here */
   images: {
     remotePatterns: [
       {
@@ -48,11 +47,8 @@ const nextConfig: NextConfig = {
         hostname: "res.cloudinary.com",
         pathname: "/**",
       },
-      // You can add more domains or patterns here
     ],
   },
 };
 
 module.exports = withPWA(nextConfig);
-
-export default nextConfig;

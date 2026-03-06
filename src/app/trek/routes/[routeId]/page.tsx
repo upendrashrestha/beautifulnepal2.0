@@ -7,7 +7,7 @@ import Link from 'next/link'
 import Navigation from '../../../../components/Navigation'
 import { initDatabase, getRouteById } from '../../../../lib/db'
 import { getAltitudeGain, getTotalDistance } from '../../../../lib/routeService'
-import type { TrekRoute, Waypoint } from '../../../../types'
+import type { TrekRoute, Waypoint } from '../../../../../types'
 
 const MapViewer = dynamic(() => import('../../../../components/MapViewer'), {
   ssr: false,
@@ -72,8 +72,8 @@ export default function RoutePage() {
     const a =
       Math.sin(dLat / 2) ** 2 +
       Math.cos((userLocation.lat * Math.PI) / 180) *
-        Math.cos((next.lat * Math.PI) / 180) *
-        Math.sin(dLon / 2) ** 2
+      Math.cos((next.lat * Math.PI) / 180) *
+      Math.sin(dLon / 2) ** 2
     const dist = R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
 
     return dist < 1000 ? `${Math.round(dist)}m` : `${(dist / 1000).toFixed(1)}km`
@@ -106,9 +106,8 @@ export default function RoutePage() {
         </div>
         <button
           onClick={toggleTracking}
-          className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-colors ${
-            isTracking ? 'bg-blue-600 text-white' : 'bg-stone-800 text-stone-300'
-          }`}
+          className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-colors ${isTracking ? 'bg-blue-600 text-white' : 'bg-stone-800 text-stone-300'
+            }`}
         >
           {isTracking ? '📍 On' : '📍 GPS'}
         </button>
@@ -155,9 +154,8 @@ export default function RoutePage() {
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`flex-1 py-2.5 rounded-xl text-xs font-bold capitalize transition-colors ${
-              activeTab === tab ? 'bg-orange-500 text-white' : 'bg-stone-800 text-stone-400'
-            }`}
+            className={`flex-1 py-2.5 rounded-xl text-xs font-bold capitalize transition-colors ${activeTab === tab ? 'bg-orange-500 text-white' : 'bg-stone-800 text-stone-400'
+              }`}
           >
             {tab === 'map' ? '🗺️ Map' : '📍 Waypoints'}
           </button>
@@ -192,19 +190,17 @@ export default function RoutePage() {
                   setSelectedWaypoint(wp)
                   setActiveTab('map')
                 }}
-                className={`w-full text-left p-4 rounded-2xl border transition-all ${
-                  isSelected
+                className={`w-full text-left p-4 rounded-2xl border transition-all ${isSelected
                     ? 'bg-orange-900/30 border-orange-600'
                     : 'bg-stone-900 border-stone-800'
-                }`}
+                  }`}
               >
                 <div className="flex items-start gap-3">
                   <div className="flex flex-col items-center gap-1 shrink-0 mt-0.5">
-                    <div className={`w-3 h-3 rounded-full border-2 ${
-                      isFirst ? 'bg-emerald-500 border-emerald-400' :
-                      isLast ? 'bg-red-500 border-red-400' :
-                      'bg-orange-500 border-orange-400'
-                    }`} />
+                    <div className={`w-3 h-3 rounded-full border-2 ${isFirst ? 'bg-emerald-500 border-emerald-400' :
+                        isLast ? 'bg-red-500 border-red-400' :
+                          'bg-orange-500 border-orange-400'
+                      }`} />
                     {!isLast && <div className="w-0.5 h-4 bg-stone-700" />}
                   </div>
                   <div className="flex-1 min-w-0">

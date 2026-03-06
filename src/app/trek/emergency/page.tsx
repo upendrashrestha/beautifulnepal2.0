@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Navigation from '../../../components/Navigation'
 import { initDatabase, getAllEmergencyContacts } from '../../../lib/db'
-import type { EmergencyContact, ContactCategory } from '../../../types'
+import type { EmergencyContact, ContactCategory } from '../../../../types'
 
 const categoryConfig: Record<ContactCategory, { emoji: string; color: string; bg: string }> = {
   Police: { emoji: '👮', color: 'text-blue-400', bg: 'bg-blue-900/20 border-blue-800' },
@@ -76,11 +76,10 @@ export default function EmergencyPage() {
           <button
             key={cat}
             onClick={() => setActiveCategory(cat)}
-            className={`shrink-0 flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-semibold transition-colors ${
-              activeCategory === cat
+            className={`shrink-0 flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-semibold transition-colors ${activeCategory === cat
                 ? 'bg-red-600 text-white'
                 : 'bg-stone-800 text-stone-400 hover:bg-stone-700'
-            }`}
+              }`}
           >
             {cat !== 'All' && <span>{categoryConfig[cat]?.emoji}</span>}
             {cat}

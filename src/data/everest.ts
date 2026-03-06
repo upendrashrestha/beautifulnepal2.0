@@ -1,4 +1,4 @@
-import type { TrekRoute } from '../types'
+import type { TrekRoute } from '../../types'
 
 export const everestRoute: TrekRoute = {
   id: 'everest-base-camp',

@@ -4,16 +4,14 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import {
   downloadMapPack,
   deleteMapPack,
-  isMapPackDownloaded,
   formatBytes,
-  MAP_PACKS,
 } from '../lib/mapDownloader'
 import {
   getDownloadPacks,
   upsertDownloadPack,
   getStorageInfo,
 } from '../lib/db'
-import type { DownloadPack, StorageInfo } from '../types'
+import type { DownloadPack, StorageInfo } from '../../types'
 
 const ROUTE_PACKS: DownloadPack[] = [
   { id: 'route-everest-base-camp', name: 'Everest Route Data', type: 'route', routeId: 'everest-base-camp', sizeBytes: 48000, version: 1, status: 'idle' },

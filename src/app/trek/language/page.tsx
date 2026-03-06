@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Navigation from '../../../components/Navigation'
 import { initDatabase, getAllPhrases } from '../../../lib/db'
-import type { Phrase, PhraseCategory } from '../../../types'
+import type { Phrase, PhraseCategory } from '../../../../types'
 
 const categoryEmojis: Record<string, string> = {
   Greetings: '👋',
@@ -79,11 +79,10 @@ export default function LanguagePage() {
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`shrink-0 flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-semibold transition-colors ${
-                activeCategory === cat
+              className={`shrink-0 flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-semibold transition-colors ${activeCategory === cat
                   ? 'bg-orange-500 text-white'
                   : 'bg-stone-800 text-stone-400 hover:bg-stone-700'
-              }`}
+                }`}
             >
               <span>{categoryEmojis[cat] ?? '📖'}</span>
               {cat}

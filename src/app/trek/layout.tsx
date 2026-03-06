@@ -7,11 +7,11 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
-    title: 'Trek Nepal',
+    title: 'Trek Companion',
   },
   formatDetection: { telephone: true },
   openGraph: {
-    title: 'Nepal Trek Companion — Offline Navigation',
+    title: 'BeautifulNepal Trek Companion — Offline Navigation',
     description: 'Navigate Everest Base Camp and Annapurna Circuit offline',
     type: 'website',
   },

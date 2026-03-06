@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Navigation from '../../components/Navigation'
 import { initDatabase, getAllRoutes } from '../../lib/db'
 import type { TrekRoute } from '../../../types'
-
+import banner from "@/assets/banner.jpg";
 const difficultyColors: Record<string, string> = {
   Easy: 'text-emerald-400 bg-emerald-900/30',
   Moderate: 'text-yellow-400 bg-yellow-900/30',
@@ -46,7 +46,7 @@ export default function TrekHomePage() {
       <div className="relative overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center opacity-20"
-          style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=800)' }}
+          style={{ backgroundImage: `url(${banner})` }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-stone-950" />
         <div className="relative px-5 pt-14 pb-10">
@@ -54,7 +54,7 @@ export default function TrekHomePage() {
             <div>
               <p className="text-xs font-bold tracking-[0.3em] uppercase text-orange-400 mb-1">Offline Companion</p>
               <h1 className="text-3xl font-black text-white leading-tight">
-                Trek<br />Nepal
+                Beautiful Nepal<br />Trek Companion
               </h1>
             </div>
             <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold ${isOnline ? 'bg-emerald-900/50 text-emerald-400 border border-emerald-700' : 'bg-stone-800 text-stone-400 border border-stone-700'}`}>

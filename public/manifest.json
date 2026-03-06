@@ -3,7 +3,7 @@
   "short_name": "Trek Nepal",
   "description": "Offline trekking companion for Nepal's greatest trails",
   "start_url": "/trek",
-  "scope": "/",
+  "scope": "/trek",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#0c0a09",
@@ -33,5 +33,6 @@
       "type": "image/png",
       "purpose": "maskable"
     }
-  ]
+  ],
+  "id": "/trek"
 }

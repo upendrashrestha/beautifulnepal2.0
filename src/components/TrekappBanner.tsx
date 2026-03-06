@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Link from 'next/link'
 
 export default function TrekAppBanner() {
     const [installPrompt, setInstallPrompt] = useState<BeforeInstallPromptEvent | null>(null)
@@ -18,8 +17,15 @@ export default function TrekAppBanner() {
             setInstallPrompt(e as BeforeInstallPromptEvent)
         }
 
+        const onInstalled = () => setIsInstalled(true)
+
         window.addEventListener('beforeinstallprompt', handler)
-        return () => window.removeEventListener('beforeinstallprompt', handler)
+        window.addEventListener('appinstalled', onInstalled)
+
+        return () => {
+            window.removeEventListener('beforeinstallprompt', handler)
+            window.removeEventListener('appinstalled', onInstalled)
+        }
     }, [])
 
     const handleInstall = async () => {
@@ -61,14 +67,10 @@ export default function TrekAppBanner() {
                     >
                         📲 Install Free
                     </button>
-                ) : (
-                    // Fallback for iOS Safari (no beforeinstallprompt support)
-                    <Link
-                        href="/trek"
-                        className="bg-orange-500 hover:bg-orange-600 active:scale-95 transition-all text-white text-xs font-bold px-4 py-2.5 rounded-xl inline-block"
-                    >
-                        Open App →
-                    </Link>
+) : (
+                    <span className="text-[11px] leading-tight text-stone-400 text-right max-w-[10rem] inline-block">
+                        iPhone: Share → Add to Home Screen
+                    </span>
                 )}
             </div>
         </div>

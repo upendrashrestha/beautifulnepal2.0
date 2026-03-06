@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Navigation from '../../components/Navigation'
+import TrekAppBanner from '../../components/TrekappBanner'
 import { initDatabase, getAllRoutes } from '../../lib/db'
 import type { TrekRoute } from '../../../types'
 import banner from "@/assets/banner.jpg";
@@ -46,7 +47,7 @@ export default function TrekHomePage() {
       <div className="relative overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center opacity-20"
-          style={{ backgroundImage: `url(${banner})` }}
+          style={{ backgroundImage: `url(${banner.src})` }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-stone-950" />
         <div className="relative px-5 pt-14 pb-10">
@@ -67,6 +68,10 @@ export default function TrekHomePage() {
             Navigate Nepal&apos;s greatest trails — even without signal.
           </p>
         </div>
+      </div>
+
+      <div className="px-5 mb-4">
+        <TrekAppBanner />
       </div>
 
       {/* Quick Actions */}

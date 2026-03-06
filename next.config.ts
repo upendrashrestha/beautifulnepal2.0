@@ -8,6 +8,16 @@ const withPWA = require("next-pwa")({
   disable: process.env.NODE_ENV === "development",
   runtimeCaching: [
     {
+      urlPattern: ({ request, url }: { request: Request; url: URL }) =>
+        request.mode === "navigate" && url.pathname.startsWith("/trek"),
+      handler: "NetworkFirst",
+      options: {
+        cacheName: "trek-pages",
+        networkTimeoutSeconds: 5,
+        expiration: { maxEntries: 20, maxAgeSeconds: 604800 },
+      },
+    },
+    {
       urlPattern: /\/api\/trek\//,
       handler: "StaleWhileRevalidate",
       options: {

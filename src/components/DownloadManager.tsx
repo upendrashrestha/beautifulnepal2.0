@@ -25,6 +25,7 @@ export default function DownloadManager() {
   const [packs, setPacks] = useState<DownloadPack[]>(ROUTE_PACKS)
   const [storageInfo, setStorageInfo] = useState<StorageInfo>({ used: 0, available: 0, quota: 0 })
   const [downloadingIds, setDownloadingIds] = useState<Set<string>>(new Set())
+  const [downloadErrors, setDownloadErrors] = useState<Record<string, string>>({})
   const abortControllers = useRef<Map<string, AbortController>>(new Map())
 
   const loadState = useCallback(async () => {
@@ -48,6 +49,13 @@ export default function DownloadManager() {
 
   const handleDownload = async (pack: DownloadPack) => {
     if (downloadingIds.has(pack.id)) return
+
+    if (typeof navigator !== 'undefined' && !navigator.onLine) {
+      setDownloadErrors((prev) => ({ ...prev, [pack.id]: 'You are offline. Connect to internet to download.' }))
+      return
+    }
+
+    setDownloadErrors((prev) => ({ ...prev, [pack.id]: '' }))
 
     const controller = new AbortController()
     abortControllers.current.set(pack.id, controller)
@@ -83,6 +91,7 @@ export default function DownloadManager() {
         const failed: DownloadPack = { ...pack, status: 'error' }
         await upsertDownloadPack(failed)
         setPacks((prev) => prev.map((p) => (p.id === pack.id ? failed : p)))
+        setDownloadErrors((prev) => ({ ...prev, [pack.id]: errorMessage }))
       }
     } finally {
       setDownloadingIds((prev) => {
@@ -177,6 +186,9 @@ export default function DownloadManager() {
 
                   {isError && (
                     <p className="text-xs text-red-400 mt-1">Download failed — tap to retry</p>
+                  )}
+                  {downloadErrors[pack.id] && (
+                    <p className="text-xs text-red-400 mt-1">{downloadErrors[pack.id]}</p>
                   )}
                 </div>
 

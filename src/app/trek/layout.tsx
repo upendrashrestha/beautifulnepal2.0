@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next'
+import React from 'react'
 
 export const metadata: Metadata = {
   title: 'Beautiful Nepal Trek Companion',
@@ -7,11 +8,18 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
-    title: 'Trek Companion',
+    title: 'Trek Nepal',
   },
   formatDetection: { telephone: true },
+  // ── Required for iOS Add to Home Screen icon ───────────────────────────
+  icons: {
+    apple: [
+      { url: '/icons/manifest-icon-192.maskable.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icons/manifest-icon-512.maskable.png', sizes: '512x512', type: 'image/png' },
+    ],
+  },
   openGraph: {
-    title: 'BeautifulNepal Trek Companion — Offline Navigation',
+    title: 'Beautiful Nepal Trek Companion — Offline Navigation',
     description: 'Navigate Everest Base Camp and Annapurna Circuit offline',
     type: 'website',
   },

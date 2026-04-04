@@ -1,7 +1,7 @@
 // components/ui/TextArea.tsx
 'use client';
 
-import { TextareaHTMLAttributes, useState } from 'react';
+import { TextareaHTMLAttributes } from 'react';
 
 interface Props extends TextareaHTMLAttributes<HTMLTextAreaElement> {
     label?: string;
@@ -20,7 +20,6 @@ export default function TextArea({
     sanitizeHtml = true, // default false
     ...props
 }: Props) {
-    const [internalValue, setInternalValue] = useState(value || "");
 
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         let newValue = e.target.value;
@@ -30,15 +29,11 @@ export default function TextArea({
             newValue = newValue.replace(/<\/?[^>]+(>|$)/g, "");
         }
 
-        setInternalValue(newValue);
 
         if (onChange) {
             // Pass sanitized or raw value to parent
-            const event = {
-                ...e,
-                target: { ...e.target, value: newValue }
-            };
-            onChange(event as React.ChangeEvent<HTMLTextAreaElement>);
+            e.target.value = newValue; // Update event value before passing up
+            onChange(e);
         }
     };
 
@@ -47,7 +42,7 @@ export default function TextArea({
             {label && <label className="block font-bold text-gray-700 dark:text-gray-200 text-left mb-1">{label}</label>}
             <textarea
                 {...props}
-                value={internalValue}
+                value={value ?? ""}
                 onChange={handleChange}
                 rows={props.rows ?? 4}
                 className={`w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all resize-none

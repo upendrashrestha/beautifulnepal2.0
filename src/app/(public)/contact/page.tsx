@@ -15,14 +15,13 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function ContactPage() {
     return (
         <PageLayout title="Contact Us" className="text-center">
-    
+
             <p className="text-md pb-10 text-gray-600 dark:text-gray-300">
-            We would love to hear from you! Please fill out the form below and we will get back to you as soon as possible.
-          </p>
+                We would love to hear from you! Please fill out the form below and we will get back to you as soon as possible.
+            </p>
 
             <AnimatedSection>
-                   <ContactForm />
-
+                <ContactForm />
             </AnimatedSection>
         </PageLayout>
     );

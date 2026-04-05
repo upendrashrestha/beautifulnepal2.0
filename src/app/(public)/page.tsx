@@ -4,7 +4,6 @@ import { redirect } from "next/navigation";
 import Posts from "@/components/Posts";
 import FeaturedDestination from "@/components/home/FeaturedDestinations";
 import Guides from "@/components/Guides";
-import Hero from "@/components/home/Hero";
 import Events from "@/components/home/Events";
 
 import {
@@ -14,6 +13,10 @@ import {
 } from "@/sanity/lib/fetch";
 
 import { generateMetadataHelper } from "@/utils/generateMetadataHelper";
+import {
+  SectionReveal,
+  SectionHeading
+} from "@/components/home/SectionUtils";
 
 export const revalidate = 60;
 
@@ -27,6 +30,19 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   Inline SVG backgrounds — zero images, pure CSS / SVG
+───────────────────────────────────────────────────────────────────────────── */
+
+/** Subtle dot-grid pattern */
+
+/** Fine crosshatch pattern */
+const CROSSHATCH =
+  "url(\"data:image/svg+xml,%3Csvg width='20' height='20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0L20 20M20 0L0 20' stroke='rgba(255,255,255,0.04)' stroke-width='0.5'/%3E%3C/svg%3E\")";
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Page
+───────────────────────────────────────────────────────────────────────────── */
 export default async function HomePage() {
   try {
     const [featuredPosts, featuredDestinations, featuredGuides] =
@@ -37,85 +53,187 @@ export default async function HomePage() {
       ]);
 
     return (
-      <main className="w-full overflow-hidden">
-        {/* ================= HERO ================= */}
-        <Hero />
+      <main className="w-full overflow-hidden" style={{ fontFamily: "var(--font-dm)" }}>
 
-        {/* ================= EVENTS ================= */}
-        <section className="bg-gray-50 dark:bg-gray-950 py-20 sm:py-24">
-          <div className="container mx-auto px-4">
-            <div className="max-w-3xl mb-12">
-              <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
-                Events
-              </h2>
-              <p className="text-gray-600 dark:text-gray-400">
-                Don&apos;t miss out on what&apos;s happening across Nepal
-              </p>
-            </div>
-            <Events />
+        {/* ══════════════════════════════════════════════
+            01 · HERO
+        ══════════════════════════════════════════════ */}
+        {/* <Hero /> */}
+
+        {/* ══════════════════════════════════════════════
+            02 · EVENTS
+            Dark forest section with diagonal top edge
+        ══════════════════════════════════════════════ */}
+        <section
+          className="relative py-20 sm:py-28"
+          style={{ background: "#faf7f2" }}
+        >
+          {/* Gold ambient blob */}
+          <div
+            className="absolute bottom-0 right-0 w-[600px] h-[600px] pointer-events-none"
+            style={{
+              background: "radial-gradient(circle at bottom right, rgba(201,148,58,0.06) 0%, transparent 65%)",
+            }}
+          />
+
+          {/* Top-left decorative rule */}
+          <div className="absolute top-0 left-0 right-0 h-px"
+            style={{ background: "linear-gradient(90deg, #bc1c2b, rgba(188,28,43,0.15), transparent)" }} />
+
+          <div className="container mx-auto px-4 relative z-10">
+            <SectionReveal>
+              <SectionHeading
+                index="02"
+                eyebrow="What's On"
+                title="Events across"
+                titleAccent="Nepal"
+                subtitle="Don't miss out on what's happening — festivals, treks, and cultural gatherings across the country."
+              />
+            </SectionReveal>
+
+            <SectionReveal delay={0.15}>
+              <Events />
+            </SectionReveal>
           </div>
+
         </section>
 
-        {/* ================= FEATURED BLOGS ================= */}
+        {/* ══════════════════════════════════════════════
+            03 · STORIES & TRAVEL INSPIRATION
+            Warm cream — editorial magazine layout
+        ══════════════════════════════════════════════ */}
         {featuredPosts.length > 0 && (
-          <section className="bg-gray-50 dark:bg-gray-950 py-20 sm:py-24">
-            <div className="container mx-auto px-4">
-              <div className="max-w-3xl mb-12">
-                <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                  Stories & Travel Inspiration
-                </h2>
-                <p className="text-lg text-gray-600 dark:text-gray-400">
-                  Local stories, travel tips, festivals, and deep dives into
-                  Nepal&apos;s culture and landscapes.
-                </p>
-              </div>
+          <section
+            className="relative py-20 sm:py-28"
+            style={{ background: "#faf7f2" }}
+          >
+            {/* Gold ambient blob */}
+            <div
+              className="absolute bottom-0 right-0 w-[600px] h-[600px] pointer-events-none"
+              style={{
+                background: "radial-gradient(circle at bottom right, rgba(201,148,58,0.06) 0%, transparent 65%)",
+              }}
+            />
 
-              <Posts title="" posts={featuredPosts} />
+            {/* Top-left decorative rule */}
+            <div className="absolute top-0 left-0 right-0 h-px"
+              style={{ background: "linear-gradient(90deg, #bc1c2b, rgba(188,28,43,0.15), transparent)" }} />
+
+            <div className="container mx-auto px-4 relative z-10">
+              <SectionReveal>
+                <SectionHeading
+                  index="03"
+                  eyebrow="Latest Stories"
+                  title="Stories & Travel"
+                  titleAccent="Inspiration"
+                  subtitle="Local stories, travel tips, festivals, and deep dives into Nepal's culture and landscapes."
+                />
+              </SectionReveal>
+
+              <SectionReveal delay={0.2}>
+                <Posts title="" posts={featuredPosts} />
+              </SectionReveal>
+
             </div>
           </section>
         )}
 
-        {/* ================= GUIDES ================= */}
+        {/* ══════════════════════════════════════════════
+            04 · EXPERT TRAVEL GUIDES
+            Deep charcoal — premium editorial feel
+        ══════════════════════════════════════════════ */}
         {featuredGuides.length > 0 && (
-          <section className="bg-white dark:bg-gray-900 py-20 sm:py-24">
-            <div className="container mx-auto px-4">
-              <div className="max-w-3xl mb-12">
-                <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                  Expert Travel Guides
-                </h2>
-                <p className="text-lg text-gray-600 dark:text-gray-400">
-                  Comprehensive guides to help you plan the perfect journey
-                  through Nepal.
-                </p>
-              </div>
+          <section
+            className="relative py-20 sm:py-28"
+            style={{ background: "#faf7f2" }}
+          >
+            {/* Gold ambient blob */}
+            <div
+              className="absolute bottom-0 right-0 w-[600px] h-[600px] pointer-events-none"
+              style={{
+                background: "radial-gradient(circle at bottom right, rgba(201,148,58,0.06) 0%, transparent 65%)",
+              }}
+            />
 
-              <Guides guides={featuredGuides} title="" />
+            {/* Top-left decorative rule */}
+            <div className="absolute top-0 left-0 right-0 h-px"
+              style={{ background: "linear-gradient(90deg, #bc1c2b, rgba(188,28,43,0.15), transparent)" }} />
+
+            <div className="container mx-auto px-4 relative z-10">
+              <SectionReveal>
+                <SectionHeading
+                  index="04"
+                  eyebrow="Plan Your Journey"
+                  title="Expert Travel"
+                  titleAccent="Guides"
+                  subtitle="Comprehensive guides to help you plan the perfect journey through Nepal — written by people who've been there."
+
+                />
+              </SectionReveal>
+
+              <SectionReveal delay={0.2}>
+                <Guides guides={featuredGuides} title="" />
+              </SectionReveal>
             </div>
+
           </section>
         )}
 
-        {/* ================= DESTINATIONS ================= */}
+        {/* ══════════════════════════════════════════════
+            05 · DESTINATIONS
+            Dark forest — the grand finale
+        ══════════════════════════════════════════════ */}
         {featuredDestinations.length > 0 && (
-          <section className="bg-gradient-to-b from-gray-50 to-white dark:from-gray-950 dark:to-gray-900 py-20 sm:py-24">
-            <div className="container mx-auto px-4">
-              <div className="max-w-3xl mb-12">
-                <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                  Explore Popular Destinations
-                </h2>
-                <p className="text-lg text-gray-600 dark:text-gray-400">
-                  From Himalayan trails to peaceful lakes and vibrant cities,
-                  discover where your next journey begins.
-                </p>
-              </div>
+          <section
+            className="relative pt-4 pb-24 sm:pb-32"
 
-              <FeaturedDestination
-                title=""
-                limit={6}
-                destinations={featuredDestinations}
-              />
+          >
+            {/* Cross-hatch */}
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{ backgroundImage: CROSSHATCH }}
+            />
+
+            {/* Twin crimson glows */}
+            <div
+              className="absolute top-1/4 left-0 w-[400px] h-[400px] pointer-events-none"
+              style={{ background: "radial-gradient(circle, rgba(188,28,43,0.06) 0%, transparent 70%)" }}
+            />
+            {/* <div
+              className="absolute bottom-1/4 right-0 w-[500px] h-[500px] pointer-events-none"
+              style={{ background: "radial-gradient(circle, rgba(201,148,58,0.05) 0%, transparent 70%)" }}
+            /> */}
+
+            {/* Vertical center hairline */}
+            {/* <div
+              className="absolute top-0 bottom-0 left-1/2 w-px pointer-events-none hidden lg:block"
+              style={{ background: "linear-gradient(to bottom, transparent 0%, rgba(255,255,255,0.04) 30%, rgba(255,255,255,0.04) 70%, transparent 100%)" }}
+            /> */}
+
+            <div className="container mx-auto px-4 relative z-10">
+              <SectionReveal>
+                <SectionHeading
+                  index="05"
+                  eyebrow="Where to Go"
+                  title="Popular"
+                  titleAccent="Destinations"
+                  subtitle="From Himalayan trails to peaceful lakes and vibrant cities — discover where your next journey begins."
+                />
+              </SectionReveal>
+
+              <SectionReveal delay={0.2}>
+                <FeaturedDestination
+                  title=""
+                  limit={6}
+                  destinations={featuredDestinations}
+                />
+              </SectionReveal>
             </div>
+
+
           </section>
         )}
+
       </main>
     );
   } catch (error) {

@@ -5,6 +5,8 @@ import { Event, EventSpecParams } from "../../../../types/event.types";
 import { FaMapMarkerAlt, FaCalendarAlt, FaClock } from "react-icons/fa";
 import Link from "next/link";
 import EventSearchClient from "./EventSearchClient";
+import AnimatedSection from "@/components/AnimatedSection";
+import PageLayout from "@/components/layouts/PageLayout";
 
 interface PageProps {
   searchParams?: Promise<EventSpecParams>;
@@ -45,11 +47,11 @@ export default async function EventsPage({ searchParams }: PageProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl text-center font-bold text-gray-900 dark:text-white mb-8">
-          Events
-        </h1>
+    <PageLayout title="Events" className="text-center">
+
+
+
+      <AnimatedSection>
 
         <EventSearchClient initialParams={params} />
 
@@ -141,8 +143,9 @@ export default async function EventsPage({ searchParams }: PageProps) {
             </div>
           )}
         </div>
-      </div>
-    </div>
+      </AnimatedSection>
+    </PageLayout>
+
   );
 }
 

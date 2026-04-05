@@ -1,9 +1,9 @@
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
-import { 
-  fetchDestinationBySlug, 
-  fetchGuidesByDestination, 
-  fetchPostsByDestination 
+import {
+  fetchDestinationBySlug,
+  fetchGuidesByDestination,
+  fetchPostsByDestination
 } from "@/sanity/lib/fetch";
 import { generateMetadataHelper } from "@/utils/generateMetadataHelper";
 import { urlFor } from "@/sanity/lib/image";
@@ -63,7 +63,7 @@ export default async function DestinationPage({ params }: Props) {
 
   return (
     <PageLayout title={destination.name}>
-      <article className="max-w-5xl mx-auto px-4 sm:px-6 py-8 space-y-8">
+      <article className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-8">
         <SocialShare />
 
         {/* Hero Image */}

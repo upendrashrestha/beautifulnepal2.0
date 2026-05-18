@@ -75,28 +75,30 @@ function PostView(post: Post) {
                     <div className="grid grid-cols-1 xl:grid-cols-4 xl:gap-x-6 divide-y xl:divide-y-0 divide-gray-200 dark:divide-gray-700 py-8">
                         {/* Sidebar */}
                         <aside className="p-4 xl:border-b xl:border-gray-200 xl:dark:border-gray-700">
-                            <div className="flex items-center gap-4 mb-6">
-                                <Image
-                                    src={
-                                        post.author?.image?.asset?._ref
-                                            ? urlFor(post.author.image.asset._ref).url()
-                                            : ""
-                                    }
-                                    alt={post.author?.name ?? "Author"}
-                                    className="h-10 w-10 rounded-full bg-gray-100"
-                                    width={40}
-                                    height={40}
-                                />
-                                <div className="text-sm">
-                                    <p className="text-gray-500">Written By</p>
-                                    <Link
-                                        href={`/author/${post.author?.slug.current}`}
-                                        className="font-semibold text-gray-900 dark:text-white hover:underline"
-                                    >
-                                        {post.author?.name}
-                                    </Link>
+                            {post.author?.name && (
+                                <div className="flex items-center gap-4 mb-6">
+                                    <Image
+                                        src={
+                                            post.author?.image?.asset?._ref
+                                                ? urlFor(post.author.image.asset._ref).url()
+                                                : ""
+                                        }
+                                        alt={post.author?.name ?? "Author"}
+                                        className="h-10 w-10 rounded-full bg-gray-100"
+                                        width={40}
+                                        height={40}
+                                    />
+                                    <div className="text-sm">
+                                        <p className="text-gray-500">Written By</p>
+                                        <Link
+                                            href={`/author/${post.author?.slug.current}`}
+                                            className="font-semibold text-gray-900 dark:text-white hover:underline"
+                                        >
+                                            {post.author?.name}
+                                        </Link>
+                                    </div>
                                 </div>
-                            </div>
+                            )}
                             <SocialShare />
                             <div className="pt-6 xl:pt-10 xl:col-start-1 xl:row-start-2">
                                 <Link
@@ -126,8 +128,10 @@ function PostView(post: Post) {
                                 </div>
                             )}
                             {/* Main Body */}
+
                             {post.body &&
-                                <div className="prose dark:prose-invert max-w-none">
+                                <div className="max-w-none">
+
                                     <BlockContent value={post.body} />
                                 </div>
                             }

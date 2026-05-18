@@ -66,6 +66,33 @@ export const postType = defineType({
     defineField({
       name: "featured",
       type: "boolean",
+      initialValue: false,
+    }),
+
+    defineField({
+      name: "aiGenerated",
+      title: "AI Generated",
+      type: "boolean",
+      initialValue: true,
+    }),
+
+    defineField({
+      name: "topicSource",
+      title: "Topic Source",
+      type: "string",
+    }),
+
+    defineField({
+      name: "status",
+      title: "Status",
+      type: "string",
+      initialValue: "draft",
+      options: {
+        list: [
+          { title: "Draft", value: "draft" },
+          { title: "Published", value: "published" },
+        ],
+      },
     }),
     defineField({
       name: "affiliateLinks",

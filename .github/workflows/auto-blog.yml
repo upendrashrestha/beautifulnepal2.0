@@ -18,11 +18,14 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install
+      - name: Install dependencies
         run: npm install
 
-      - name: Run auto blog
-        run: node scripts/auto-blog.ts
+      - name: Install tsx
+        run: npm install -D tsx
+
+      - name: Run auto blog script
+        run: npx tsx scripts/auto-blog.ts
         env:
           NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_SANITY_PROJECT_ID }}
           NEXT_PUBLIC_SANITY_DATASET: ${{ secrets.NEXT_PUBLIC_SANITY_DATASET }}

@@ -1,4 +1,4 @@
-import TrekAppBanner from "@/components/TrekappBanner";
+
 
 export default function DashboardPage() {
     return (
@@ -36,7 +36,6 @@ export default function DashboardPage() {
                     </a>
                 </li>
             </ul>
- <TrekAppBanner />
             <p className="mt-5 text-sm text-yellow-600 dark:text-yellow-300">
                 If there is any issue, reach out to{" "}
                 <a

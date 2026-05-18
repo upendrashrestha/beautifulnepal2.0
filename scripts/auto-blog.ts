@@ -60,6 +60,11 @@ const sanityClient = createClient({
   useCdn: false,
 });
 
+// Strip surrounding double or single quotes the AI may wrap around values
+function stripQuotes(text: string): string {
+  return text.replace(/^["']|["']$/g, "").trim();
+}
+
 async function getTrendingTopic(): Promise<TrendingTopic> {
   try {
     const fromDate = new Date(Date.now() - 5 * 24 * 60 * 60 * 1000)
@@ -112,7 +117,7 @@ ${titles}
 Pick ONE SEO-friendly travel blog topic
 for Nepal that people would search.
 
-Return title only.
+Return the title only, with no surrounding quotes.
 `,
           },
         ],
@@ -124,7 +129,9 @@ Return title only.
       },
     );
 
-    const topic = aiResponse.data.choices[0]?.message?.content?.trim();
+    const rawTopic = aiResponse.data.choices[0]?.message?.content?.trim();
+    // Remove any surrounding quotes the model may have added
+    const topic = rawTopic ? stripQuotes(rawTopic) : null;
 
     return {
       title: topic || "Best Hidden Places to Visit in Nepal",

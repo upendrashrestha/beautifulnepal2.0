@@ -1,39 +1,45 @@
-"use client";
+// Add this import at the top of your Header file
+import clsx from "clsx";
+import { useRouter } from "next/navigation";
+import { FaCompass } from "react-icons/fa";
 
-import Link from "next/link";
-
-interface CTAButtonProps {
-  label: string;
-  source: string;
+// Update the CTAButton component to accept href prop
+export function CTAButton({ 
+  label, 
+  onClick, 
+  href, 
+  className 
+}: { 
+  label: string; 
+  onClick?: () => void; 
   href?: string;
-  onClick?: () => void;
   className?: string;
-}
-
-export default function CTAButton({
-  label,
-  source,
-  href = "/plan-your-trip",
-  onClick,
-  className = "",
-}: CTAButtonProps) {
+}) {
+  const router = useRouter();
+  
+  const handleClick = () => {
+    if (href) {
+      router.push(href);
+    }
+    onClick?.();
+  };
+  
   return (
-    <Link
-      href={{
-        pathname: href,
-        query: { source },
-      }}
-      onClick={onClick}
-      className={`
-        inline-flex items-center justify-center
-        rounded-full bg-black px-6 py-3
-        text-sm font-semibold text-gray-100
-        transition
-        hover:bg-gray-800 hover:text-white
-        ${className}
-      `}
+    <button
+      onClick={handleClick}
+      className={clsx(
+        "group relative overflow-hidden rounded-full px-5 py-2.5 text-sm font-semibold transition-all duration-300",
+        "bg-gradient-to-r from-[#bc1c2b] to-[#d93344] text-white",
+        "hover:shadow-lg hover:shadow-[#bc1c2b]/30 hover:scale-[1.02]",
+        "active:scale-98",
+        className
+      )}
     >
-      {label}
-    </Link>
+      <span className="relative z-10 flex items-center gap-2">
+        {label}
+        <FaCompass className="w-3.5 h-3.5 transition-transform group-hover:rotate-12" />
+      </span>
+      <div className="absolute inset-0 -translate-x-full group-hover:translate-x-0 transition-transform duration-500 bg-gradient-to-r from-white/20 to-transparent" />
+    </button>
   );
 }

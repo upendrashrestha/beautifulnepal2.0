@@ -10,6 +10,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { clsx } from "clsx";
 import { fetchFeaturedDestinations } from "@/sanity/lib/fetch";
 import { Destination } from "../../types";
+import { CTAButton } from "./CTAButton";
 
 // Helper to get category from destination name or type
 const getDestinationCategory = (dest: Destination): string => {
@@ -287,26 +288,7 @@ function DestinationDropdown({ onNavigate }: { onNavigate?: () => void }) {
   );
 }
 
-function CTAButton({ label, onClick, className }: { label: string; onClick?: () => void; className?: string }) {
-  return (
-    <button
-      onClick={onClick}
-      className={clsx(
-        "group relative overflow-hidden rounded-full px-5 py-2.5 text-sm font-semibold transition-all duration-300",
-        "bg-gradient-to-r from-[#bc1c2b] to-[#d93344] text-white",
-        "hover:shadow-lg hover:shadow-[#bc1c2b]/30 hover:scale-[1.02]",
-        "active:scale-98",
-        className
-      )}
-    >
-      <span className="relative z-10 flex items-center gap-2">
-        {label}
-        <FaCompass className="w-3.5 h-3.5 transition-transform group-hover:rotate-12" />
-      </span>
-      <div className="absolute inset-0 -translate-x-full group-hover:translate-x-0 transition-transform duration-500 bg-gradient-to-r from-white/20 to-transparent" />
-    </button>
-  );
-}
+
 
 export default function Header() {
   const [stickyMenu, setStickyMenu] = useState(false);
@@ -373,7 +355,7 @@ export default function Header() {
               Events
             </Link>
             <div className="ml-2">
-              <CTAButton label="Plan Your Trip" />
+              <CTAButton label="Plan Your Trip" href="/plan-your-trip" />
             </div>
           </nav>
 

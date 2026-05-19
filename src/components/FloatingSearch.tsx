@@ -51,11 +51,11 @@ function ModalSearch({ onClose }: { onClose: () => void }) {
         : [];
 
     const TYPE_COLORS: Record<string, { bg: string; text: string }> = {
-        posts: { bg: "rgba(188,28,43,0.1)", text: "#bc1c2b" },
-        guides: { bg: "rgba(201,148,58,0.12)", text: "#c9943a" },
-        destinations: { bg: "rgba(45,90,61,0.12)", text: "#3d8a5c" },
-        categories: { bg: "rgba(80,80,120,0.12)", text: "#8080c0" },
-        "whats-happening": { bg: "rgba(30,120,180,0.12)", text: "#3080c0" },
+        posts:              { bg: "rgba(188,28,43,0.1)",   text: "#bc1c2b" },
+        guides:             { bg: "rgba(180,110,20,0.12)", text: "#a86c10" },
+        destinations:       { bg: "rgba(30,110,60,0.12)",  text: "#1e7a42" },
+        categories:         { bg: "rgba(70,70,160,0.1)",   text: "#5a5ab0" },
+        "whats-happening":  { bg: "rgba(20,100,180,0.1)",  text: "#1a6abf" },
     };
 
     const typeLabel = (t: string) => t === "whats-happening" ? "Event" :
@@ -67,11 +67,11 @@ function ModalSearch({ onClose }: { onClose: () => void }) {
             {/* ── Input bar ─────────────────────────────────────────────── */}
             <div
                 className="flex items-center gap-3 px-5 py-4 border-b"
-                style={{ borderColor: "rgba(255,255,255,0.08)" }}
+                style={{ borderColor: "rgba(0,0,0,0.08)" }}
             >
                 <RiSearchLine
                     className="w-5 h-5 shrink-0 transition-colors duration-200"
-                    style={{ color: term ? "#bc1c2b" : "rgba(255,255,255,0.3)" }}
+                    style={{ color: term ? "#bc1c2b" : "rgba(0,0,0,0.3)" }}
                 />
                 <input
                     ref={inputRef}
@@ -79,7 +79,7 @@ function ModalSearch({ onClose }: { onClose: () => void }) {
                     onChange={(e) => { setTerm(e.target.value); setTouched(true); }}
                     onKeyDown={(e) => e.key === "Enter" && search(term)}
                     placeholder="Search destinations, guides, blogs…"
-                    className="flex-1 bg-transparent text-white text-base placeholder-white/25
+                    className="flex-1 bg-transparent text-[15px] text-gray-800 placeholder-black/30
                      focus:outline-none"
                     style={{ fontFamily: "var(--font-dm)" }}
                 />
@@ -87,7 +87,7 @@ function ModalSearch({ onClose }: { onClose: () => void }) {
                     <button
                         onClick={() => { setTerm(""); setResults(null); inputRef.current?.focus(); }}
                         className="w-6 h-6 rounded-full flex items-center justify-center
-                       text-white/30 hover:text-white hover:bg-white/8 transition-all"
+                       text-black/30 hover:text-black/60 hover:bg-black/6 transition-all"
                         aria-label="Clear"
                     >
                         <RiCloseLine className="w-4 h-4" />
@@ -96,19 +96,21 @@ function ModalSearch({ onClose }: { onClose: () => void }) {
             </div>
 
             {/* ── Results area ──────────────────────────────────────────── */}
-            <div className="flex-1 overflow-y-auto overscroll-contain px-2 py-2"
-                style={{ scrollbarWidth: "thin", scrollbarColor: "#bc1c2b transparent" }}>
+            <div
+                className="flex-1 overflow-y-auto overscroll-contain px-2 py-2"
+                style={{ scrollbarWidth: "thin", scrollbarColor: "#bc1c2b transparent" }}
+            >
 
                 {/* Loading skeletons */}
                 {loading && (
                     <div className="space-y-2 p-2">
                         {[1, 2, 3].map((i) => (
                             <div key={i} className="rounded-xl p-4 animate-pulse"
-                                style={{ background: "rgba(255,255,255,0.04)" }}>
+                                style={{ background: "rgba(0,0,0,0.04)" }}>
                                 <div className="h-3.5 w-3/4 rounded-full mb-2"
-                                    style={{ background: "rgba(255,255,255,0.08)" }} />
+                                    style={{ background: "rgba(0,0,0,0.08)" }} />
                                 <div className="h-2.5 w-1/4 rounded-full"
-                                    style={{ background: "rgba(255,255,255,0.05)" }} />
+                                    style={{ background: "rgba(0,0,0,0.05)" }} />
                             </div>
                         ))}
                     </div>
@@ -141,12 +143,12 @@ function ModalSearch({ onClose }: { onClose: () => void }) {
                                         href={href}
                                         onClick={onClose}
                                         className="group flex items-center gap-3 rounded-xl px-4 py-3 transition-all duration-200"
-                                        style={{ background: "rgba(255,255,255,0)" }}
+                                        style={{ background: "transparent" }}
                                         onMouseEnter={(e) => {
-                                            (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.05)";
+                                            (e.currentTarget as HTMLAnchorElement).style.background = "rgba(0,0,0,0.04)";
                                         }}
                                         onMouseLeave={(e) => {
-                                            (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0)";
+                                            (e.currentTarget as HTMLAnchorElement).style.background = "transparent";
                                         }}
                                     >
                                         {/* Type dot */}
@@ -157,7 +159,7 @@ function ModalSearch({ onClose }: { onClose: () => void }) {
 
                                         {/* Title */}
                                         <p
-                                            className="flex-1 text-sm text-white/80 group-hover:text-white
+                                            className="flex-1 text-[15px] text-gray-700 group-hover:text-gray-900
                                  line-clamp-1 transition-colors"
                                             style={{ fontFamily: "var(--font-dm)" }}
                                         >
@@ -166,15 +168,19 @@ function ModalSearch({ onClose }: { onClose: () => void }) {
 
                                         {/* Type badge */}
                                         <span
-                                            className="shrink-0 text-[10px] font-medium px-2 py-0.5 rounded-full"
-                                            style={{ background: style.bg, color: style.text, fontFamily: "var(--font-dm)" }}
+                                            className="shrink-0 text-[11px] font-medium px-2.5 py-0.5 rounded-full"
+                                            style={{
+                                                background: style.bg,
+                                                color: style.text,
+                                                fontFamily: "var(--font-dm)",
+                                            }}
                                         >
                                             {label}
                                         </span>
 
                                         <RiArrowRightSLine
-                                            className="w-4 h-4 shrink-0 text-white/20
-                                 group-hover:text-white/50 group-hover:translate-x-0.5
+                                            className="w-4 h-4 shrink-0 text-black/20
+                                 group-hover:text-black/50 group-hover:translate-x-0.5
                                  transition-all duration-200"
                                         />
                                     </Link>
@@ -187,12 +193,9 @@ function ModalSearch({ onClose }: { onClose: () => void }) {
                 {/* Empty state */}
                 {!loading && touched && term && results && allResults.length === 0 && (
                     <div className="flex flex-col items-center justify-center py-14 gap-3">
-                        <span className="text-4xl opacity-20" style={{ fontFamily: "var(--font-cormorant)" }}>
-                            ॐ
-                        </span>
-                        <p className="text-sm text-white/30" style={{ fontFamily: "var(--font-dm)" }}>
+                        <p className="text-sm text-gray-400" style={{ fontFamily: "var(--font-dm)" }}>
                             No results found for{" "}
-                            <span className="text-white/50 italic">&ldquo;{term}&rdquo;</span>
+                            <span className="text-gray-600 italic">&ldquo;{term}&rdquo;</span>
                         </p>
                     </div>
                 )}
@@ -200,8 +203,10 @@ function ModalSearch({ onClose }: { onClose: () => void }) {
                 {/* Idle hint */}
                 {!touched && (
                     <div className="px-4 pt-6 pb-2">
-                        <p className="text-[10px] tracking-[0.18em] uppercase text-white/20 mb-4"
-                            style={{ fontFamily: "var(--font-dm)" }}>
+                        <p
+                            className="text-[11px] tracking-[0.18em] uppercase text-black/30 mb-4"
+                            style={{ fontFamily: "var(--font-dm)" }}
+                        >
                             Quick links
                         </p>
                         <div className="flex flex-wrap gap-2">
@@ -209,9 +214,9 @@ function ModalSearch({ onClose }: { onClose: () => void }) {
                                 <button
                                     key={tag}
                                     onClick={() => { setTerm(tag); setTouched(true); }}
-                                    className="text-xs px-3 py-1.5 rounded-full border transition-all duration-200
-                             text-white/40 hover:text-white border-white/8 hover:border-white/20
-                             hover:bg-white/5"
+                                    className="text-[13px] px-3 py-1.5 rounded-full border transition-all duration-200
+                             text-gray-500 hover:text-gray-800 border-black/10 hover:border-black/25
+                             hover:bg-black/5"
                                     style={{ fontFamily: "var(--font-dm)" }}
                                 >
                                     {tag}
@@ -322,7 +327,10 @@ export default function FloatingSearch() {
                                 transition={{ duration: 0.2 }}
                                 onClick={close}
                                 className="fixed inset-0 z-[200]"
-                                style={{ background: "rgba(6,14,8,0.82)", backdropFilter: "blur(8px)" }}
+                                style={{
+                                    background: "rgba(20,30,25,0.55)",
+                                    backdropFilter: "blur(8px)",
+                                }}
                             />
 
                             {/* Modal panel */}
@@ -333,21 +341,23 @@ export default function FloatingSearch() {
                                 exit={{ opacity: 0, y: -16, scale: 0.98 }}
                                 transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
                                 className="fixed z-[210] inset-x-4 md:inset-x-auto md:left-1/2 md:-translate-x-1/2
-                           top-[8vh] md:top-[12vh] md:w-[600px] lg:w-[680px]
+                           top-[8vh] md:top-[12vh] md:w-[620px] lg:w-[700px]
                            flex flex-col overflow-hidden"
                                 style={{
                                     maxHeight: "72vh",
-                                    background: "linear-gradient(160deg, #0d1f16 0%, #091409 100%)",
-                                    border: "1px solid rgba(255,255,255,0.09)",
+                                    background: "#ffffff",
+                                    border: "1px solid rgba(0,0,0,0.08)",
                                     borderRadius: "20px",
-                                    boxShadow: "0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(188,28,43,0.15)",
+                                    boxShadow:
+                                        "0 32px 80px rgba(0,0,0,0.18), 0 0 0 1px rgba(188,28,43,0.12)",
                                 }}
                             >
                                 {/* Crimson top accent */}
                                 <div
                                     className="absolute top-0 left-8 right-8 h-px"
                                     style={{
-                                        background: "linear-gradient(90deg, transparent, #bc1c2b, transparent)",
+                                        background:
+                                            "linear-gradient(90deg, transparent, #bc1c2b, transparent)",
                                     }}
                                 />
 
@@ -355,7 +365,7 @@ export default function FloatingSearch() {
                                 <button
                                     onClick={close}
                                     className="absolute top-3.5 right-4 w-7 h-7 flex items-center justify-center
-                             rounded-full text-white/30 hover:text-white hover:bg-white/8
+                             rounded-full text-black/30 hover:text-black/60 hover:bg-black/6
                              transition-all duration-200 z-10"
                                     aria-label="Close search"
                                 >
@@ -368,17 +378,45 @@ export default function FloatingSearch() {
                                 {/* Footer hint */}
                                 <div
                                     className="flex items-center justify-between px-5 py-2.5 border-t"
-                                    style={{ borderColor: "rgba(255,255,255,0.06)" }}
+                                    style={{ borderColor: "rgba(0,0,0,0.07)" }}
                                 >
-                                    <span className="text-[10px] text-white/18"
-                                        style={{ fontFamily: "var(--font-dm)" }}>
+                                    <span
+                                        className="text-[11px] text-black/30"
+                                        style={{ fontFamily: "var(--font-dm)" }}
+                                    >
                                         Beautiful Nepal
                                     </span>
-                                    <div className="flex items-center gap-3 text-[10px] text-white/25"
-                                        style={{ fontFamily: "var(--font-dm)" }}>
-                                        <span><kbd className="opacity-60">↑↓</kbd> navigate</span>
-                                        <span><kbd className="opacity-60">↵</kbd> open</span>
-                                        <span><kbd className="opacity-60">esc</kbd> close</span>
+                                    <div
+                                        className="flex items-center gap-3 text-[11px] text-black/30"
+                                        style={{ fontFamily: "var(--font-dm)" }}
+                                    >
+                                        <span>
+                                            <kbd
+                                                className="opacity-60 px-1 py-0.5 rounded text-[10px]"
+                                                style={{
+                                                    background: "rgba(0,0,0,0.06)",
+                                                    border: "1px solid rgba(0,0,0,0.1)",
+                                                }}
+                                            >↑↓</kbd>{" "}navigate
+                                        </span>
+                                        <span>
+                                            <kbd
+                                                className="opacity-60 px-1 py-0.5 rounded text-[10px]"
+                                                style={{
+                                                    background: "rgba(0,0,0,0.06)",
+                                                    border: "1px solid rgba(0,0,0,0.1)",
+                                                }}
+                                            >↵</kbd>{" "}open
+                                        </span>
+                                        <span>
+                                            <kbd
+                                                className="opacity-60 px-1 py-0.5 rounded text-[10px]"
+                                                style={{
+                                                    background: "rgba(0,0,0,0.06)",
+                                                    border: "1px solid rgba(0,0,0,0.1)",
+                                                }}
+                                            >esc</kbd>{" "}close
+                                        </span>
                                     </div>
                                 </div>
                             </motion.div>

@@ -52,16 +52,17 @@ export default function TodaysEvents() {
     };
   };
 
-  return (
-    <section className="container mx-auto px-4 py-16">
-      <div className="flex mb-10">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-          Happening Today
-        </h2>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {loading ? (
-          Array.from({ length: 3 }).map((_, i) => (
+  // Show loading skeletons
+  if (loading) {
+    return (
+      <section className="container mx-auto px-4 py-16">
+        <div className="flex mb-10">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+            Happening Today
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {Array.from({ length: 3 }).map((_, i) => (
             <div
               key={i}
               className="bg-white dark:bg-gray-800 rounded-3xl shadow-lg overflow-hidden"
@@ -73,92 +74,98 @@ export default function TodaysEvents() {
                 <Skeleton className="h-4 w-2/3" />
               </div>
             </div>
-          ))
-        ) :
-          events.length > 0 ?
-            (events.map((event) => {
-              const dateInfo = formatDate(event.eventOn);
-              return (
-                <Link
-                  key={event.id}
-                  href={`/events/${event.slug || event.id}`}
-                  className="group bg-white dark:bg-gray-800 rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:-translate-y-1"
-                >
-                  {/* Image */}
-                  <div className="relative h-56 overflow-hidden">
-                    {event.pictureUrl ? (
-                      <img
-                        src={event.pictureUrl}
-                        alt={event.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                      />
-                    ) : (<>
-                      <div className="w-full h-full flex items-center justify-center">
-                        <FaCalendarAlt className="text-gray-500 text-6xl opacity-50" />
-                      </div>
-                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
-                      <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    </>
-                    )}
+          ))}
+        </div>
+      </section>
+    );
+  }
 
-                    {/* Date Badge */}
-                    <div className="absolute top-4 right-4 bg-white dark:bg-gray-800 rounded-xl shadow-lg px-3 py-2 text-center">
-                      <div className="text-2xl font-bold text-black dark:text-indigo-400 leading-none">
-                        {dateInfo.day}
-                      </div>
-                      <div className="text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase">
-                        {dateInfo.month}
-                      </div>
-                    </div>
+  // Show empty state when no events
+  if (!loading && events.length === 0) {
+    return (
+      <></>
+    );
+  }
 
-
-                  </div>
-
-                  {/* Content */}
-                  <div className="p-5">
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 line-clamp-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                      {event.title}
-                    </h3>
-
-                    <div className="space-y-2 mb-4">
-                      <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400 text-sm">
-                        <FaMapMarkerAlt className="text-black shrink-0" />
-                        <span className="truncate">{event.city}</span>
-                      </div>
-
-                      <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400 text-sm">
-                        <FaClock className="text-black shrink-0" />
-                        <span>{formatTime(event.eventOnTime)}</span>
-                      </div>
-                    </div>
-
-                    <p className="text-gray-600 dark:text-gray-300 text-sm line-clamp-2 leading-relaxed">
-                      {event.description}
-                    </p>
-
-                    <div className="mt-4 flex items-center text-indigo-600 dark:text-indigo-400 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-                      <span>View Details</span>
-                      <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </div>
-                  </div>
-                </Link>
-              );
-            })
-
-            )
-            : (
-              <div className="col-span-full text-center py-16">
-                <div className="inline-flex items-center justify-center w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-full mb-4">
-                  <FaCalendarAlt className="text-4xl text-gray-400 dark:text-gray-600" />
-                </div>
-                <p className="text-gray-500 dark:text-gray-400 text-lg">No events scheduled for today</p>
-              </div>
-            )
-        }
+  // Show events
+  return (
+    <section className="container mx-auto px-4 py-16">
+      <div className="flex mb-10">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+          Happening Today
+        </h2>
       </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {events.map((event) => {
+          const dateInfo = formatDate(event.eventOn);
+          return (
+            <Link
+              key={event.id}
+              href={`/events/${event.slug || event.id}`}
+              className="group bg-white dark:bg-gray-800 rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:-translate-y-1"
+            >
+              {/* Image */}
+              <div className="relative h-56 overflow-hidden">
+                {event.pictureUrl ? (
+                  <img
+                    src={event.pictureUrl}
+                    alt={event.title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                ) : (
+                  <>
+                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800">
+                      <FaCalendarAlt className="text-gray-400 dark:text-gray-600 text-6xl opacity-50" />
+                    </div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  </>
+                )}
 
+                {/* Date Badge */}
+                <div className="absolute top-4 right-4 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-xl shadow-lg px-3 py-2 text-center">
+                  <div className="text-2xl font-bold text-gray-900 dark:text-indigo-400 leading-none">
+                    {dateInfo.day}
+                  </div>
+                  <div className="text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase">
+                    {dateInfo.month}
+                  </div>
+                </div>
+              </div>
+
+              {/* Content */}
+              <div className="p-5">
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 line-clamp-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                  {event.title}
+                </h3>
+
+                <div className="space-y-2 mb-4">
+                  <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400 text-sm">
+                    <FaMapMarkerAlt className="text-gray-500 dark:text-gray-500 shrink-0" />
+                    <span className="truncate">{event.city}</span>
+                  </div>
+
+                  <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400 text-sm">
+                    <FaClock className="text-gray-500 dark:text-gray-500 shrink-0" />
+                    <span>{formatTime(event.eventOnTime)}</span>
+                  </div>
+                </div>
+
+                <p className="text-gray-600 dark:text-gray-300 text-sm line-clamp-2 leading-relaxed">
+                  {event.description}
+                </p>
+
+                <div className="mt-4 flex items-center text-indigo-600 dark:text-indigo-400 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span>View Details</span>
+                  <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </div>
+            </Link>
+          );
+        })}
+      </div>
     </section>
   );
 }

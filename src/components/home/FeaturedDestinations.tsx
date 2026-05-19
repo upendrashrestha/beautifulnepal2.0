@@ -5,7 +5,7 @@ import { urlFor } from "@/sanity/lib/image";
 import { Destination } from "../../../types";
 import { Card, CardContent } from "../ui/card";
 import AnimatedSection from "../AnimatedSection";
-import { FaArrowRight } from "react-icons/fa";
+import { FaArrowRight, FaMapPin } from "react-icons/fa";
 
 interface FeaturedDestinationProps {
   destinations: Destination[];
@@ -86,13 +86,19 @@ export default function FeaturedDestination({
 
         {/* View All Destinations Link */}
         <div className="flex justify-center mt-12">
-          <Link
-            href="/destinations"
-            className="group inline-flex items-center gap-3 px-8 py-4 bg-black hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-200 text-white dark:text-black font-semibold rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
-          >
-            <span>View All Destinations</span>
-            <FaArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-          </Link>
+        <Link
+  href="/destinations"
+  className="group relative inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#bc1c2b] to-[#d93344] text-white rounded-full font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-[#bc1c2b]/25 hover:scale-105 active:scale-95 overflow-hidden"
+>
+  <span className="relative z-10 flex items-center gap-2">
+    <FaMapPin className="w-4 h-4" />
+    View All Destinations
+    <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+    </svg>
+  </span>
+  <div className="absolute inset-0 -translate-x-full group-hover:translate-x-0 transition-transform duration-500 bg-gradient-to-r from-white/20 to-transparent" />
+</Link>
         </div>
       </AnimatedSection>
     </section>

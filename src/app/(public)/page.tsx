@@ -17,6 +17,8 @@ import {
   SectionReveal,
   SectionHeading
 } from "@/components/home/SectionUtils";
+import Link from "next/link";
+import { FaCalendarAlt } from "react-icons/fa";
 
 export const revalidate = 60;
 
@@ -64,39 +66,51 @@ export default async function HomePage() {
             02 · EVENTS
             Dark forest section with diagonal top edge
         ══════════════════════════════════════════════ */}
-        <section
-          className="relative py-20 sm:py-28"
-          style={{ background: "#faf7f2" }}
-        >
-          {/* Gold ambient blob */}
-          <div
-            className="absolute bottom-0 right-0 w-[600px] h-[600px] pointer-events-none"
-            style={{
-              background: "radial-gradient(circle at bottom right, rgba(201,148,58,0.06) 0%, transparent 65%)",
-            }}
-          />
+     
 
           {/* Top-left decorative rule */}
-          <div className="absolute top-0 left-0 right-0 h-px"
-            style={{ background: "linear-gradient(90deg, #bc1c2b, rgba(188,28,43,0.15), transparent)" }} />
+<section className="relative py-4 md:py-6 lg:py-8">
+  {/* Top gradient line */}
+  <div className="absolute top-0 left-0 right-0 h-px"
+    style={{ background: "linear-gradient(90deg, #bc1c2b, rgba(188,28,43,0.15), transparent)" }} />
 
-          <div className="container mx-auto px-4 relative z-10">
-            <SectionReveal>
-              <SectionHeading
-                index="02"
-                eyebrow="What's On"
-                title="Events across"
-                titleAccent="Nepal"
-                subtitle="Don't miss out on what's happening — festivals, treks, and cultural gatherings across the country."
-              />
-            </SectionReveal>
+  <div className="container mx-auto px-4 relative z-10">
+ 
 
-            <SectionReveal delay={0.15}>
-              <Events />
-            </SectionReveal>
-          </div>
+    {/* Modern header with floating button */}
+    <div className="mt-12 mb-10">
+      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+        <SectionReveal>
+      <SectionHeading
+        index="02"
+        eyebrow="What's On"
+        title="Events across"
+        titleAccent="Nepal"
+        subtitle="Don't miss out on what's happening — festivals, treks, and cultural gatherings across the country."
+      />
+    </SectionReveal>
 
-        </section>
+        <SectionReveal delay={0.1}>
+          <Link
+            href="/events"
+            className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-gray-200 bg-white/50 backdrop-blur-sm text-gray-700 font-medium hover:border-[#bc1c2b]/30 hover:bg-[#bc1c2b]/5 transition-all duration-300"
+          >
+            <FaCalendarAlt className="w-4 h-4 text-[#bc1c2b]" />
+            View All Events
+            <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </Link>
+        </SectionReveal>
+      </div>
+    </div>
+
+    {/* Events Grid */}
+    <SectionReveal delay={0.15}>
+      <Events />
+    </SectionReveal>
+  </div>
+</section>
 
         {/* ══════════════════════════════════════════════
             03 · STORIES & TRAVEL INSPIRATION

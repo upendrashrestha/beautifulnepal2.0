@@ -5,7 +5,7 @@ import { urlFor } from "@/sanity/lib/image";
 import { Post } from "../../types";
 import { Card, CardContent } from "./ui/card";
 import AnimatedSection from "./AnimatedSection";
-import { FaArrowRight } from "react-icons/fa";
+import { FaArrowRight, FaBookOpen } from "react-icons/fa";
 
 interface PostsProps {
   posts: Post[];
@@ -73,13 +73,17 @@ export default function Posts({ posts, title }: PostsProps) {
 
         {/* View All Posts Link */}
         <div className="flex justify-center mt-12">
-          <Link
-            href="/blogs"
-            className="group inline-flex items-center gap-3 px-8 py-4 bg-black hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-200 text-white dark:text-black font-semibold rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
-          >
-            <span>View All Stories</span>
-            <FaArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-          </Link>
+         <Link
+  href="/blogs"
+  className="group relative inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#bc1c2b] to-[#d93344] text-white rounded-full font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-[#bc1c2b]/25 hover:scale-105 active:scale-95 overflow-hidden"
+>
+  <span className="relative z-10 flex items-center gap-2">
+    <FaBookOpen className="w-4 h-4" />
+    View All Stories
+    <FaArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+  </span>
+  <div className="absolute inset-0 -translate-x-full group-hover:translate-x-0 transition-transform duration-500 bg-gradient-to-r from-white/20 to-transparent" />
+</Link>
         </div>
       </AnimatedSection>
     </section>

@@ -14,10 +14,10 @@ import BlockContent from "@/components/ui/blockContent";
 import Posts from "@/components/Posts";
 import Guides from "@/components/Guides";
 
-
 interface Props {
   params: Promise<{ slug: string }>;
 }
+
 // ---------------------------
 // Metadata for SEO
 // ---------------------------
@@ -29,15 +29,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return { title: "Destination not found", description: "" };
   }
 
-  const openGraphImageUrl = destination.heroImage
-    ? urlFor(destination.heroImage.asset._ref).url()
-    : undefined;
+  const seo = destination.seo;
+  const title = seo?.metaTitle || destination.name;
+  const description = seo?.metaDescription || destination.intro || "";
+  const keywords = seo?.keywords?.join(", ") || "destination, explore, location, city, village, local, experience";
+
+  // Prefer seo.ogImage, fallback to heroImage
+  const ogImageUrl = seo?.ogImage?.asset?._ref
+    ? urlFor(seo.ogImage.asset._ref).url()
+    : destination.heroImage?.asset?._ref
+      ? urlFor(destination.heroImage.asset._ref).url()
+      : undefined;
 
   return generateMetadataHelper({
-    title: destination.name,
-    description: destination.intro || "",
-    openGraphImageUrl,
-    keywords: "destination, explore, location, city, village, local, experience",
+    title,
+    description,
+    keywords,
+    openGraphImageUrl: ogImageUrl,
+    noIndex: seo?.noIndex ?? false,
+    canonicalUrl: seo?.canonicalUrl,
   });
 }
 
@@ -56,10 +66,12 @@ export default async function DestinationPage({ params }: Props) {
 
   if (!destination) return notFound();
 
-  // Memoized hero image URL
-  const heroImageUrl = destination.heroImage
-    ? urlFor(destination.heroImage.asset._ref).width(1200).height(800).url()
-    : undefined;
+  // Use ogImage from seo if available, otherwise heroImage
+  const heroImageUrl = destination.seo?.ogImage?.asset?._ref
+    ? urlFor(destination.seo.ogImage.asset._ref).width(1200).height(800).url()
+    : destination.heroImage?.asset?._ref
+      ? urlFor(destination.heroImage.asset._ref).width(1200).height(800).url()
+      : undefined;
 
   return (
     <PageLayout title={destination.name}>
@@ -71,7 +83,7 @@ export default async function DestinationPage({ params }: Props) {
           <div className="relative w-full h-64 sm:h-96 rounded-lg overflow-hidden shadow-sm">
             <Image
               src={heroImageUrl}
-              alt={destination.name}
+              alt={destination.seo?.ogImage?.alt || destination.name}
               fill
               priority
               className="object-cover"

@@ -1,22 +1,45 @@
-import { BnMetadata } from "../../types";
 import { Metadata } from "next";
-import { generateKeywords } from "./generateKeywords";
-export async function generateMetadataHelper(
-  mdata: BnMetadata,
-): Promise<Metadata> {
-  const keywords = await generateKeywords({
-    title: mdata.title,
-    categories: mdata.keywords?.split(","),
-  });
-  return {
-    title: mdata.title,
-    description: mdata.description,
+
+type MetadataHelperProps = {
+  title: string;
+  description?: string;
+  keywords?: string;
+  openGraphImageUrl?: string;
+  author?: string;
+  noIndex?: boolean;
+  canonicalUrl?: string;
+};
+
+export function generateMetadataHelper({
+  title,
+  description,
+  keywords,
+  openGraphImageUrl,
+  author,
+  noIndex = false,
+  canonicalUrl,
+}: MetadataHelperProps): Metadata {
+  const metadata: Metadata = {
+    title,
+    description,
+    keywords,
+    authors: author ? [{ name: author }] : undefined,
+    alternates: canonicalUrl ? { canonical: canonicalUrl } : undefined,
     openGraph: {
-      title: mdata.title,
-      description: mdata.description,
-      images: mdata.openGraphImageUrl,
+      title,
+      description,
+      images: openGraphImageUrl ? [{ url: openGraphImageUrl }] : undefined,
+      type: "article",
+      authors: author ? [author] : undefined,
     },
-    keywords: keywords,
-    authors: mdata.author ? [{ name: mdata.author }] : undefined,
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: openGraphImageUrl ? [openGraphImageUrl] : undefined,
+    },
+    robots: noIndex ? { index: false, follow: true } : undefined,
   };
+
+  return metadata;
 }

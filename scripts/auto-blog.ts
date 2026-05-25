@@ -3,6 +3,8 @@ import { createClient } from "next-sanity";
 import dotenv from "dotenv";
 dotenv.config({ path: ".env.local" });
 
+// ==================== TYPES ====================
+
 type NewsArticle = {
   title: string;
   description?: string;
@@ -14,12 +16,14 @@ type TrendingTopic = {
   source: string;
 };
 
+type OpenRouterChoice = {
+  message: {
+    content: string;
+  };
+};
+
 type OpenRouterResponse = {
-  choices: {
-    message: {
-      content: string;
-    };
-  }[];
+  choices: OpenRouterChoice[];
 };
 
 type PexelsPhoto = {
@@ -28,14 +32,70 @@ type PexelsPhoto = {
   };
 };
 
+type PexelsResponse = {
+  photos: PexelsPhoto[];
+};
+
+type PortableTextSpan = {
+  _type: "span";
+  text: string;
+};
+
 type PortableTextBlock = {
   _type: "block";
-  style: string;
-  children: {
-    _type: "span";
-    text: string;
-  }[];
+  style: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+  children: PortableTextSpan[];
 };
+
+type ArticleWithSeo = {
+  article: string;
+  excerpt: string;
+  keywords: string[];
+};
+
+type SanityImageAsset = {
+  _type: "reference";
+  _ref: string;
+};
+
+type SanityImage = {
+  _type: "image";
+  asset: SanityImageAsset;
+  alt?: string;
+};
+
+type SanitySeo = {
+  metaTitle?: string;
+  metaDescription?: string;
+  keywords?: string[];
+  canonicalUrl?: string;
+  noIndex?: boolean;
+  ogImage?: SanityImage;
+};
+
+type SanityPost = {
+  _type: "post";
+  title: string;
+  slug: {
+    _type: "slug";
+    current: string;
+  };
+  excerpt: string;
+  publishedAt: string;
+  body: PortableTextBlock[];
+  featured: boolean;
+  aiGenerated: boolean;
+  topicSource: string;
+  status: "draft" | "published";
+  seo: SanitySeo;
+  mainImage?: SanityImage;
+  author?: {
+    _type: "reference";
+    _ref: string;
+  };
+};
+
+// ==================== ENV VALIDATION ====================
 
 const requiredEnv = [
   "NEXT_PUBLIC_SANITY_PROJECT_ID",
@@ -44,13 +104,14 @@ const requiredEnv = [
   "OPENROUTER_API_KEY",
   "PEXELS_API_KEY",
   "NEWS_API_KEY",
+  "NEXT_PUBLIC_SITE_URL",
 ] as const;
 
-requiredEnv.forEach((key) => {
+for (const key of requiredEnv) {
   if (!process.env[key]) {
     throw new Error(`Missing environment variable: ${key}`);
   }
-});
+}
 
 const sanityClient = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
@@ -60,10 +121,50 @@ const sanityClient = createClient({
   useCdn: false,
 });
 
-// Strip surrounding double or single quotes the AI may wrap around values
+// ==================== UTILITIES ====================
+
 function stripQuotes(text: string): string {
   return text.replace(/^["']|["']$/g, "").trim();
 }
+
+function createSlug(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+}
+
+function markdownToPortableText(markdown: string): PortableTextBlock[] {
+  const lines = markdown
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0);
+
+  return lines.map((line) => {
+    let style: PortableTextBlock["style"] = "normal";
+    let text = line;
+
+    if (line.startsWith("### ")) {
+      style = "h3";
+      text = line.slice(4);
+    } else if (line.startsWith("## ")) {
+      style = "h2";
+      text = line.slice(3);
+    } else if (line.startsWith("# ")) {
+      style = "h1";
+      text = line.slice(2);
+    }
+
+    return {
+      _type: "block",
+      style,
+      children: [{ _type: "span", text }],
+    };
+  });
+}
+
+// ==================== API CALLS ====================
 
 async function getTrendingTopic(): Promise<TrendingTopic> {
   try {
@@ -71,24 +172,21 @@ async function getTrendingTopic(): Promise<TrendingTopic> {
       .toISOString()
       .split("T")[0];
 
-    const response = await axios.get<{
-      articles: NewsArticle[];
-    }>("https://newsapi.org/v2/everything", {
-      params: {
-        q: `
-          Nepal tourism OR Nepal trekking
-          OR Pokhara OR Everest OR Kathmandu
-        `,
-        language: "en",
-        sortBy: "publishedAt",
-        pageSize: 10,
-        from: fromDate,
-        apiKey: process.env.NEWS_API_KEY,
+    const newsResponse = await axios.get<{ articles: NewsArticle[] }>(
+      "https://newsapi.org/v2/everything",
+      {
+        params: {
+          q: "Nepal tourism OR Nepal trekking OR Pokhara OR Everest OR Kathmandu",
+          language: "en",
+          sortBy: "publishedAt",
+          pageSize: 10,
+          from: fromDate,
+          apiKey: process.env.NEWS_API_KEY,
+        },
       },
-    });
+    );
 
-    const articles = response.data.articles;
-
+    const articles = newsResponse.data.articles;
     if (!articles.length) {
       return {
         title: "Best Hidden Places to Visit in Nepal",
@@ -96,7 +194,7 @@ async function getTrendingTopic(): Promise<TrendingTopic> {
       };
     }
 
-    const titles = articles.map((article) => article.title).join("\n");
+    const titles = articles.map((a) => a.title).join("\n");
 
     const aiResponse = await axios.post<OpenRouterResponse>(
       "https://openrouter.ai/api/v1/chat/completions",
@@ -114,8 +212,7 @@ Recent Nepal travel/news topics:
 
 ${titles}
 
-Pick ONE SEO-friendly travel blog topic
-for Nepal that people would search.
+Pick ONE SEO-friendly travel blog topic for Nepal that people would search.
 
 Return the title only, with no surrounding quotes.
 `,
@@ -130,7 +227,6 @@ Return the title only, with no surrounding quotes.
     );
 
     const rawTopic = aiResponse.data.choices[0]?.message?.content?.trim();
-    // Remove any surrounding quotes the model may have added
     const topic = rawTopic ? stripQuotes(rawTopic) : null;
 
     return {
@@ -139,7 +235,6 @@ Return the title only, with no surrounding quotes.
     };
   } catch (error) {
     console.error("Topic generation failed", error);
-
     return {
       title: "Best Hidden Places to Visit in Nepal",
       source: "fallback",
@@ -147,19 +242,8 @@ Return the title only, with no surrounding quotes.
   }
 }
 
-async function generateArticle(title: string): Promise<string> {
-  const response = await axios.post<OpenRouterResponse>(
-    "https://openrouter.ai/api/v1/chat/completions",
-    {
-      model: "openai/gpt-4o-mini",
-      messages: [
-        {
-          role: "system",
-          content: "You are an expert Nepal travel writer.",
-        },
-        {
-          role: "user",
-          content: `
+async function generateArticleWithSeo(title: string): Promise<ArticleWithSeo> {
+  const prompt = `
 Write a detailed SEO travel blog.
 
 Title: ${title}
@@ -173,69 +257,78 @@ Requirements:
 - SEO optimized
 - factual information
 - markdown format
-`,
+
+Also provide:
+- A short excerpt (max 160 characters) summarising the article.
+- A list of 5-10 relevant SEO keywords.
+
+Return valid JSON only, with the following structure:
+{
+  "article": "markdown content here",
+  "excerpt": "short excerpt under 160 chars",
+  "keywords": ["keyword1", "keyword2", "..."]
+}
+
+Do not include any other text or comments outside the JSON.
+`;
+
+  const response = await axios.post<OpenRouterResponse>(
+    "https://openrouter.ai/api/v1/chat/completions",
+    {
+      model: "openai/gpt-4o-mini",
+      messages: [
+        {
+          role: "system",
+          content:
+            "You are an expert Nepal travel writer. Always output valid JSON.",
+        },
+        {
+          role: "user",
+          content: prompt,
         },
       ],
+      response_format: { type: "json_object" },
     },
     {
       headers: {
         Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        "Content-Type": "application/json",
       },
     },
   );
 
-  return response.data.choices[0].message.content;
-}
+  const rawContent = response.data.choices[0].message.content;
+  let parsed: ArticleWithSeo;
 
-function markdownToPortableText(markdown: string): PortableTextBlock[] {
-  const lines = markdown
-    .split("\n")
-    .map((line) => line.trim())
-    .filter(Boolean);
+  try {
+    parsed = JSON.parse(rawContent) as ArticleWithSeo;
+  } catch {
+    throw new Error(
+      `AI returned invalid JSON for title: ${title}\nRaw: ${rawContent}`,
+    );
+  }
 
-  return lines.map((line) => {
-    let style = "normal";
-    let text = line;
+  if (!parsed.article || !parsed.excerpt || !Array.isArray(parsed.keywords)) {
+    throw new Error("AI response missing required fields");
+  }
 
-    if (line.startsWith("### ")) {
-      style = "h3";
-      text = line.replace(/^### /, "");
-    } else if (line.startsWith("## ")) {
-      style = "h2";
-      text = line.replace(/^## /, "");
-    } else if (line.startsWith("# ")) {
-      style = "h1";
-      text = line.replace(/^# /, "");
-    }
+  if (parsed.excerpt.length > 160) {
+    parsed.excerpt = parsed.excerpt.slice(0, 157) + "...";
+  }
 
-    return {
-      _type: "block",
-      style,
-      children: [
-        {
-          _type: "span",
-          text,
-        },
-      ],
-    };
-  });
+  return parsed;
 }
 
 async function fetchImage(query: string): Promise<PexelsPhoto | null> {
   try {
-    const response = await axios.get<{
-      photos: PexelsPhoto[];
-    }>("https://api.pexels.com/v1/search", {
-      headers: {
-        Authorization: process.env.PEXELS_API_KEY!,
+    const response = await axios.get<PexelsResponse>(
+      "https://api.pexels.com/v1/search",
+      {
+        headers: { Authorization: process.env.PEXELS_API_KEY! },
+        params: { query: `${query} Nepal`, per_page: 1 },
       },
-      params: {
-        query: `${query} Nepal`,
-        per_page: 1,
-      },
-    });
-
-    return response.data.photos[0] || null;
+    );
+    return response.data.photos[0] ?? null;
   } catch (error) {
     console.error("Image fetch failed", error);
     return null;
@@ -244,18 +337,14 @@ async function fetchImage(query: string): Promise<PexelsPhoto | null> {
 
 async function uploadImage(imageUrl: string): Promise<string | null> {
   try {
-    const image = await axios.get(imageUrl, {
+    const image = await axios.get<ArrayBuffer>(imageUrl, {
       responseType: "arraybuffer",
     });
-
     const asset = await sanityClient.assets.upload(
       "image",
       Buffer.from(image.data),
-      {
-        filename: "auto-blog.jpg",
-      },
+      { filename: "auto-blog.jpg" },
     );
-
     return asset._id;
   } catch (error) {
     console.error("Image upload failed", error);
@@ -263,72 +352,114 @@ async function uploadImage(imageUrl: string): Promise<string | null> {
   }
 }
 
-function createSlug(title: string): string {
-  return title
-    .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-");
+async function getAuthor(): Promise<{ _id: string; name: string }> {
+  // 1. Try to fetch author named "Beautiful Nepal"
+  const beautifulNepal = await sanityClient.fetch<{
+    _id: string;
+    name: string;
+  } | null>(`
+    *[_type == "author" && name == "Beautiful Nepal"][0]{
+      _id,
+      name
+    }
+  `);
+  if (beautifulNepal) {
+    console.log("✅ Using author: Beautiful Nepal");
+    return beautifulNepal;
+  }
+
+  // 2. Fallback: first available author
+  const fallbackAuthor = await sanityClient.fetch<{
+    _id: string;
+    name: string;
+  } | null>(`
+    *[_type == "author"][0]{
+      _id,
+      name
+    }
+  `);
+  if (!fallbackAuthor) {
+    throw new Error(
+      "No author found. Please create an author document (e.g., 'Beautiful Nepal') in Sanity.",
+    );
+  }
+  console.warn(
+    `⚠️ 'Beautiful Nepal' not found. Using fallback author: ${fallbackAuthor.name}`,
+  );
+  return fallbackAuthor;
 }
 
-async function createPost() {
+// ==================== MAIN ====================
+async function createPost(): Promise<void> {
   console.log("Finding trending Nepal topic...");
-
   const topic = await getTrendingTopic();
-
   console.log("Topic:", topic.title);
 
-  const article = await generateArticle(topic.title);
+  console.log("Generating article and SEO data...");
+  const { article, excerpt, keywords } = await generateArticleWithSeo(
+    topic.title,
+  );
 
+  console.log("Fetching image...");
   const image = await fetchImage(topic.title);
-
   let imageRef: string | null = null;
-
   if (image) {
     imageRef = await uploadImage(image.src.large);
   }
 
   const slug = createSlug(topic.title);
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL!.replace(/\/$/, "");
+  const canonicalUrl = `${siteUrl}/posts/${slug}`;
 
-  const post = {
-    _type: "post",
+  // Get the default author
+  const author = await getAuthor();
 
-    title: topic.title,
-
-    slug: {
-      _type: "slug",
-      current: slug,
-    },
-
-    excerpt: topic.title,
-
-    publishedAt: new Date().toISOString(),
-
-    body: markdownToPortableText(article),
-
-    featured: false,
-
-    aiGenerated: true,
-
-    topicSource: topic.source,
-
-    status: "draft",
-
-    ...(imageRef && {
-      mainImage: {
-        _type: "image",
-        asset: {
-          _type: "reference",
-          _ref: imageRef,
-        },
-        alt: topic.title,
-      },
-    }),
+  // Build SEO object
+  const seo: SanitySeo = {
+    metaTitle: topic.title.slice(0, 60),
+    metaDescription: excerpt,
+    keywords,
+    canonicalUrl,
+    noIndex: false,
   };
 
-  await sanityClient.create(post);
+  if (imageRef) {
+    seo.ogImage = {
+      _type: "image",
+      asset: { _type: "reference", _ref: imageRef },
+      alt: topic.title,
+    };
+  }
 
-  console.log(`Post created successfully: ${topic.title}`);
+  // Build the post document
+  const post: SanityPost = {
+    _type: "post",
+    title: topic.title,
+    slug: { _type: "slug", current: slug },
+    author: { _type: "reference", _ref: author._id }, // 👈 Add author reference
+    excerpt,
+    publishedAt: new Date().toISOString(),
+    body: markdownToPortableText(article),
+    featured: false,
+    aiGenerated: true,
+    topicSource: topic.source,
+    status: "draft",
+    seo,
+  };
+
+  if (imageRef) {
+    post.mainImage = {
+      _type: "image",
+      asset: { _type: "reference", _ref: imageRef },
+      alt: topic.title,
+    };
+  }
+
+  await sanityClient.create(post);
+  console.log(`✅ Post created: ${topic.title}`);
+  console.log(`   Author: ${author.name}`);
+  console.log(`   Excerpt: ${excerpt}`);
+  console.log(`   Keywords: ${keywords.join(", ")}`);
 }
 
 createPost().catch(console.error);

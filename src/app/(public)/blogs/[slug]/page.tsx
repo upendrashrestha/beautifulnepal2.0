@@ -11,7 +11,7 @@ import BlockContent from "@/components/ui/blockContent";
 import Link from "@/components/Link";
 import PageLayout from "@/components/layouts/PageLayout";
 
-export const dynamic = "force-dynamic"; // or use generateStaticParams
+export const dynamic = "force-dynamic";
 
 type PageProps = {
     params: Promise<{ slug: string }>;
@@ -23,12 +23,25 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
 
     if (!post) return { title: "Blog not found", description: "" };
 
+    // Use SEO fields if available, otherwise fall back to post fields
+    const seo = post.seo;
+    const title = seo?.metaTitle || post.title;
+    const description = seo?.metaDescription || post.excerpt || "";
+    const keywords = seo?.keywords?.join(", ") || post.categories?.map(c => c.title).join(", ");
+    const ogImageUrl = seo?.ogImage?.asset?._ref
+        ? urlFor(seo.ogImage.asset._ref).url()
+        : post.mainImage?.asset?._ref
+            ? urlFor(post.mainImage.asset._ref).url()
+            : undefined;
+
     return generateMetadataHelper({
-        title: post.title,
-        description: post.excerpt || "",
-        keywords: post.categories?.map(c => c.title).join(", "),
-        openGraphImageUrl: post.mainImage ? urlFor(post.mainImage.asset._ref).url() ?? undefined : undefined,
+        title,
+        description,
+        keywords,
+        openGraphImageUrl: ogImageUrl,
         author: post.author?.name,
+        noIndex: seo?.noIndex ?? false,
+        canonicalUrl: seo?.canonicalUrl,
     });
 }
 
@@ -67,7 +80,6 @@ function PostView(post: Post) {
                                     </ul>
                                 )}
                             </div>
-
                         </div>
                     </header>
 
@@ -111,14 +123,13 @@ function PostView(post: Post) {
                             </div>
                         </aside>
 
-
                         <section className="xl:col-span-3 xl:row-span-2 xl:pb-0 pt-6 xl:pt-0">
                             {/* Main Image */}
                             {post.mainImage?.asset?._ref && (
                                 <div className="mb-8">
                                     <Image
                                         src={urlFor(post.mainImage.asset._ref).url()}
-                                        alt={post.mainImage?.asset?.alt || post.title}
+                                        alt={post.title}
                                         width={1000}
                                         height={500}
                                         priority
@@ -128,22 +139,16 @@ function PostView(post: Post) {
                                 </div>
                             )}
                             {/* Main Body */}
-
-                            {post.body &&
+                            {post.body && (
                                 <div className="max-w-none">
-
                                     <BlockContent value={post.body} />
                                 </div>
-                            }
+                            )}
                         </section>
-
-
-
                     </div>
-                    {post.affiliateLinks && post.affiliateLinks.length > 0 &&
+                    {post.affiliateLinks && post.affiliateLinks.length > 0 && (
                         <div className="p-4">
                             <h2 className="mb-4 text-black text-lg font-semibold">Useful Links</h2>
-
                             <ul className="space-y-2">
                                 {post.affiliateLinks.map(link => (
                                     <li key={link.url}>
@@ -159,9 +164,8 @@ function PostView(post: Post) {
                                     </li>
                                 ))}
                             </ul>
-
-                        </div>}
-
+                        </div>
+                    )}
                 </article>
             </SectionContainer>
         </PageLayout>

@@ -43,7 +43,7 @@ jobs:
       # ---------------------------
       - name: Backfill SEO for Posts (Blog)
         if: ${{ !inputs.skipPosts }}
-        run: npx tsx scripts/backfill-seo.ts
+        run: npx tsx scripts/backfill-seo-blog.ts
         env:
           NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_SANITY_PROJECT_ID }}
           NEXT_PUBLIC_SANITY_DATASET: ${{ secrets.NEXT_PUBLIC_SANITY_DATASET }}
@@ -56,7 +56,7 @@ jobs:
       # ---------------------------
       - name: Backfill SEO for Destinations
         if: ${{ !inputs.skipDestinations }}
-        run: npx tsx scripts/backfill-destinations-seo.ts
+        run: npx tsx scripts/backfill-seo-destination-content.ts
         env:
           NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_SANITY_PROJECT_ID }}
           NEXT_PUBLIC_SANITY_DATASET: ${{ secrets.NEXT_PUBLIC_SANITY_DATASET }}
@@ -69,7 +69,7 @@ jobs:
       # ---------------------------
       - name: Backfill SEO for Guides
         if: ${{ !inputs.skipGuides }}
-        run: npx tsx scripts/backfill-guides-seo.ts
+        run: npx tsx scripts/backfill-seo-guide.ts
         env:
           NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_SANITY_PROJECT_ID }}
           NEXT_PUBLIC_SANITY_DATASET: ${{ secrets.NEXT_PUBLIC_SANITY_DATASET }}

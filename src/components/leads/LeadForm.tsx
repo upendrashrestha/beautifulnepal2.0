@@ -7,6 +7,7 @@ import CountrySelect from '../CountrySelect';
 import Dropdown from '../ui/Dropdown';
 import BotCheck, { BotCheckRef } from '../BotCheck';
 import Checkbox from '../ui/Checkbox';
+import { FaArrowRight } from 'react-icons/fa';
 
 interface Props {
   initialData: Lead;
@@ -121,7 +122,7 @@ export default function LeadForm({
   const [travelMonth, travelYear] = form.travelMonth?.split(' ') || [];
 
   return (
-    <form onSubmit={handleSubmit} className="mt-10 space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-5">
       <Input
         label="Name *"
         name="fullName"
@@ -200,6 +201,12 @@ export default function LeadForm({
           }
         />
       </div>
+      <div className="flex items-center gap-3 my-6 text-xs uppercase tracking-widest text-gray-400">
+        <span className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
+        Verification
+        <span className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
+      </div>
+
       <BotCheck
         ref={botCheckRef}
         error={errors.botCheck}
@@ -216,15 +223,17 @@ export default function LeadForm({
       />
 
       {/* Submit */}
-      <div className="flex items-center justify-end pt-4">
-        <button
-          type="submit"
-          disabled={loading}
-          className="inline-flex items-center rounded-full bg-black px-6 py-3 font-medium text-white transition hover:bg-gray-800"
-        >
-          {loading ? 'Saving…' : submitLabel}
-        </button>
-      </div>
+      <button
+        type="submit"
+        disabled={loading}
+        className="w-full h-12 rounded-full bg-[#1A1714] text-white text-sm font-medium tracking-wide
+             flex items-center justify-center gap-2
+             hover:bg-[#3A2F25] active:scale-[.98] transition-all duration-150"
+      >
+        {loading ? 'Sending…' : submitLabel}
+        {!loading && <FaArrowRight className="w-4 h-4" />}
+      </button>
+
     </form>
   );
 }

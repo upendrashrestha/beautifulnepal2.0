@@ -16,59 +16,67 @@ export default function CreateLead() {
     const source = searchParams.get('source') ?? 'unknown';
 
     return (
-        <div className={`bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8`}>
+        <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl p-8 max-w-xl mx-auto">
 
-            <div className="mt-10 space-y-6 ">
-                <p className="mb-6 flex items-start justify-center gap-2 rounded-md bg-blue-50 px-4 py-3 text-sm text-blue-800">
-                    <FaInfo className="mt-0.5 shrink-0 text-orange-700" />
-                    <span>
-                        <strong>Info:</strong> BeautifulNepal is not a travel agency. We connect travelers with licensed Nepal-based tour operators.
-                    </span>
-                </p>
+            {/* Header */}
+            <p className="text-[11px] uppercase tracking-widest text-gray-400 mb-1">Beautiful Nepal</p>
+            <h1 className="font-serif text-3xl font-medium leading-tight mb-1">
+                Plan your <em className="italic text-[#B07D50]">perfect</em> journey
+            </h1>
+            <p className="text-sm text-gray-500 mb-6 pb-5 border-b border-gray-100 dark:border-gray-800">
+                Share your travel details and we&apos;ll connect you with the right local expert.
+            </p>
 
-                {hideFormOnSubmit ? (
-                    <div className="mt-4 text-center">
-                        <p className="font-medium text-green-600">
-                            Your request has been submitted. We will get back to you soon.
-                        </p>
-                    </div>
-                ) : (
-                    <>
-                        
-
-                        <LeadForm
-                            submitLabel="Submit"
-                            initialData={{
-                                id: '',
-                                fullName: '',
-                                email: '',
-                                status: 'new',
-                                country: '',
-                                destination: '',
-                                travelMonth: '',
-                                phone: '',
-                                source,
-                            }}
-                            onSubmit={async data => {
-                                await LeadService.createLead(data);
-                                setShowToast(true);
-                                setHideFormOnSubmit(true);
-                            }}
-                            onUpdate={async data => {
-                                await LeadService.updateLead(data);
-                            }}
-                            resetOnSuccess
-                        />
-                    </>
-                )}
-
-                {showToast && (
-                    <Toast
-                        message="Thank you! Your request has been submitted!"
-                        onClose={() => setShowToast(false)}
-                    />
-                )}
+            {/* Info banner */}
+            <div className="flex items-start gap-2.5 bg-amber-50 border border-amber-200 rounded-lg px-3.5 py-2.5 text-[12.5px] text-amber-800 mb-6">
+                <FaInfo className="mt-0.5 shrink-0 text-amber-600" />
+                <span>BeautifulNepal is not a travel agency — we connect travelers with licensed Nepal-based tour operators.</span>
             </div>
+
+
+
+            {hideFormOnSubmit ? (
+                <div className="mt-4 text-center">
+                    <p className="font-medium text-green-600">
+                        Your request has been submitted. We will get back to you soon.
+                    </p>
+                </div>
+            ) : (
+                <>
+
+
+                    <LeadForm
+                        submitLabel="Submit"
+                        initialData={{
+                            id: '',
+                            fullName: '',
+                            email: '',
+                            status: 'new',
+                            country: '',
+                            destination: '',
+                            travelMonth: '',
+                            phone: '',
+                            source,
+                        }}
+                        onSubmit={async data => {
+                            await LeadService.createLead(data);
+                            setShowToast(true);
+                            setHideFormOnSubmit(true);
+                        }}
+                        onUpdate={async data => {
+                            await LeadService.updateLead(data);
+                        }}
+                        resetOnSuccess
+                    />
+                </>
+            )}
+
+            {showToast && (
+                <Toast
+                    message="Thank you! Your request has been submitted!"
+                    onClose={() => setShowToast(false)}
+                />
+            )}
         </div>
     );
 }

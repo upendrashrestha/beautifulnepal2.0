@@ -1,0 +1,47 @@
+name: Auto Sitemap
+on:
+  schedule:
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+
+jobs:
+  sitemap:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # 👈 this was missing
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}  # 👈 explicit token
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install tsx
+        run: npm install -D tsx
+
+      - name: Run sitemap generator
+        run: npx tsx scripts/generate-sitemap.ts
+        env:
+          NEXT_PUBLIC_BASE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
+
+      - name: Check for changes
+        id: git-check
+        run: |
+          git diff --quiet public/ || echo "changes=true" >> $GITHUB_OUTPUT
+
+      - name: Commit changes
+        if: steps.git-check.outputs.changes == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/sitemap*.xml
+          git commit -m "chore: auto update sitemap"
+          git push
